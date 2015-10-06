@@ -14,21 +14,23 @@ import java.awt.event.ActionListener;
 /**
  * Created by NEGU on 6/10/2015.
  */
-public class ButtonFilterType extends JPanel{
+public class ButtonFilterType extends JPanel {
 
-    JLabel raicesText;
-    raicesText = new JLabel("Resultado de un ejemplo:");
+    JLabel raicesText = new JLabel("Resultado de un ejemplo:");
     JButton boton = new JButton("Ejemplo de Raices");
-    boton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            double[] polyCoefs = {2,1};
-            PolynomialFunction polynomialFunction = new PolynomialFunction(polyCoefs);
 
-            LaguerreSolver laguerreSolver = new LaguerreSolver();
-            Complex[] raices = laguerreSolver.solveAllComplex(polynomialFunction.getCoefficients(), 0);
+    public ButtonFilterType() {
+        boton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                double[] polyCoefs = {2, 1};
+                PolynomialFunction polynomialFunction = new PolynomialFunction(polyCoefs);
 
-            raicesText.setText(Arrays.toString(raices));
-        }
-    });
+                LaguerreSolver laguerreSolver = new LaguerreSolver();
+                Complex[] raices = laguerreSolver.solveAllComplex(polynomialFunction.getCoefficients(), 0);
+
+                raicesText.setText(Arrays.toString(raices));
+            }
+        });
+    }
 }
