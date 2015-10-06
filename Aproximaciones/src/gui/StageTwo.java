@@ -8,10 +8,6 @@ import org.math.plot.*;
 import tclib.Approximation;
 import tclib.GenericUtils;
 
-
-/**
- * Created by kdewald on 23/09/15.
- */
 public class StageTwo extends JPanel {
 
     public StageTwo() {

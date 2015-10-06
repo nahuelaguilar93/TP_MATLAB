@@ -1,6 +1,5 @@
 package gui;
 
-
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
@@ -11,9 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Arrays;
 
-/**
- * Created by kdewald on 23/09/15.
- */
 public class StageOne extends JPanel {
 
     JLabel raicesText;

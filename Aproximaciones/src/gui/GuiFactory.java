@@ -1,8 +1,5 @@
 package gui;
 
-/**
- * Created by kdewald on 23/09/15.
- */
 public class GuiFactory {
 
     private static StageOne stageOne = null;

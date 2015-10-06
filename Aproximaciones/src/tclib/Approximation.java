@@ -5,9 +5,6 @@ import org.apache.commons.math3.complex.Complex;
 
 import java.util.Arrays;
 
-/**
- * Created by kdewald on 24/09/15.
- */
 public class Approximation {
 
     PolynomialFunction numerador;

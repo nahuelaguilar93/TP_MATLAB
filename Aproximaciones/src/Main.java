@@ -4,22 +4,12 @@ import javax.swing.*;
 
 public class Main extends JFrame {
 
-    public Main()
-    {
-//        JPanel basicComponentPanel = new JPanel();
-//        basicComponentPanel.setLayout(new BoxLayout(basicComponentPanel, BoxLayout.X_AXIS));
-//        add(basicComponentPanel);
-//
-//        basicComponentPanel.add(GuiFactory.getStageOne());
-//        basicComponentPanel.add(GuiFactory.getStageTwo());
-//        basicComponentPanel.add(GuiFactory.getStageThree());
-
+    public Main() {
         JTabbedPane jTabbedPane = new JTabbedPane();
         jTabbedPane.addTab("Stage One", GuiFactory.getStageOne());
         jTabbedPane.addTab("Stage Two", GuiFactory.getStageTwo());
         jTabbedPane.addTab("Stage Three", GuiFactory.getStageThree());
         this.add(jTabbedPane);
-
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TP de Aproximaciones en Java");
@@ -42,6 +32,6 @@ public class Main extends JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        SwingUtilities.invokeLater(() -> new Main().setVisible(true));
+        SwingUtilities.invokeLater(() - > new Main().setVisible(true));
     }
 }

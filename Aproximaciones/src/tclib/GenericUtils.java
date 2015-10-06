@@ -1,8 +1,5 @@
 package tclib;
 
-/**
- * Created by kdewald on 24/09/15.
- */
 public class GenericUtils {
 
     public static double[] linspace(double start, double end, int pointCount){
