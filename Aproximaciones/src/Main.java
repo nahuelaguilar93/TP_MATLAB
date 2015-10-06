@@ -2,6 +2,8 @@ import gui.GuiFactory;
 
 import javax.swing.*;
 
+import static javax.swing.SwingUtilities.invokeLater;
+
 public class Main extends JFrame {
 
     public Main() {
@@ -32,6 +34,6 @@ public class Main extends JFrame {
         //</editor-fold>
 
         /* Create and display the form */
-        SwingUtilities.invokeLater(() - > new Main().setVisible(true));
+        invokeLater(() -> new Main().setVisible(true));
     }
 }

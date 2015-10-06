@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.scene.layout.Pane;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
@@ -12,28 +13,16 @@ import java.util.Arrays;
 
 public class StageOne extends JPanel {
 
-    JLabel raicesText;
+    JPanel panelFiltro;
+
 
     public StageOne() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(Color.ORANGE);
 
-        raicesText = new JLabel("Resultado de un ejemplo:");
-        JButton boton = new JButton("Ejemplo de Raices");
-        boton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                double[] polyCoefs = {2,1};
-                PolynomialFunction polynomialFunction = new PolynomialFunction(polyCoefs);
+        panelFiltro = new JPanel(); //Panel where you select and configure the Type of Filter (BP, LP, etc)
 
-                LaguerreSolver laguerreSolver = new LaguerreSolver();
-                Complex[] raices = laguerreSolver.solveAllComplex(polynomialFunction.getCoefficients(), 0);
-
-                raicesText.setText(Arrays.toString(raices));
-            }
-        });
-
-        this.add(boton);
-        this.add(raicesText);
+        this.add(panelFiltro);
+        panelFiltro.add(FilterSelect.getButtons());
     }
 }
