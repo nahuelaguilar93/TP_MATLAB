@@ -41,7 +41,7 @@
         <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/PanelConfig.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
+              <caret line="24" column="44" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -59,21 +59,34 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="FilterSelectPanel.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="FilterSelectPanel.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/FilterSelectPanel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
-              <folding />
+            <state vertical-scroll-proportion="0.6925926">
+              <caret line="22" column="63" selection-start-line="22" selection-start-column="63" selection-end-line="22" selection-end-column="63" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="class#1622:1846" expanded="false" />
+                <element signature="method#actionPerformed#0;class#1622:1846" expanded="false" />
+                <element signature="method#selectConfigurator#0;class#FilterSelectPanel#0" expanded="false" />
+                <element signature="class#GenericConfiguratorPanel#0;class#FilterSelectPanel#0" expanded="false" />
+                <element signature="class#3232:3370" expanded="false" />
+                <element signature="class#3420:3558" expanded="false" />
+                <element signature="class#HighPassConfiguratorPanel#0;class#FilterSelectPanel#0" expanded="false" />
+                <element signature="class#4155:4293" expanded="false" />
+                <element signature="class#4343:4481" expanded="false" />
+                <element signature="class#BandPassConfiguratorPanel#0;class#FilterSelectPanel#0" expanded="false" />
+                <element signature="class#RejectBandConfiguratorPanel#0;class#FilterSelectPanel#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TextFieldFilterType.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="TextFieldFilterType.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/TextFieldFilterType.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="1.0584905">
-              <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="33" column="31" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
               <folding>
                 <element signature="class#818:940" expanded="false" />
               </folding>
@@ -85,8 +98,10 @@
         <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/ComboBoxFilterType.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
-              <folding />
+              <caret line="10" column="85" selection-start-line="10" selection-start-column="85" selection-end-line="28" selection-end-column="0" />
+              <folding>
+                <element signature="method#ComboBoxFilterType#0;class#ComboBoxFilterType#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -95,7 +110,7 @@
         <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/aproximationpanel/ButtonAprox.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+              <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -166,12 +181,12 @@
         <option value="$PROJECT_DIR$/src/gui/firststage/Panel2.java" />
         <option value="$PROJECT_DIR$/src/gui/firststage/DrawingPanel.java" />
         <option value="$PROJECT_DIR$/src/gui/firststage/drawingpanel/DrawingPanel.java" />
-        <option value="$PROJECT_DIR$/src/gui/firststage/configurationpanel/PanelConfig.java" />
         <option value="$PROJECT_DIR$/src/gui/firststage/configurationpanel/aproximationpanel/AproximationPanel.java" />
-        <option value="$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/FilterSelectPanel.java" />
         <option value="$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/ComboBoxFilterType.java" />
         <option value="$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/LowPassConfiguratiorPanel.java" />
         <option value="$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/TextFieldFilterType.java" />
+        <option value="$PROJECT_DIR$/src/gui/firststage/configurationpanel/PanelConfig.java" />
+        <option value="$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/FilterSelectPanel.java" />
       </list>
     </option>
   </component>
@@ -186,9 +201,10 @@
     <order />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="952" />
-    <option name="width" value="976" />
-    <option name="height" value="1038" />
+    <option name="x" value="-9" />
+    <option name="y" value="-9" />
+    <option name="width" value="1938" />
+    <option name="height" value="1048" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
@@ -564,7 +580,7 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="952" y="0" width="976" height="1038" extended-state="0" />
+    <frame x="-9" y="-9" width="1938" height="1048" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -575,10 +591,10 @@
       <window_info id="Application Servers" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.365991" sideWeight="0.49786097" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.36191538" sideWeight="0.49786097" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.37334803" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18128343" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32962137" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24962178" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -605,7 +621,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="22" />
+      <option name="time" value="24" />
     </breakpoint-manager>
     <watches-manager>
       <configuration name="Application">
@@ -969,24 +985,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/PanelConfig.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="29" selection-start-line="19" selection-start-column="29" selection-end-line="19" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/aproximationpanel/ButtonAprox.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/aproximationpanel/CheckBoxAprox.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
@@ -1008,28 +1006,61 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/TextFieldFilterType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="33" column="31" selection-start-line="33" selection-start-column="31" selection-end-line="33" selection-end-column="31" />
+          <folding>
+            <element signature="class#818:940" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/PanelConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="24" column="44" selection-start-line="24" selection-start-column="44" selection-end-line="24" selection-end-column="44" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/ComboBoxFilterType.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <caret line="10" column="85" selection-start-line="10" selection-start-column="85" selection-end-line="28" selection-end-column="0" />
+          <folding>
+            <element signature="method#ComboBoxFilterType#0;class#ComboBoxFilterType#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/aproximationpanel/ButtonAprox.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/FilterSelectPanel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="16" column="37" selection-start-line="16" selection-start-column="37" selection-end-line="16" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/gui/firststage/configurationpanel/filterselectpanel/TextFieldFilterType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="1.0584905">
-          <caret line="40" column="5" selection-start-line="40" selection-start-column="5" selection-end-line="40" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.6925926">
+          <caret line="22" column="63" selection-start-line="22" selection-start-column="63" selection-end-line="22" selection-end-column="63" />
           <folding>
-            <element signature="class#818:940" expanded="false" />
+            <element signature="imports" expanded="true" />
+            <element signature="class#1622:1846" expanded="false" />
+            <element signature="method#actionPerformed#0;class#1622:1846" expanded="false" />
+            <element signature="method#selectConfigurator#0;class#FilterSelectPanel#0" expanded="false" />
+            <element signature="class#GenericConfiguratorPanel#0;class#FilterSelectPanel#0" expanded="false" />
+            <element signature="class#3232:3370" expanded="false" />
+            <element signature="class#3420:3558" expanded="false" />
+            <element signature="class#HighPassConfiguratorPanel#0;class#FilterSelectPanel#0" expanded="false" />
+            <element signature="class#4155:4293" expanded="false" />
+            <element signature="class#4343:4481" expanded="false" />
+            <element signature="class#BandPassConfiguratorPanel#0;class#FilterSelectPanel#0" expanded="false" />
+            <element signature="class#RejectBandConfiguratorPanel#0;class#FilterSelectPanel#0" expanded="false" />
           </folding>
         </state>
       </provider>

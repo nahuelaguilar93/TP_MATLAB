@@ -22,7 +22,7 @@ public class PanelConfig extends JPanel {
         this.setMinimumSize(new Dimension(300, 768));
         this.setPreferredSize(new Dimension(300, 768));
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new GridLayout(3,1));
         //panelConfig.setBorder(BorderFactory.createTitledBorder("Configuration"));
 
         this.add(panelFiltro);
