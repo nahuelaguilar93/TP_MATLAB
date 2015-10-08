@@ -1,4 +1,4 @@
-package gui.firststage.Config.Filter;
+package gui.firststage.configurationpanel.filterselectpanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

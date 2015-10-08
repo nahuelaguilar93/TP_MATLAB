@@ -1,4 +1,4 @@
-package gui.firststage.Config.List;
+package gui.firststage.configurationpanel.listpanel;
 
 import javax.swing.*;
 import javax.swing.text.NumberFormatter;

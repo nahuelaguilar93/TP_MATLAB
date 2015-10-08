@@ -1,4 +1,4 @@
-package gui.firststage.Config.List;
+package gui.firststage.configurationpanel.listpanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,7 @@ public class ListOfAprox extends JPanel{
 
 
     public ListOfAprox () {
-        //Configure List
+        //Configure listpanel
         listOfAprox.setLayoutOrientation(JList.VERTICAL);
         listOfAprox.setVisibleRowCount(-1);
         listOfAprox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

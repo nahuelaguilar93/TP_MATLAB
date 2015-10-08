@@ -1,4 +1,4 @@
-package gui.firststage.Plot;
+package gui.firststage.drawingpanel;
 
 import org.math.plot.Plot2DPanel;
 import tclib.TransferFunction;
@@ -29,6 +29,7 @@ public class PlotPlot extends JPanel{
         plot.setPreferredSize(new Dimension(600,500));
         plot.setMinimumSize(new Dimension(600,500));
         plot.setMaximumSize(new Dimension(600,500));
+        this.setBorder(BorderFactory.createTitledBorder("Plot"));
 
         this.add(plot);
     }

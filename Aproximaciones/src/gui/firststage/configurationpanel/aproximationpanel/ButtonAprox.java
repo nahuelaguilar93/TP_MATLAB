@@ -1,4 +1,4 @@
-package gui.firststage.Config.Aprox;
+package gui.firststage.configurationpanel.aproximationpanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

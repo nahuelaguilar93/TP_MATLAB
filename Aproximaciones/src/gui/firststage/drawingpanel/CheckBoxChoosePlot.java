@@ -1,4 +1,4 @@
-package gui.firststage.ChoosePlot;
+package gui.firststage.drawingpanel;
 
 import javax.swing.*;
 import java.awt.event.ItemEvent;

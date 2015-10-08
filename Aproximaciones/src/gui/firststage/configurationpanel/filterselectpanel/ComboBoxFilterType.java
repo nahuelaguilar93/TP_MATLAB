@@ -1,4 +1,4 @@
-package gui.firststage.Config.Filter;
+package gui.firststage.configurationpanel.filterselectpanel;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -18,6 +18,7 @@ public class ComboBoxFilterType extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 JComboBox cb = (JComboBox)e.getSource();
                 String SelectedFilter = (String)cb.getSelectedItem();
+
             }
         });
 
