@@ -1,4 +1,4 @@
-package gui;
+package gui.SecondStage;
 
 import javax.swing.*;
 import java.awt.*;

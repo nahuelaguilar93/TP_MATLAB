@@ -1,4 +1,4 @@
-package gui;
+package gui.ThirdStage;
 
 import org.math.plot.Plot2DPanel;
 import tclib.Approximation;
