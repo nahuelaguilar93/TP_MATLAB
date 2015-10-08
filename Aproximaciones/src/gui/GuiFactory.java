@@ -1,10 +1,15 @@
 package gui;
 
-import gui.FirstStage.StageOne;
-import gui.SecondStage.StageTwo;
-import gui.ThirdStage.StageThree;
+import gui.firststage.StageOne;
+import gui.secondstage.StageTwo;
+import gui.thirdstage.StageThree;
 
 public class GuiFactory {
+
+    public static int APP_WIDTH = 1024;
+    public static int APP_HEIGHT = 768;
+
+
 
     private static StageOne stageOne = null;
     private static StageTwo stageTwo = null;

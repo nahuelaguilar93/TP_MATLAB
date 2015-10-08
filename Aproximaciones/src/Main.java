@@ -15,7 +15,7 @@ public class Main extends JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TP de Aproximaciones en Java");
-        setSize(1024, 768);
+        setSize(GuiFactory.APP_WIDTH, GuiFactory.APP_HEIGHT);
         setLocationRelativeTo(null);
     }
 
