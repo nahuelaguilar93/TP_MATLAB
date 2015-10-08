@@ -1,5 +1,9 @@
 package gui;
 
+import gui.FirstStage.StageOne;
+import gui.SecondStage.StageTwo;
+import gui.ThirdStage.StageThree;
+
 public class GuiFactory {
 
     private static StageOne stageOne = null;

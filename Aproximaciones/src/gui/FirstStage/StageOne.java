@@ -1,8 +1,7 @@
 package gui.FirstStage;
 
 import gui.FirstStage.Config.PanelConfig;
-import gui.FirstStage.Panel2;
-import gui.UserData;
+import Data.UserData;
 
 import javax.swing.*;
 import java.awt.*;
