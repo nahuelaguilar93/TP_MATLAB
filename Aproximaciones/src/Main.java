@@ -18,7 +18,6 @@ public class Main extends JFrame {
         setSize(GuiFactory.APP_WIDTH, GuiFactory.APP_HEIGHT);
         setLocationRelativeTo(null);
     }
-
     public static void main(String[] args) {
         // <editor-fold defaultstate="collapsed" desc="Look and Feel">
         try {
