@@ -1,6 +1,7 @@
 package gui.firststage.configurationpanel.filterselectpanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -10,6 +11,8 @@ import java.awt.event.ActionListener;
 public class FilterSelectPanel extends JPanel{
     private ConfiguratorPanel[] configuratorPanels = new ConfiguratorPanel[4];
     private ButtonFilterType buttonFilterType = new ButtonFilterType();
+    private static int TEXT_HEIGH = 50;
+    private static int TEXT_WIDTH = 65;
 /*    private final LowPassConfiguratorPanel lowpassConfiguratorPanel = new LowPassConfiguratorPanel();
     private final HighPassConfiguratorPanel highpassConfiguratorPanel = new HighPassConfiguratorPanel();
     private final BandPassConfiguratorPanel bandpassConfiguratorPanel = new BandPassConfiguratorPanel();
@@ -24,6 +27,11 @@ public class FilterSelectPanel extends JPanel{
         configuratorPanels[1] = new HighPassConfiguratorPanel();
         configuratorPanels[2] = new BandPassConfiguratorPanel();
         configuratorPanels[3] = new RejectBandConfiguratorPanel();
+
+        configuratorPanels[0].setVisible(true);
+        for (int i = 1; i < 4; i++) {
+            configuratorPanels[i].setVisible(false);
+        }
 
         String[] filterStrings = { "Low Pass", "High Pass", "Band Pass", "Reject Band" };
         JComboBox filterList = new JComboBox(filterStrings);
@@ -41,11 +49,14 @@ public class FilterSelectPanel extends JPanel{
         this.add(filterList);
         this.add(genericConfiguratorPanel);
         this.add(configuratorPanels[0]);
+        this.add(configuratorPanels[1]);
+        this.add(configuratorPanels[2]);
+        this.add(configuratorPanels[3]);
         this.add(buttonFilterType);
     }
 
     private void selectConfigurator(int index) {
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 4; i++) {
             if (index == i) {
                 configuratorPanels[i].setVisible(true);
             }
@@ -62,6 +73,10 @@ public class FilterSelectPanel extends JPanel{
         JLabel labelAp = new JLabel("Ap");
         public GenericConfiguratorPanel() {
             this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+            textFilterAa.setMinimumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
+            textFilterAp.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
+            textFilterAa.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
+            textFilterAp.setMinimumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
 
             this.add(labelAa);
             this.add(textFilterAa);
@@ -89,6 +104,12 @@ public class FilterSelectPanel extends JPanel{
 
                 }
             });
+
+            textFilterWp.setMinimumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterWp.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterWa.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterWa.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+
             this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
             this.add(labelWa);
@@ -116,7 +137,12 @@ public class FilterSelectPanel extends JPanel{
 
                 }
             });
-            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+            textFilterWp.setMinimumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterWp.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterWa.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterWa.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
 
             this.add(labelWa);
             this.add(textFilterWa);
@@ -130,7 +156,13 @@ public class FilterSelectPanel extends JPanel{
         JLabel labelWo = new JLabel("Wo");
         JLabel labelB = new JLabel("B");
         public BandPassConfiguratorPanel() {
-            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+
+            textFilterWo.setMinimumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
+            textFilterWo.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterB.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterB.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
 
             this.add(labelWo);
             this.add(textFilterWo);
@@ -144,7 +176,13 @@ public class FilterSelectPanel extends JPanel{
         JLabel labelWo = new JLabel("Wo");
         JLabel labelB = new JLabel("B");
         public RejectBandConfiguratorPanel() {
-            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+            this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+
+
+            textFilterWo.setMinimumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterWo.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterB.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
+            textFilterB.setMaximumSize(new Dimension(TEXT_WIDTH,TEXT_HEIGH));
 
             this.add(labelWo);
             this.add(textFilterWo);

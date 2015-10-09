@@ -1,6 +1,6 @@
 package gui.firststage.configurationpanel;
 
-import gui.firststage.configurationpanel.aproximationpanel.AproximationPanel;
+import gui.firststage.configurationpanel.approximationpanel.AproximationPanel;
 import gui.firststage.configurationpanel.filterselectpanel.FilterSelectPanel;
 import gui.firststage.configurationpanel.listpanel.ListPanel;
 
@@ -22,7 +22,8 @@ public class PanelConfig extends JPanel {
         this.setMinimumSize(new Dimension(300, 768));
         this.setPreferredSize(new Dimension(300, 768));
 
-        this.setLayout(new GridLayout(3,1));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        //this.setLayout(new GridLayout(4,1));
         //panelConfig.setBorder(BorderFactory.createTitledBorder("Configuration"));
 
         this.add(panelFiltro);

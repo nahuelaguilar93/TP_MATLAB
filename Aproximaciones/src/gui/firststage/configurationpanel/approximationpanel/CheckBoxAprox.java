@@ -1,4 +1,4 @@
-package gui.firststage.configurationpanel.aproximationpanel;
+package gui.firststage.configurationpanel.approximationpanel;
 
 import data.UserData;
 
