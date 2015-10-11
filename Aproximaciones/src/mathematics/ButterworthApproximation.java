@@ -52,6 +52,7 @@ public class ButterworthApproximation extends Approximation {
 
         for(int i=0;i<minOrder;i++){
             PolesOfTransferFunction.add(i,new Complex(module/Math.sqrt(1+Math.tan(Argument)),Math.sqrt(Math.pow(module,2)-module/Math.sqrt(1+Math.tan(Argument)))));
+            /*Esto de arriba esta bien? o lo tengo que asignar a Poles of transferfunction?*/
             Argument=Argument+Math.PI/order;
         }
 
