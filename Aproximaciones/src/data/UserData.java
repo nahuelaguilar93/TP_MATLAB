@@ -1,9 +1,25 @@
 package data;
+import java.util.*;
+import tclib.*;
+import tclib.templates.AbstractTemplate;
 
 /**
  * Created by NEGU on 7/10/2015.
  */
-public class UserData {
+
+/*Nueva user data hecha por Augusto ( con U entre la A y la G )*/
+
+public class UserData{  //No tiene que ser static? o no existen clases estaticas o no? quiero saber como la hago especificamente
+
+    //public static List<Approximation> ApproximationList= new List<Approximation>();
+    //Ayuda a kevin con esto... como las hago las listas de las aproximaciones?, hago listas de funciones transferencia?
+
+    public static List<TransferFunction> ApproximationList = new ArrayList<>(); //Will be treated as LIFO? or how?
+    public static AbstractTemplate CurrentTemplate=null;
+
+
+    /*Esta es la que habia hecho agustin solo*/
+
     private static UserData ud = null;
     private static int FilterType=0;
     private static int Aprox=0;
@@ -77,5 +93,6 @@ public class UserData {
     public static void setWp(double wp) {
         Wp = wp;
     }
+
 
 }
