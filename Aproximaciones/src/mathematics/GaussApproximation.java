@@ -7,7 +7,6 @@ import tclib.*;
  */
 public class GaussApproximation extends Approximation {
 
-
     @Override   //this is an override of the function that Approximation is asking
     protected TransferFunction getNormalizedTransferFunction() {
         return null;
