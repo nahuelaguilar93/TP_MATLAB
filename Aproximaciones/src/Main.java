@@ -1,4 +1,5 @@
 import gui.GuiFactory;
+import tclib.TransferFunction;
 
 import javax.swing.*;
 

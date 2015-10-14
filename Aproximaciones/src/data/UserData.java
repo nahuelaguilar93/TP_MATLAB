@@ -1,5 +1,7 @@
 package data;
+
 import java.util.*;
+
 import tclib.*;
 import tclib.templates.AbstractTemplate;
 
@@ -9,26 +11,26 @@ import tclib.templates.AbstractTemplate;
 
 /*Nueva user data hecha por Augusto ( con U entre la A y la G )*/
 
-public class UserData{  //No tiene que ser static? o no existen clases estaticas o no? quiero saber como la hago especificamente
+public class UserData {  //No tiene que ser static? o no existen clases estaticas o no? quiero saber como la hago especificamente
 
     //public static List<Approximation> ApproximationList= new List<Approximation>();
     //Ayuda a kevin con esto... como las hago las listas de las aproximaciones?, hago listas de funciones transferencia?
 
     public static List<TransferFunction> ApproximationList = new ArrayList<>(); //Will be treated as LIFO? or how?
-    public static AbstractTemplate CurrentTemplate=null;
+    public static AbstractTemplate CurrentTemplate = null;
 
 
     /*Esta es la que habia hecho agustin solo*/
 
     private static UserData ud = null;
-    private static int FilterType=0;
-    private static int Aprox=0;
-    private static double B=1;
-    private static double Wp=0;
-    private static double Wa=0;
-    private static double Aa=0;
-    private static double Ap=0;
-    private static int n=1;
+    private static int FilterType = 0;
+    private static int Aprox = 0;
+    private static double B = 1;
+    private static double Wp = 0;
+    private static double Wa = 0;
+    private static double Aa = 0;
+    private static double Ap = 0;
+    private static int n = 1;
 
     public static int getFilterType() {
         return FilterType;
