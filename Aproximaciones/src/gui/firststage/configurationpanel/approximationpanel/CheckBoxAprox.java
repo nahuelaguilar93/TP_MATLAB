@@ -3,6 +3,7 @@ package gui.firststage.configurationpanel.approximationpanel;
 import data.UserData;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
 /**
@@ -24,6 +25,11 @@ public class CheckBoxAprox extends JPanel {
         maxQ.setSelected(false);
         selectOrder.setSelected(false);
         textSelectOrder.setEnabled(false);
+
+        //Hardcode Size of TextField
+        textSelectOrder.setMaximumSize(new Dimension(80, 24));
+        textSelectOrder.setPreferredSize(new Dimension(80, 24));
+        textSelectOrder.setMinimumSize(new Dimension(50, 24));
 
         //AddListener
         minOrder.addItemListener(new ItemListener() {
@@ -61,7 +67,8 @@ public class CheckBoxAprox extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(isDataValid()) {
-                    UserData.setN(Integer.parseInt(textSelectOrder.getText()));
+                    //this line doesn't work, I neeed to know why
+                    //ud.setN(Integer.parseInt(textSelectOrder.getText()));
                 }
                 else {
                     //error Message for order

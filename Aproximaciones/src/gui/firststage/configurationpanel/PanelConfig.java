@@ -1,5 +1,6 @@
 package gui.firststage.configurationpanel;
 
+import gui.firststage.StageOne;
 import gui.firststage.configurationpanel.approximationpanel.AproximationPanel;
 import gui.firststage.configurationpanel.filterselectpanel.FilterSelectPanel;
 import gui.firststage.configurationpanel.listpanel.ListPanel;
