@@ -29,7 +29,47 @@ public class TransferFunction {
     public TransferFunction(double[] numPoly, double[] denPoly) {
         numerador = new PolynomialFunction(numPoly);
         denominador = new PolynomialFunction(denPoly);
+    }
 
+    /**
+     *
+     * @param zeros: Array of complex numbers for each zero.
+     * @param poles: Array of complex numbers for each pole.
+     */
+    public TransferFunction(Complex[] zeros, Complex[] poles) {
+        double[] polyInit = {1.0};
+        numerador = new PolynomialFunction(polyInit);
+        denominador = new PolynomialFunction(polyInit);
+
+        for (Complex zero : zeros) {
+            if (zero.getImaginary() == 0) {
+                double[] roots = {-zero.getReal(), 1};
+                PolynomialFunction aux = new PolynomialFunction(roots);
+                numerador = numerador.multiply(aux);
+            } else if (zero.getImaginary() > 0) {
+                double a = zero.getReal();
+                double b = zero.getImaginary();
+
+                double[] roots = {a * a + b * b, -2 * a, 1};
+                PolynomialFunction aux = new PolynomialFunction(roots);
+                numerador = numerador.multiply(aux);
+            }
+        }
+
+        for (Complex pole : poles) {
+            if (pole.getImaginary() == 0) {
+                double[] roots = {-pole.getReal(), 1};
+                PolynomialFunction aux = new PolynomialFunction(roots);
+                denominador = denominador.multiply(aux);
+            } else if (pole.getImaginary() > 0) {
+                double a = pole.getReal();
+                double b = pole.getImaginary();
+
+                double[] roots = {a * a + b * b, -2 * a, 1};
+                PolynomialFunction aux = new PolynomialFunction(roots);
+                denominador = denominador.multiply(aux);
+            }
+        }
 
     }
 
@@ -338,25 +378,15 @@ public class TransferFunction {
 
     public static void executeTest() {
 
-        double[] num = {1};
-        double[] den = {1, 1, 1};
+        Complex zero1 = new Complex(2, 3);
 
-        TransferFunction tf = new TransferFunction(num, den);
+        Complex[] zeros = {zero1};
 
-        LowpassTemplate lowpass = new LowpassTemplate(5, 0, 0, 0);
-        HighpassTemplate highpass = new HighpassTemplate(0, 5, 0, 0);
 
-        TransferFunction tflow = tf.denormalize(lowpass);
-        TransferFunction tfhigh = tf.denormalize(highpass);
+        TransferFunction tf = new TransferFunction(zeros, zeros);
 
-        System.out.println(Arrays.toString(tflow.numerador.getCoefficients()));
-        System.out.println(Arrays.toString(tflow.denominador.getCoefficients()));
-
-        System.out.println(Arrays.toString(tfhigh.numerador.getCoefficients()));
-        System.out.println(Arrays.toString(tfhigh.denominador.getCoefficients()));
-
-        tflow.getImpulseResponseAtTime(5);
-
+        System.out.println(Arrays.toString(tf.numerador.getCoefficients()));
+        System.out.println(Arrays.toString(tf.denominador.getCoefficients()));
 
     }
 
