@@ -5,6 +5,9 @@ package tclib.templates;
  */
 public class BandpassTemplate extends AbstractTemplate {
 
+    public double bandwidth;
+    public double centerFrequency;
+
     @Override
     public TemplateType getTemplateType() {
         return TemplateType.BANDPASS;

@@ -4,6 +4,9 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
+import org.apache.commons.math3.util.CombinatoricsUtils;
+import tclib.templates.BandpassTemplate;
+import tclib.templates.BandrejectTemplate;
 import tclib.templates.HighpassTemplate;
 import tclib.templates.LowpassTemplate;
 
@@ -22,6 +25,11 @@ public class TransferFunction {
     private Hashtable<Complex, Integer> numeradorPoleOrderTable;
     private Hashtable<Complex, Integer> denominadorPoleOrderTable;
 
+    public TransferFunction(PolynomialFunction numerador, PolynomialFunction denominador) {
+        this.numerador = numerador;
+        this.denominador = denominador;
+    }
+
     /**
      * @param numPoly: Indice del elemento indica la potencia de ese termino del polinomio.
      * @param denPoly: Indice del elemento indica la potencia de ese termino del polinomio.
@@ -32,7 +40,6 @@ public class TransferFunction {
     }
 
     /**
-     *
      * @param zeros: Array of complex numbers for each zero.
      * @param poles: Array of complex numbers for each pole.
      */
@@ -135,6 +142,17 @@ public class TransferFunction {
         return impulse;
     }
 
+    public double[] getStepResponse(double[] time) {
+        double[] impulse = getImpulseResponse(time);
+        double[] step = new double[time.length];
+        double cumSum = 0;
+        for (int i = 0; i < impulse.length; i++) {
+            step[i] = cumSum;
+            cumSum += impulse[i];
+        }
+        return step;
+    }
+
     public double getImpulseResponseAtTime(double time) {
         // aca calculo la funcion de transferencia para un delta t en particular
         // delta t para derivar en el caso de grado num igual a grado den
@@ -202,6 +220,113 @@ public class TransferFunction {
 
     }
 
+    public TransferFunction denormalize(BandpassTemplate bandpassTemplate) {
+        double[] currentDen = denominador.getCoefficients();
+        double[] currentNum = numerador.getCoefficients();
+        int denominatorDegree = currentDen.length - currentNum.length; // Defino por que potencia de S tengo que multiplicar y dividir
+        PolynomialFunction denpol = finalPolinomeBandPass(currentDen, 0, bandpassTemplate); // creo el nuevo cociente
+        PolynomialFunction numpol = finalPolinomeBandPass(currentNum, denominatorDegree, bandpassTemplate);
+        return new TransferFunction(numpol, denpol);
+    }
+
+    public TransferFunction denormalize(BandrejectTemplate bandrejectTemplate) {
+        double[] currentDen = denominador.getCoefficients();
+        double[] currentNum = numerador.getCoefficients();
+        int denominatorDegree = currentDen.length - currentNum.length;// Defino por que potencia de S tengo que multiplicar y dividir
+        PolynomialFunction denpol = finalPolinomeBandReject(currentDen, 0, bandrejectTemplate);// Creo el nuevo cociente
+        PolynomialFunction numpol = finalPolinomeBandReject(currentNum, denominatorDegree, bandrejectTemplate);
+        return new TransferFunction(numpol, denpol);
+    }
+
+    //<editor-fold desc="Internal Functions of Passband and Bandreject Approximations">
+    private PolynomialFunction finalPolinomeBandPass(double[] originalpol, int multiplicatororder, BandpassTemplate bandpassTemplate) {
+        int coefiterator; // Con este manejo el término del polinomio que estoy expandiendo
+        double[] fix = {0}; // Para crear un polinomio vacio
+        double[] addattheend = new double[originalpol.length];//aca meto el termino independiente del pol original multiplicado por s
+        PolynomialFunction polinome; // COn este creo los polinomios intermedios
+        PolynomialFunction finalpolinome = new PolynomialFunction(fix);
+
+        for (coefiterator = 1; coefiterator < originalpol.length; coefiterator++) {
+            polinome = turnDouble2PolynomePass(originalpol, coefiterator, bandpassTemplate.bandwidth, bandpassTemplate.centerFrequency);
+            finalpolinome = finalpolinome.add(polinome); // Voy sumando los polinomios expandidos
+        }
+        addattheend[addattheend.length - 1] = originalpol[0]; // Al final le sumo el término independiente
+        finalpolinome = finalpolinome.add(new PolynomialFunction(addattheend));
+
+        if (multiplicatororder > 0) { // Si multiplique por S de un orden mayor que el orden del polinomio, corrijo con este algoritmo:
+            double[] corrector = new double[multiplicatororder + 1];
+            corrector[corrector.length - 1] = 1;// Simplemente multiplico lo ya hecho por un S de orden tal que cubra la diferencia
+            finalpolinome = finalpolinome.multiply(new PolynomialFunction(corrector));
+        }
+
+        return finalpolinome;
+    }
+
+    private PolynomialFunction turnDouble2PolynomePass(double[] originalpolinome, int iteration, double bandwidth, double centerFrequency) {
+        PolynomialFunction returnthis;
+        double[] currentpolinome;
+        double[] multiplicator = new double[originalpolinome.length - iteration]; // Con esto luego multiplico por S de orden tal que no queden cocientes
+
+        currentpolinome = newtonExpands(iteration, originalpolinome[iteration], bandwidth, centerFrequency);// Expando cada binomio en newton
+        returnthis = new PolynomialFunction(currentpolinome);
+        multiplicator[originalpolinome.length - iteration - 1] = 1;
+        returnthis = returnthis.multiply(new PolynomialFunction(multiplicator));// Devuelvo el polinomio listo para ser sumado
+
+        return returnthis;
+    }
+
+    private PolynomialFunction finalPolinomeBandReject(double[] originalpol, int multiplicatororder, BandrejectTemplate bandrejectTemplate) {
+        int coefiterator;
+        double[] addattheend = new double[originalpol.length];// Con esto voy a agregar el termino independiente (en este caso el coeficiente de mayor grado) al final
+        double[] fix = {0};
+        PolynomialFunction polinome;
+        PolynomialFunction finalpolinome = new PolynomialFunction(fix);
+
+        for (coefiterator = 1; coefiterator < originalpol.length; coefiterator++) {
+            polinome = turnDouble2PolynomeReject(originalpol, coefiterator, bandrejectTemplate.bandwidth, bandrejectTemplate.centerFrequency);
+            finalpolinome = finalpolinome.add(polinome);// Voy sumando los polinomios ya expandidos y corregidos
+        }
+
+        addattheend[addattheend.length - 1] = originalpol[originalpol.length - 1];
+        finalpolinome = finalpolinome.add(new PolynomialFunction(addattheend));// Aca agrego el que habia quedado como término independiente
+
+        if (multiplicatororder > 0) {// Si el polinomio fue multiplicado por un término de grado mayor al necesario, agrego esa parte con este algoritmo:
+            double[] corrector = newtonExpands(multiplicatororder, 1, bandrejectTemplate.bandwidth, bandrejectTemplate.centerFrequency);
+            finalpolinome = finalpolinome.multiply(new PolynomialFunction(corrector));
+        }
+
+        return finalpolinome;
+    }
+
+    private PolynomialFunction turnDouble2PolynomeReject(double[] originalpolinome, int iteration, double bandwidth, double centerFrequency) {
+        PolynomialFunction returnthis;
+        double[] currentpolinome;
+        double[] multiplicator = new double[originalpolinome.length - iteration]; // Con esto multiplico por S de orden tal que no queden S dividiendo
+
+        currentpolinome = newtonExpands(iteration, originalpolinome[originalpolinome.length - 1 - iteration], bandwidth, centerFrequency);// Expando el termino con binomio de newton para poder operar con el
+        returnthis = new PolynomialFunction(currentpolinome);// acá transformo el polinomio de double[] a polynome
+        multiplicator[originalpolinome.length - iteration - 1] = 1;// multiplico por S^(orden total - orden del termino)
+        returnthis = returnthis.multiply(new PolynomialFunction(multiplicator)); //Lo devuelvo listo para ser sumado
+
+        return returnthis;
+    }
+
+    private double[] newtonExpands(int n, double coef, double bandwidth, double centerFrequency) { // Esta funcion expande un binomio en un polinomio
+        int iterate; //esta es la potencia de S
+        int kadvancer = 0; //este es K de la sumatoria
+        double[] thispolinome = new double[2 * n + 1];// El tamaño va a ser de 2n (por la potencia maxima) +  1 (por el termino independiente)
+        for (iterate = 0; iterate < 2 * n + 1; iterate = iterate + 2) { //
+            thispolinome[iterate] = (double) coef * Math.pow(1 / (bandwidth * centerFrequency), n) * newtonTerm(n, kadvancer, centerFrequency);
+            kadvancer++;
+        }
+        return thispolinome;
+    }
+
+    private double newtonTerm(int n, int k, double centerFrequency) {// Esta funcion devuelve el coeficiente del termino k del polinomio de newton
+        double tobereturned = (double) CombinatoricsUtils.binomialCoefficientDouble(n, k) * Math.pow(centerFrequency, 2 * (n - k));
+        return tobereturned;
+    }
+    //</editor-fold>
 
     //<editor-fold desc="Internal Functions of Impulse Response">
     private void preloadRoots() {
