@@ -7,7 +7,6 @@ import tclib.templates.*;
  */
 public abstract class Approximation {
 
-
     public TransferFunction getDenormalized(LowpassTemplate lowpassTemplate)
     {
         return null;
@@ -34,7 +33,5 @@ public abstract class Approximation {
     }
 
     protected abstract TransferFunction getNormalizedTransferFunction();
-
-
 
 }

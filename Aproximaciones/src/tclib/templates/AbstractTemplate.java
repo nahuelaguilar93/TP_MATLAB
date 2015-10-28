@@ -1,6 +1,5 @@
 package tclib.templates;
 
-
 /**
  * Created by kdewald on 8/10/15.
  */
@@ -14,8 +13,7 @@ public abstract class AbstractTemplate {
         BANDREJECT,
         DELAY,
     }
-
     public abstract TemplateType getTemplateType();
-
+    //public abstract Normalize();
 
 }

@@ -12,5 +12,4 @@ public class BandpassTemplate extends AbstractTemplate {
     public TemplateType getTemplateType() {
         return TemplateType.BANDPASS;
     }
-
 }

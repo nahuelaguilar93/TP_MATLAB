@@ -9,9 +9,7 @@ import tclib.templates.AbstractTemplate;
  * Created by NEGU on 7/10/2015.
  */
 
-/*Nueva user data hecha por Augusto ( con U entre la A y la G )*/
-
-public class UserData {  //No tiene que ser static? o no existen clases estaticas o no? quiero saber como la hago especificamente
+public class UserData {
 
     //public static List<Approximation> ApproximationList= new List<Approximation>();
     //Ayuda a kevin con esto... como las hago las listas de las aproximaciones?, hago listas de funciones transferencia?
