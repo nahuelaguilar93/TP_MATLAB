@@ -8,10 +8,10 @@ import java.awt.event.ItemListener;
  * Created by NEGU on 7/10/2015.
  */
 public class CheckBoxChoosePlot extends JPanel{
-    JCheckBox atenuacion = new JCheckBox("Atenuacion");
-    JCheckBox fase = new JCheckBox("Fase");
-    JCheckBox transferencia = new JCheckBox("Transferencia");
-    JCheckBox polosCeros = new JCheckBox("Polos y Ceros");
+    JRadioButton atenuacion = new JRadioButton("Atenuacion");
+    JRadioButton fase = new JRadioButton("Fase");
+    JRadioButton transferencia = new JRadioButton("Transferencia");
+    JRadioButton polosCeros = new JRadioButton("Polos y Ceros");
 
     public CheckBoxChoosePlot() {
         atenuacion.setSelected(true);
@@ -60,6 +60,7 @@ public class CheckBoxChoosePlot extends JPanel{
                 }
             }
         });
+
 
         this.add(atenuacion);
         this.add(fase);

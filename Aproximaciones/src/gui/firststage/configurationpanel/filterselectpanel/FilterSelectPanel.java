@@ -1,7 +1,9 @@
 package gui.firststage.configurationpanel.filterselectpanel;
 
+import data.UserData;
 import gui.firststage.configurationpanel.PanelConfig;
 
+import javax.jws.soap.SOAPBinding;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;

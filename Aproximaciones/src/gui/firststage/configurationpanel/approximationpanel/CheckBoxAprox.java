@@ -10,9 +10,9 @@ import java.awt.event.*;
  * Created by NEGU on 7/10/2015.
  */
 public class CheckBoxAprox extends JPanel {
-    JCheckBox minOrder = new JCheckBox("Min Order");
-    JCheckBox maxQ = new JCheckBox("Max Q");
-    JCheckBox selectOrder = new JCheckBox("Select Order");
+    JRadioButton minOrder = new JRadioButton("Min Order");
+    JRadioButton maxQ = new JRadioButton("Max Q");
+    JRadioButton selectOrder = new JRadioButton("Select Order");
     JTextField textSelectOrder = new JTextField("Select Order");
 
     public CheckBoxAprox() {
@@ -49,7 +49,8 @@ public class CheckBoxAprox extends JPanel {
                 if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
                     minOrder.setSelected(false);
                     selectOrder.setSelected(false);
-                    textSelectOrder.setEnabled(false);
+                    textSelectOrder.setEnabled(true);
+                    textSelectOrder.setText("Select Q");
                 }
             }
         });
@@ -60,6 +61,7 @@ public class CheckBoxAprox extends JPanel {
                     maxQ.setSelected(false);
                     minOrder.setSelected(false);
                     textSelectOrder.setEnabled(true);
+                    textSelectOrder.setText("Select Order");
                 }
             }
         });

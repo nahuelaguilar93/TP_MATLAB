@@ -7,21 +7,16 @@ import java.awt.*;
  * Created by NEGU on 7/10/2015.
  */
 public class ListOfAprox extends JPanel{
-    DefaultListModel listModel = new DefaultListModel();
-    private static int LIST_HEIGHT = 40;
-    private static int LIST_WIDTH = 40;
 
     public ListOfAprox () {
-        String listData[] = {"Ejemplo 1", "Ejemplo 2", "Ejemplo 3"};
+        String listData[] = {};
         //Configure listpanel
         JList listOfAprox = new JList(listData);
+        listOfAprox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  //You can only choose one option
         listOfAprox.setLayoutOrientation(JList.VERTICAL);
-        listOfAprox.setMaximumSize(new Dimension(LIST_WIDTH, LIST_HEIGHT));
-        listOfAprox.setMinimumSize(new Dimension(LIST_WIDTH, LIST_HEIGHT));
-        listOfAprox.setVisibleRowCount(-1);
-        listOfAprox.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        listOfAprox.setVisibleRowCount(5); //Acá va la máxima cantidad de nombres que tira sin el scroller. Si se pone -1 trata de poner todas las que entren.
         JScrollPane listScroller = new JScrollPane(listOfAprox);
 
-        this.add(listOfAprox);
+        this.add(listScroller);
     }
 }
