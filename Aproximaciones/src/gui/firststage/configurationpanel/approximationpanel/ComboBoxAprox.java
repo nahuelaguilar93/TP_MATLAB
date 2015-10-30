@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
  * Created by NEGU on 7/10/2015.
  */
 public class ComboBoxAprox extends JPanel{
-    String[] AproxStrings = { "Butter", "Chebyshev", "Inverse Chevyshev", "Legendre", "Cauer", "Bessel", "Gauss" };
+    String[] AproxStrings = { "Butterworth", "Chebyshev", "Inverse Chebyshev", "Legendre", "Cauer", "Bessel", "Gauss" };
     JComboBox AproxList = new JComboBox(AproxStrings);
 
     public ComboBoxAprox(){

@@ -19,8 +19,6 @@ public class FilterSelectPanel extends JPanel{
     private static int TEXT_WIDTH = 65;
     private static String[] filterStrings = { "Low Pass", "High Pass", "Band Pass", "Reject Band" };
     private static JComboBox filterList = new JComboBox(filterStrings);
-    public FilterData filterData = new FilterData();
-
 
     private final GenericConfiguratorPanel genericConfiguratorPanel = new GenericConfiguratorPanel();
     int index = 0;
@@ -73,19 +71,6 @@ public class FilterSelectPanel extends JPanel{
         }
     }
 
-    /*
-    This will be a temporary data. After Clicking on the buttonFilterType, it will check its data and upload to the UserData (for now)
-    After we know it works we will use NormalizedTemplate.
-     */
-    protected class FilterData {
-        protected double B = 1;
-        protected double Wp = 0;
-        protected double Wa = 0;
-        protected double Aa = 0;
-        protected double Ap = 0;
-        protected double Wo = 0;
-    }
-
     public abstract class ConfiguratorPanel extends JPanel{}
     /*
         Here there are all the sub-panels, One generic and the others according to the Filter Selected
@@ -106,7 +91,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.Aa = Double.parseDouble(textFilterAa.getText());
+                        //filterData.Aa = Double.parseDouble(textFilterAa.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for order
@@ -119,7 +104,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.Ap = Double.parseDouble(textFilterAp.getText());
+                        //filterData.Ap = Double.parseDouble(textFilterAp.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for order
@@ -148,7 +133,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.Wa = Double.parseDouble(textFilterWa.getText());
+                        //filterData.Wa = Double.parseDouble(textFilterWa.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for input
@@ -162,7 +147,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.Wp = Double.parseDouble(textFilterWp.getText());
+                        //filterData.Wp = Double.parseDouble(textFilterWp.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for order
@@ -198,7 +183,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.Wa = Double.parseDouble(textFilterWa.getText());
+                        //filterData.Wa = Double.parseDouble(textFilterWa.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for order
@@ -212,7 +197,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.Wp = Double.parseDouble(textFilterWp.getText());
+                        //filterData.Wp = Double.parseDouble(textFilterWp.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for order
@@ -247,7 +232,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.B = Double.parseDouble(textFilterB.getText());
+                        //filterData.B = Double.parseDouble(textFilterB.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for order
@@ -260,7 +245,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.Wo = Double.parseDouble(textFilterWo.getText());
+                        //filterData.Wo = Double.parseDouble(textFilterWo.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for order
@@ -293,7 +278,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.B = Double.parseDouble(textFilterB.getText());
+                        //filterData.B = Double.parseDouble(textFilterB.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for order
@@ -306,7 +291,7 @@ public class FilterSelectPanel extends JPanel{
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
-                        filterData.Wo = Double.parseDouble(textFilterWo.getText());
+                        //filterData.Wo = Double.parseDouble(textFilterWo.getText());
                     }
                     catch (NumberFormatException nfe){
                         //error Message for order

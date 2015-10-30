@@ -4,6 +4,7 @@ import java.util.*;
 
 import tclib.*;
 import tclib.templates.AbstractTemplate;
+import tclib.templates.BandpassTemplate;
 
 /**
  * Created by NEGU on 7/10/2015.
@@ -30,12 +31,6 @@ public class UserData {
     private static double Ap = 0;
     private static double Wo = 0;
     private static int n = 1;
-    private static AbstractTemplate template = new AbstractTemplate() {
-        @Override
-        public TemplateType getTemplateType() {
-            return null;
-        }
-    };
 
     //Getters
     public static double getWo() {
