@@ -32,6 +32,7 @@ public abstract class Approximation {
         return null;
     }
 
-    protected abstract TransferFunction getNormalizedTransferFunction();
+    //que mierda hace esta función Acá? La Normalización y desnormalización de una transferencia son independientes de las aproximaciones
+    //protected abstract TransferFunction getNormalizedTransferFunction();
 
 }

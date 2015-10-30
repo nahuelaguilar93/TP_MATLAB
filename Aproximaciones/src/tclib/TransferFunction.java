@@ -77,10 +77,9 @@ public class TransferFunction {
         }
 
     }
-
+    //WHY NOT USING PolynomialFunction.Evaluate(double[] coefficients, double arguments) METHOD?
     public Complex evaluateApproximationAtOmega(double omega) {
         Complex evaluationPoint = new Complex(0, omega);
-
         Complex numValue = new Complex(0);
         double[] numCoefficient = numerador.getCoefficients();
         for (int i = 0; i < numCoefficient.length; i++) {

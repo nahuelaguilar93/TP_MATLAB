@@ -3,7 +3,7 @@ package tclib.templates;
 /**
  * Created by kdewald on 8/10/15.
  */
-public class HighpassTemplate extends AbstractTemplate {
+public class HighpassTemplate extends SuperTemplate {
 
     public double omegaP;
     public double omegaA;
@@ -18,7 +18,7 @@ public class HighpassTemplate extends AbstractTemplate {
     }
 
     @Override
-    public TemplateType getTemplateType() {
-        return TemplateType.HIGHPASS;
+    public TemplateTypeEnum getTemplateType() {
+        return TemplateTypeEnum.HIGHPASS;
     }
 }

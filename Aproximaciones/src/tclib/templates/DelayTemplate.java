@@ -3,10 +3,10 @@ package tclib.templates;
 /**
  * Created by kdewald on 8/10/15.
  */
-public class DelayTemplate extends AbstractTemplate {
+public class DelayTemplate extends SuperTemplate {
 
     @Override
-    public TemplateType getTemplateType() {
-        return TemplateType.DELAY;
+    public TemplateTypeEnum getTemplateType() {
+        return TemplateTypeEnum.DELAY;
     }
 }

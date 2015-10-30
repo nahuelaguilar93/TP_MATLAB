@@ -4,9 +4,9 @@ package tclib.templates;
 /**
  * Created by kdewald on 8/10/15.
  */
-public class NormalizedTemplate extends AbstractTemplate {
+public class NormalizedTemplate extends SuperTemplate {
     @Override
-    public TemplateType getTemplateType() {
-        return TemplateType.NORMALIZED;
+    public TemplateTypeEnum getTemplateType() {
+        return TemplateTypeEnum.NORMALIZED;
     }
 }

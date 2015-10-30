@@ -1,11 +1,9 @@
 package tclib.templates;
 
-import tclib.TransferFunction;
-
 /**
  * Created by kdewald on 8/10/15.
  */
-public class LowpassTemplate extends AbstractTemplate {
+public class LowpassTemplate extends SuperTemplate {
 
     public double omegaP;
     public double omegaA;
@@ -20,8 +18,8 @@ public class LowpassTemplate extends AbstractTemplate {
     }
 
     @Override
-    public TemplateType getTemplateType() {
-        return TemplateType.LOWPASS;
+    public TemplateTypeEnum getTemplateType() {
+        return TemplateTypeEnum.LOWPASS;
     }
 
 }
