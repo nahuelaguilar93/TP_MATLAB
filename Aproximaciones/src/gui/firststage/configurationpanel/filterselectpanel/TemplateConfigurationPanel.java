@@ -1,11 +1,9 @@
 package gui.firststage.configurationpanel.filterselectpanel;
 
 import data.UserData;
-import gui.firststage.configurationpanel.PanelConfig;
-import gui.firststage.configurationpanel.approximationpanel.AproximationPanel;
 import gui.firststage.configurationpanel.approximationpanel.ComboBoxAprox;
-import gui.firststage.configurationpanel.filterselectpanel.FilterSelectPanel;
-import javax.jws.soap.SOAPBinding;
+import tclib.templates.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,19 +12,18 @@ import java.awt.event.ActionListener;
 /**
  * Created by NEGU on 8/10/2015.
  */
-public class FilterSelectPanel extends JPanel {
+public class TemplateConfigurationPanel extends JPanel implements TemplatesInterface {
     private ConfiguratorPanel[] configuratorPanels = new ConfiguratorPanel[4];
-    private ButtonFilterType buttonFilterType = new ButtonFilterType();
+    private ButtonFilterType buttonFilterType;
     private static int TEXT_HEIGH = 50;
     private static int TEXT_WIDTH = 65;
-    private static String[] filterStrings = {"Low Pass", "High Pass", "Band Pass", "Reject Band"};
-    private static JComboBox filterList = new JComboBox(filterStrings);
+    private static JComboBox filterList = new JComboBox(templateStrings);
 
     private final GenericConfiguratorPanel genericConfiguratorPanel = new GenericConfiguratorPanel();
     int index = 0;
     private JPanel comboBoxAprox;
 
-    public FilterSelectPanel(JPanel carlos) {
+    public TemplateConfigurationPanel(JPanel carlos) {
         comboBoxAprox = carlos;
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createTitledBorder("Filter Configurator"));
@@ -37,11 +34,14 @@ public class FilterSelectPanel extends JPanel {
         configuratorPanels[2] = new BandPassConfiguratorPanel();
         configuratorPanels[3] = new RejectBandConfiguratorPanel();
         //
+        buttonFilterType = new ButtonFilterType(configuratorPanels);
         //This is used to select the default panel. By default it will start in LowPass
         configuratorPanels[0].setVisible(true);
         for (int i = 1; i < 4; i++) {
             configuratorPanels[i].setVisible(false);
         }
+
+
 
         filterList.setSelectedIndex(0); //Low Pass as Default
         filterList.addActionListener(new ActionListener() {
@@ -56,7 +56,7 @@ public class FilterSelectPanel extends JPanel {
         filterList.setPreferredSize(new Dimension(150, 30));
         filterList.setMinimumSize(new Dimension(150, 30));
 
-        //Adds everything to the FilterSelectPanel
+        //Adds everything to the TemplateConfigurationPanel
         this.add(filterList);
         this.add(genericConfiguratorPanel);
         this.add(configuratorPanels[0]);
@@ -69,10 +69,31 @@ public class FilterSelectPanel extends JPanel {
     public class ButtonFilterType extends JPanel {
         JButton buttonFilterType = new JButton("Create Template");
 
-        public ButtonFilterType() {
+        public ButtonFilterType(ConfiguratorPanel[] configuratorPanels) {
             buttonFilterType.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+
+                    //ToDo: IsDataValid antes de crear el template
+                    int index = filterList.getSelectedIndex();
+                    switch ( templateType.values()[index] ) {
+                        case LOWPASS:
+                            //UserData.CurrentTemplate = new LowpassTemplate();
+                            break;
+                        case HIGHPASS:
+                            //UserData.CurrentTemplate = new HighpassTemplate();
+                            break;
+                        case BANDPASS:
+                            //UserData.CurrentTemplate = new BandpassTemplate();
+                            break;
+                        case BANDREJECT:
+                            //UserData.CurrentTemplate = new BandrejectTemplate();
+                            break;
+                        case DELAY:
+                            //UserData.CurrentTemplate = new DelayTemplate();
+                            break;
+
+                    }
                     ComboBoxAprox asd = (ComboBoxAprox) comboBoxAprox;
                     asd.UpdateComboBoxAproximation();
                 }
@@ -100,12 +121,12 @@ public class FilterSelectPanel extends JPanel {
     Here there are all the sub-panels, One generic and the others according to the Filter Selected
     */
     public class GenericConfiguratorPanel extends JPanel {
-            JTextField textFilterAp = new JTextField("[dB]");
-            JTextField textFilterAa = new JTextField("[dB]");
-            JLabel labelAa = new JLabel("Aa");
-            JLabel labelAp = new JLabel("Ap");
+        JTextField textFilterAp = new JTextField("[dB]");
+        JTextField textFilterAa = new JTextField("[dB]");
+        JLabel labelAa = new JLabel("Aa");
+        JLabel labelAp = new JLabel("Ap");
 
-            public GenericConfiguratorPanel() {
+        public GenericConfiguratorPanel() {
                 this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
                 textFilterAa.setMinimumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
                 textFilterAp.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
@@ -142,12 +163,15 @@ public class FilterSelectPanel extends JPanel {
                 this.add(labelAp);
                 this.add(textFilterAp);
             }
+
+        public double getFilterApValue() { return Double.parseDouble(textFilterAp.getText());}
+        public double getFilterAaValue() { return Double.parseDouble(textFilterAa.getText());}
         }
     public class LowPassConfiguratorPanel extends ConfiguratorPanel {
-            JTextField textFilterWp = new JTextField("[rad/seg]");
-            JTextField textFilterWa = new JTextField("[rad/seg]");
-            JLabel labelWp = new JLabel("Wp");
-            JLabel labelWa = new JLabel("Wa");
+            private JTextField textFilterWp = new JTextField("[rad/seg]");
+            private JTextField textFilterWa = new JTextField("[rad/seg]");
+            private JLabel labelWp = new JLabel("Wp");
+            private JLabel labelWa = new JLabel("Wa");
 
             public LowPassConfiguratorPanel() {
                 //Set action after input
@@ -191,6 +215,10 @@ public class FilterSelectPanel extends JPanel {
                 this.add(labelWp);
                 this.add(textFilterWp);
             }
+
+            public double getFilterWpValue() { return Double.parseDouble(textFilterWp.getText());}
+            public double getFilterWaValue() { return Double.parseDouble(textFilterWa.getText());}
+        public void asd() {}
         }
     public class HighPassConfiguratorPanel extends ConfiguratorPanel {
             JTextField textFilterWp = new JTextField("[rad/seg]");
@@ -237,6 +265,9 @@ public class FilterSelectPanel extends JPanel {
                 this.add(labelWp);
                 this.add(textFilterWp);
             }
+
+            public double getFilterWpValue() { return Double.parseDouble(textFilterWp.getText());}
+            public double getFilterWaValue() { return Double.parseDouble(textFilterWa.getText());}
         }
     public class BandPassConfiguratorPanel extends ConfiguratorPanel {
             JTextField textFilterWo = new JTextField("[rad/seg]");
@@ -328,4 +359,6 @@ public class FilterSelectPanel extends JPanel {
                 this.add(textFilterB);
             }
         }
+
 }
+

@@ -1,6 +1,6 @@
 package tclib.templates;
 
-public abstract class SuperTemplate {
+public abstract class SuperTemplate implements TemplatesInterface {
     public double wan;
     public double Ap;
     public double Aa;

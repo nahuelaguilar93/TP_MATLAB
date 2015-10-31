@@ -31,7 +31,7 @@ public class ButtonAprox extends JPanel{
                 }
                 Approximation newAprox = new Approximation(comboBoxAprox.getComboBoxAproxIndex(), UserData.CurrentTemplate, order, Q);
                 UserData.ApproximationList.add(newAprox);
-                //listOfAprox.AddToList(/* newAprox.getDetails*/);
+                listOfAprox.AddToList(newAprox.getDetails());
             }
         });
         this.add(buttonAprox);

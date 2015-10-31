@@ -1,8 +1,7 @@
 package gui.firststage.configurationpanel;
 
-import gui.firststage.StageOne;
 import gui.firststage.configurationpanel.approximationpanel.AproximationPanel;
-import gui.firststage.configurationpanel.filterselectpanel.FilterSelectPanel;
+import gui.firststage.configurationpanel.filterselectpanel.TemplateConfigurationPanel;
 import gui.firststage.configurationpanel.listpanel.ListPanel;
 
 import javax.swing.*;
@@ -14,7 +13,7 @@ import java.awt.*;
 public class PanelConfig extends JPanel {
     private ListPanel panelList = new ListPanel();
     private AproximationPanel panelAprox = new AproximationPanel(this.panelList.getListOfAprox());
-    private FilterSelectPanel panelFiltro = new FilterSelectPanel(this.panelAprox.getComboBoxAprox());
+    private TemplateConfigurationPanel panelFiltro = new TemplateConfigurationPanel(this.panelAprox.getComboBoxAprox());
 
     public PanelConfig() {
         //Configuration Panel
