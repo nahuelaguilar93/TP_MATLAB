@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by Augusto on 8/10/2015.
  */
-public class ChebycheffApproximation extends Approximation {
+public class ChebycheffApproximation {
     public ChebycheffApproximation() {
         /*Notese que al igual que en Butter esto debe modificarse al modificar el flow del programa con userdata y los templates*/
         double Ap = 3;
@@ -60,10 +60,5 @@ public class ChebycheffApproximation extends Approximation {
         }
         //I have poles, and it has no zeroes, therefore I would only have format the poles to fit in with TransferFunction
 
-    }
-
-    @Override   //this is an override of the function that Approximation is asking
-    protected TransferFunction getNormalizedTransferFunction() {
-        return null;
     }
 }

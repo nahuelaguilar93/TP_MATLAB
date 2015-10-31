@@ -1,15 +1,30 @@
 package tclib.templates;
 
-/**
- * Created by kdewald on 8/10/15.
- */
+import static java.lang.Math.sqrt;
+
 public class BandpassTemplate extends SuperTemplate {
 
-    public double bandwidth;
-    public double centerFrequency;
+    public final double wpp;
+    public final double wap;
+    public final double wpm;
+    public final double wam;
+    public final double B;
+    public final double wo;
+
+    public BandpassTemplate(double wpp, double wap, double wpm, double wam, double Ap, double Aa) {
+        this.Ap = Ap;
+        this.Aa = Aa;
+        this.wpp = wpp;
+        this.wap = wap;
+        this.wpm = wpm;
+        this.wam = wam;
+        this.wo = sqrt(wpm*wpp);
+        this.B = (wpp-wpm)/wo;
+        Normalize();
+    }
 
     @Override
-    public TemplateTypeEnum getTemplateType() {
-        return TemplateTypeEnum.BANDPASS;
+    protected void Normalize() {
+        this.wan = (wap-wam)/(wpp-wpm);
     }
 }

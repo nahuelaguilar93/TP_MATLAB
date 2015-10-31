@@ -1,12 +1,20 @@
 package tclib.templates;
 
-/**
- * Created by kdewald on 8/10/15.
- */
 public class DelayTemplate extends SuperTemplate {
 
+    public final double wp;
+    public final double wa;
+
+    public DelayTemplate(double wp, double wa, double Ap, double Aa) {
+        this.Ap = Ap;
+        this.Aa = Aa;
+        this.wp = wp;
+        this.wa = wa;
+        Normalize();
+    }
+
     @Override
-    public TemplateTypeEnum getTemplateType() {
-        return TemplateTypeEnum.DELAY;
+    protected void Normalize() {
+        this.wan = wa/wp;
     }
 }

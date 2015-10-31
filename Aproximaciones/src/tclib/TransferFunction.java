@@ -29,6 +29,7 @@ public class TransferFunction {
         this.numerador = numerador;
         this.denominador = denominador;
     }
+
     /**
      * @param numPoly: Indice del elemento indica la potencia de ese termino del polinomio.
      * @param denPoly: Indice del elemento indica la potencia de ese termino del polinomio.
@@ -37,6 +38,7 @@ public class TransferFunction {
         numerador = new PolynomialFunction(numPoly);
         denominador = new PolynomialFunction(denPoly);
     }
+
     /**
      * @param zeros: Array of complex numbers for each zero.
      * @param poles: Array of complex numbers for each pole.
@@ -185,11 +187,11 @@ public class TransferFunction {
         double[] denormalizedNum = new double[currentNum.length];
 
         for (int i = 0; i < currentDen.length; i++) {
-            denormalizedDen[i] = currentDen[i] * Math.pow(1.0 / lowpassTemplate.omegaP, i);
+            denormalizedDen[i] = currentDen[i] * Math.pow(1.0 / lowpassTemplate.wp, i);
         }
 
         for (int i = 0; i < currentNum.length; i++) {
-            denormalizedNum[i] = currentNum[i] * Math.pow(1.0 / lowpassTemplate.omegaP, i);
+            denormalizedNum[i] = currentNum[i] * Math.pow(1.0 / lowpassTemplate.wp, i);
         }
 
         return new TransferFunction(denormalizedNum, denormalizedDen);
@@ -203,11 +205,11 @@ public class TransferFunction {
         double[] denormalizedNum = new double[currentDen.length];
 
         for (int i = 0; i < currentDen.length; i++) {
-            denormalizedDen[i] = currentDen[i] * Math.pow(highpassTemplate.omegaA, i);
+            denormalizedDen[i] = currentDen[i] * Math.pow(highpassTemplate.wa, i);
         }
 
         for (int i = 0; i < currentNum.length; i++) {
-            denormalizedNum[i] = currentNum[i] * Math.pow(highpassTemplate.omegaA, i);
+            denormalizedNum[i] = currentNum[i] * Math.pow(highpassTemplate.wa, i);
         }
 
         ArrayUtils.reverse(denormalizedDen);
@@ -244,7 +246,7 @@ public class TransferFunction {
         PolynomialFunction finalpolinome = new PolynomialFunction(fix);
 
         for (coefiterator = 1; coefiterator < originalpol.length; coefiterator++) {
-            polinome = turnDouble2PolynomePass(originalpol, coefiterator, bandpassTemplate.bandwidth, bandpassTemplate.centerFrequency);
+            polinome = turnDouble2PolynomePass(originalpol, coefiterator, bandpassTemplate.B, bandpassTemplate.wo);
             finalpolinome = finalpolinome.add(polinome); // Voy sumando los polinomios expandidos
         }
         addattheend[addattheend.length - 1] = originalpol[0]; // Al final le sumo el término independiente
@@ -280,7 +282,7 @@ public class TransferFunction {
         PolynomialFunction finalpolinome = new PolynomialFunction(fix);
 
         for (coefiterator = 1; coefiterator < originalpol.length; coefiterator++) {
-            polinome = turnDouble2PolynomeReject(originalpol, coefiterator, bandrejectTemplate.bandwidth, bandrejectTemplate.centerFrequency);
+            polinome = turnDouble2PolynomeReject(originalpol, coefiterator, bandrejectTemplate.B, bandrejectTemplate.wo);
             finalpolinome = finalpolinome.add(polinome);// Voy sumando los polinomios ya expandidos y corregidos
         }
 
@@ -288,7 +290,7 @@ public class TransferFunction {
         finalpolinome = finalpolinome.add(new PolynomialFunction(addattheend));// Aca agrego el que habia quedado como término independiente
 
         if (multiplicatororder > 0) {// Si el polinomio fue multiplicado por un término de grado mayor al necesario, agrego esa parte con este algoritmo:
-            double[] corrector = newtonExpands(multiplicatororder, 1, bandrejectTemplate.bandwidth, bandrejectTemplate.centerFrequency);
+            double[] corrector = newtonExpands(multiplicatororder, 1, bandrejectTemplate.B, bandrejectTemplate.wo);
             finalpolinome = finalpolinome.multiply(new PolynomialFunction(corrector));
         }
 
@@ -496,6 +498,7 @@ public class TransferFunction {
         return derivativeValue;
     }
     //</editor-fold>
+
 
     public static void executeTest() {
 

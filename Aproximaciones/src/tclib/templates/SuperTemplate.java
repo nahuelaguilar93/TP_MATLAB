@@ -1,22 +1,16 @@
 package tclib.templates;
 
-/**
- * Created by kdewald on 8/10/15.
- */
-public class SuperTemplate {
+public abstract class SuperTemplate {
+    public double wan;
+    public double Ap;
+    public double Aa;
 
-    public enum TemplateTypeEnum {
-        NORMALIZED,
-        LOWPASS,
-        HIGHPASS,
-        BANDPASS,
-        BANDREJECT,
-        DELAY,
-        UNDEFINED,
-    }
-    TemplateTypeEnum templateType;
-    public TemplateTypeEnum getTemplateType(){
-        return templateType;
-    }
-    //public abstract Normalize();
+    protected abstract void Normalize();   //To be called by each subclass initialization.
 }
+
+/*
+    double psi;     //Zero if it's not defined
+    int maxOrder;   //Zero if it's not defined
+    double maxQ;
+
+*/

@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Created by Augusto on 8/10/2015.
  */
-public class ButterworthApproximation extends Approximation {
+public class ButterworthApproximation {
 
     private TransferFunction ButterworthTransferFunction;
 
@@ -60,12 +60,5 @@ public class ButterworthApproximation extends Approximation {
 
         /*Aca estarian los polos pero como los paso a funcion transferencia?*/
         /*Hay que hacer una funcion que pase de raices a un polinomio como el que pide Transferfuncion para inicializarse!*/
-
-
-    }
-
-    @Override   //this is an override of the function that Approximation is asking
-    protected TransferFunction getNormalizedTransferFunction() {
-        return null;
     }
 }

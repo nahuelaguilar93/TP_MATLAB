@@ -13,7 +13,7 @@ import org.apache.commons.math3.complex.Complex;
 /**
  * Created by Augusto on 8/10/2015.
  */
-public class InverseChebycheffApproximation extends Approximation {
+public class InverseChebycheffApproximation {
 
     public InverseChebycheffApproximation() {
         double Ap = 4;
@@ -21,9 +21,6 @@ public class InverseChebycheffApproximation extends Approximation {
         double wp = 10;
         double wa = 1000;
         double wan = wa / wp;
-
-
-
 
         /*Here starts the aproximation function*/
         double epsilon = 1 / (Math.sqrt(Math.pow(10, Aa / 10) - 1));
@@ -56,14 +53,5 @@ public class InverseChebycheffApproximation extends Approximation {
                 ZeroesOfTransferFunction.add(new Complex(0,wan/(Math.cos(alpha))));
             }
         }
-
-
-
-
-
-    }
-    @Override   //this is an override of the function that Approximation is asking
-    protected TransferFunction getNormalizedTransferFunction() {
-        return null;
     }
 }

@@ -1,25 +1,20 @@
 package tclib.templates;
 
-/**
- * Created by kdewald on 8/10/15.
- */
 public class LowpassTemplate extends SuperTemplate {
 
-    public double omegaP;
-    public double omegaA;
-    public double attenuationP;
-    public double attenuationA;
+    public final double wp;
+    public final double wa;
 
-    public LowpassTemplate(double omegaP, double omegaA, double attenuationP, double attenuationA) {
-        this.omegaP = omegaP;
-        this.omegaA = omegaA;
-        this.attenuationP = attenuationP;
-        this.attenuationA = attenuationA;
+    public LowpassTemplate(double wp, double wa, double Ap, double Aa) {
+        this.Ap = Ap;
+        this.Aa = Aa;
+        this.wp = wp;
+        this.wa = wa;
+        Normalize();
     }
 
     @Override
-    public TemplateTypeEnum getTemplateType() {
-        return TemplateTypeEnum.LOWPASS;
+    protected void Normalize() {
+        this.wan = wa/wp;
     }
-
 }
