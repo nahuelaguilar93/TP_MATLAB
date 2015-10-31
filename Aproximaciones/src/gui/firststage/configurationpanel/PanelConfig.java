@@ -14,14 +14,14 @@ import java.awt.*;
 public class PanelConfig extends JPanel {
 
     private static FilterSelectPanel panelFiltro = new FilterSelectPanel();
-    private static ListPanel panelList = new ListPanel();
     private static AproximationPanel panelAprox = new AproximationPanel();
+    private static ListPanel panelList = new ListPanel();
 
     public PanelConfig() {
         //Configuration Panel
         this.setMaximumSize(new Dimension(300, 1080));
-        this.setMinimumSize(new Dimension(300, 768));
-        this.setPreferredSize(new Dimension(300, 768));
+        //this.setMinimumSize(new Dimension(300, 768));
+        //this.setPreferredSize(new Dimension(300, 768));
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         //this.setLayout(new GridLayout(4,1));

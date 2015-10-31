@@ -1,6 +1,7 @@
 package gui.firststage.drawingpanel;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -61,6 +62,9 @@ public class CheckBoxChoosePlot extends JPanel{
             }
         });
 
+        this.setMinimumSize(new Dimension(500, 100));
+        this.setMaximumSize(new Dimension(1980, 100));
+        this.setPreferredSize(new Dimension(1980, 100));
 
         this.add(atenuacion);
         this.add(fase);

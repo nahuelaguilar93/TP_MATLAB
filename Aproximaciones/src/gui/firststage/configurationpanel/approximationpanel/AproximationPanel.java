@@ -6,9 +6,9 @@ import javax.swing.*;
  * Created by NEGU on 7/10/2015.
  */
 public class AproximationPanel extends JPanel{
-    private static ComboBoxAprox comboBoxAprox = new ComboBoxAprox();
-    private static ButtonAprox buttonAprox = new ButtonAprox();
-    private static CheckBoxAprox checkBoxAprox = new CheckBoxAprox();
+    private ComboBoxAprox comboBoxAprox = new ComboBoxAprox();
+    private ButtonAprox buttonAprox = new ButtonAprox();
+    private CheckBoxAprox checkBoxAprox = new CheckBoxAprox();
 
 
     public AproximationPanel() {

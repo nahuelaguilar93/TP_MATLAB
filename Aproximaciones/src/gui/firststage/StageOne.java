@@ -8,14 +8,12 @@ import javax.swing.*;
 import java.awt.*;
 
 public class StageOne extends JPanel {
-    public static UserData ud = new UserData();
-    PanelConfig panelConfig;
-    DrawingPanel drawingPanel;
+    public PanelConfig panelConfig;
+    public DrawingPanel drawingPanel;
 
     public StageOne() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        this.setBackground(Color.ORANGE);
-
+        this.setBackground(Color.ORANGE);   //No se debería ver. Lo hago para darme cuenta si me queda corto algún panel o siempre lo cubro
 
         //Configuration Panel
         panelConfig = new PanelConfig();

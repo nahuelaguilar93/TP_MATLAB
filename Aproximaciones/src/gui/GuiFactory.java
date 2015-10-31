@@ -10,8 +10,6 @@ public class GuiFactory {
     public static int APP_WIDTH = 1024;
     public static int APP_HEIGHT = 768;
 
-
-
     private static StageOne stageOne = null;
     private static StageTwo stageTwo = null;
     private static StageThree stageThree = null;

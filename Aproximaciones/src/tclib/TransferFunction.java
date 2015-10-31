@@ -29,7 +29,6 @@ public class TransferFunction {
         this.numerador = numerador;
         this.denominador = denominador;
     }
-
     /**
      * @param numPoly: Indice del elemento indica la potencia de ese termino del polinomio.
      * @param denPoly: Indice del elemento indica la potencia de ese termino del polinomio.
@@ -38,7 +37,6 @@ public class TransferFunction {
         numerador = new PolynomialFunction(numPoly);
         denominador = new PolynomialFunction(denPoly);
     }
-
     /**
      * @param zeros: Array of complex numbers for each zero.
      * @param poles: Array of complex numbers for each pole.
@@ -499,7 +497,6 @@ public class TransferFunction {
         return derivativeValue;
     }
     //</editor-fold>
-
 
     public static void executeTest() {
 

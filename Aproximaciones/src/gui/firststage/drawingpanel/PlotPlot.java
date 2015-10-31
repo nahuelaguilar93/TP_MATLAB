@@ -24,14 +24,13 @@ public class PlotPlot extends JPanel{
         Plot2DPanel plot = new Plot2DPanel();
         plot.setAxisScales("LOG", "LIN");
         plot.addLinePlot("my plot", freq, modulo);
+        //plot.setSize(600,500);
 
         //Hardcoded size, it would be nice to change this.
-        plot.setPreferredSize(new Dimension(600,500));
-        plot.setMinimumSize(new Dimension(600,500));
-        plot.setMaximumSize(new Dimension(600,500));
+        //this.setMinimumSize(new Dimension(640,400));
+        //this.setPreferredSize(new Dimension(640,400));
+        //plot.setMaximumSize(new Dimension(600,500));
         this.setBorder(BorderFactory.createTitledBorder("Plot"));
-
         this.add(plot);
     }
-
 }
