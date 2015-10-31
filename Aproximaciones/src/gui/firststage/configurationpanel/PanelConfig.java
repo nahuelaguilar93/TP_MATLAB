@@ -1,7 +1,7 @@
 package gui.firststage.configurationpanel;
 
 import gui.firststage.configurationpanel.approximationpanel.AproximationPanel;
-import gui.firststage.configurationpanel.filterselectpanel.TemplateConfigurationPanel;
+import gui.firststage.configurationpanel.templatepanel.TemplateConfigurationPanel;
 import gui.firststage.configurationpanel.listpanel.ListPanel;
 
 import javax.swing.*;

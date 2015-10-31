@@ -1,4 +1,5 @@
 import gui.GuiFactory;
+import gui.PrincipalPanel;
 import gui.firststage.StageOne;
 import gui.secondstage.StageTwo;
 import gui.thirdstage.StageThree;
@@ -15,24 +16,13 @@ import static javax.swing.SwingUtilities.invokeLater;
 public class Main extends JFrame {
 
     public Main() {
-        JPanel principalPanel = new JPanel();
-        JPanel bigPanel = new JPanel();
-        StageOne stageOne = new StageOne();
-        StageTwo stageTwo = new StageTwo();
-        StageThree stageThree = new StageThree();
-        CardLayout cardLayout = new CardLayout();
-        JButton nextStageButton = new JButton();
+        /*The configuration goes like this:
+        *           There is a principalPanel with two Panels. One is the bigPanel where it has everything of the stage
+        *           The other is a button panel which only has two buttons to go back and forth between panels
+         */
+        PrincipalPanel principalPanel = new PrincipalPanel();
 
-        bigPanel.setLayout(cardLayout);
-        bigPanel.add(stageOne, "One");
-        bigPanel.add(stageTwo, "Two");
-        bigPanel.add(stageThree, "Three");
-
-        //Falta hacer que esto ande bien
-        //cardLayout.show(bigPanel, "Three");
-
-        principalPanel.add(bigPanel);
-        this.add(bigPanel);
+        this.add(principalPanel);
 
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -61,32 +51,3 @@ public class Main extends JFrame {
         invokeLater(() -> new Main().setVisible(true));
     }
 }
-
-
-  /* Esto dentro del main, no lo quiero perder por eso lo dejo acá
-        JTabbedPane jTabbedPane = new JTabbedPane();
-        jTabbedPane.addTab("Stage One", GuiFactory.getStageOne());
-        jTabbedPane.addTab("Stage Two", GuiFactory.getStageTwo());
-        jTabbedPane.addTab("Stage Three", GuiFactory.getStageThree());
-        this.add(jTabbedPane);
-
-        principalPanel.setLayout(cardLayout);
-
-        principalPanel.add(stageOne, "One");
-        principalPanel.add(stageTwo, "Two");
-
-        JButton nextStage = new JButton("Next Stage");
-        nextStage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(principalPanel, "Two");
-            }
-        });
-
-        buttonPanel.add(nextStage);
-
-        this.add(principalPanel);
-        this.add(buttonPanel);
-*/
-
-
