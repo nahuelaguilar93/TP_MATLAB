@@ -1,9 +1,7 @@
 package gui.firststage.configurationpanel.approximationpanel;
 
-import com.sun.javaws.jnl.UpdateDesc;
 import data.UserData;
-import tclib.Approximation;
-import tclib.templates.HighpassTemplate;
+import mathematics.Approximation;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;

@@ -2,7 +2,7 @@ package data;
 
 import java.util.*;
 
-import tclib.*;
+import mathematics.Approximation;
 import tclib.templates.LowpassTemplate;
 import tclib.templates.SuperTemplate;
 

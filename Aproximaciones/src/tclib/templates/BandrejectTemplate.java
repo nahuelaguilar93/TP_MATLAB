@@ -4,7 +4,7 @@ import static java.lang.Math.sqrt;
 
 public class BandrejectTemplate extends SuperTemplate {
 
-    public   final double wpp;
+    public final double wpp;
     public final double wap;
     public final double wpm;
     public final double wam;

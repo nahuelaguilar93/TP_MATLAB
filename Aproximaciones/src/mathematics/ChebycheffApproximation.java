@@ -1,10 +1,6 @@
 package mathematics;
 
 import org.apache.commons.math3.complex.Complex;
-import tclib.Approximation;
-import tclib.TransferFunction;
-
-import org.apache.commons.math3.*;
 
 import java.lang.Math;
 import java.util.ArrayList;

@@ -2,10 +2,8 @@ package gui.firststage.configurationpanel.approximationpanel;
 
 import data.UserData;
 import gui.firststage.configurationpanel.listpanel.ListOfAprox;
-import gui.firststage.configurationpanel.listpanel.ListPanel;
-import tclib.Approximation;
+import mathematics.Approximation;
 
-import javax.jws.soap.SOAPBinding;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

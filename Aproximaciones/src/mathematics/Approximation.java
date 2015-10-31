@@ -1,6 +1,7 @@
-package tclib;
+package mathematics;
 
 import org.apache.commons.math3.complex.Complex;
+import tclib.TransferFunction;
 import tclib.templates.*;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class Approximation {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    private TransferFunction NTF;
     private TransferFunction TF;
     private double maxQobtained;
     private int Order;
@@ -45,7 +47,7 @@ public class Approximation {
         this(index, temp, setOrder, maxQ, 0, 0);
     }
 
-    public Approximation(int index, SuperTemplate temp, int setOrder, double maxQ, double delay, double psi){
+    public Approximation(int index, SuperTemplate temp, int setOrder, double maxQ, double delay, double psi) {
         List<String> approxList = getStringsToComboBox(temp);
         if(approxList.get(index).equals("Butterworth")) {
             Butter(temp, setOrder, maxQ);
@@ -56,6 +58,17 @@ public class Approximation {
             Details = "Cheby 1 " + "/ Orden " + Order + " / Max Q " + maxQobtained;
         }
 
+    }
+
+    public void Denormalize(SuperTemplate temp) {
+        if(temp instanceof LowpassTemplate)
+            TF = NTF.denormalize((LowpassTemplate) temp);
+        else if(temp instanceof HighpassTemplate)
+            TF = NTF.denormalize((HighpassTemplate) temp);
+        else if(temp instanceof BandpassTemplate)
+            TF = NTF.denormalize((BandpassTemplate) temp);
+        else if(temp instanceof BandrejectTemplate)
+            TF = NTF.denormalize((BandrejectTemplate) temp);
     }
 
 /*ATENCIÓN AUGUSTO:
@@ -73,7 +86,7 @@ public class Approximation {
 
         Por último, los métodos no tienen que tener Output, pero tienen que setear las siguientes variables
         propias de la clase:
-            this.TF     (TransferFunction)  //La Función Transferencia resultante.
+            this.NTF     (TransferFunction)  //La Función Transferencia resultante.
             this.maxQobtained   (double)    //El Q más alto de la función Transferencia.
             this.Order          (int)       //El orden alcanzado.
  */
@@ -98,7 +111,7 @@ public class Approximation {
         }
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
         Complex[] ZerosArray = new Complex[0];
-        this.TF = new TransferFunction(ZerosArray,PolesArray);
+        this.NTF = new TransferFunction(ZerosArray,PolesArray);
         this.maxQobtained = 1./(2*Math.sin(Math.PI/(2*this.Order)));
     }
 
@@ -106,7 +119,7 @@ public class Approximation {
     private void Cheby1(SuperTemplate temp, int setOrder, double maxQ){
         double[] numer = {1};
         double[] denom = {1,2,1};
-        this.TF = new TransferFunction(numer, denom);
+        this.NTF = new TransferFunction(numer, denom);
         this.Order = 7;
         this.maxQobtained = 8.3;
     }
@@ -115,4 +128,3 @@ public class Approximation {
     private void Bessel(SuperTemplate temp, int setOrder, double maxQ, double delay, double psi){}
     private void Gauss(SuperTemplate temp, int setOrder, double maxQ, double delay, double psi){}
 }
-
