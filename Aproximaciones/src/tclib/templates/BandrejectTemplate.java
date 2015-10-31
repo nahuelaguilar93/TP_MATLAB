@@ -11,6 +11,13 @@ public class BandrejectTemplate extends SuperTemplate {
     public final double B;
     public final double wo;
 
+    public double getWpp() { return wpp; }
+    public double getWap() { return wap; }
+    public double getWpm() { return wpm; }
+    public double getWam() { return wam; }
+    public double getB() { return B; }
+    public double getWo() { return wo; }
+
     public BandrejectTemplate(double wpp, double wap, double wpm, double wam, double Ap, double Aa) {
         this.Ap = Ap;
         this.Aa = Aa;

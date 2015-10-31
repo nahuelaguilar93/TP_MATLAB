@@ -34,12 +34,18 @@ public class Approximation {
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private TransferFunction NTF;
+
+
     private TransferFunction TF;
     private double maxQobtained;
     private int Order;
     private String Details;
 
     public String getDetails() { return Details; }
+    public TransferFunction getNTF() { return NTF; }
+    public TransferFunction getTF() { return TF; }
+    public double getMaxQobtained() { return maxQobtained; }
+    public int getOrder() { return Order; }
 
     public Approximation(int index, SuperTemplate temp) { this(index, temp, 0, 0, 0, 0); }
     public Approximation(int index, SuperTemplate temp, int setOrder) { this(index, temp, setOrder, 0, 0, 0); }
@@ -57,18 +63,7 @@ public class Approximation {
             Cheby1(temp, setOrder, maxQ);
             Details = "Cheby 1 " + "/ Orden " + Order + " / Max Q " + maxQobtained;
         }
-
-    }
-
-    public void Denormalize(SuperTemplate temp) {
-        if(temp instanceof LowpassTemplate)
-            TF = NTF.denormalize((LowpassTemplate) temp);
-        else if(temp instanceof HighpassTemplate)
-            TF = NTF.denormalize((HighpassTemplate) temp);
-        else if(temp instanceof BandpassTemplate)
-            TF = NTF.denormalize((BandpassTemplate) temp);
-        else if(temp instanceof BandrejectTemplate)
-            TF = NTF.denormalize((BandrejectTemplate) temp);
+        TF = NTF.denormalize(temp);
     }
 
 /*ATENCIÓN AUGUSTO:
@@ -115,13 +110,51 @@ public class Approximation {
         this.maxQobtained = 1./(2*Math.sin(Math.PI/(2*this.Order)));
     }
 
-
     private void Cheby1(SuperTemplate temp, int setOrder, double maxQ){
         double[] numer = {1};
         double[] denom = {1,2,1};
         this.NTF = new TransferFunction(numer, denom);
         this.Order = 7;
         this.maxQobtained = 8.3;
+
+        double Ap = temp.Ap;
+        double Aa = temp.Aa;
+        double wan = temp.wan;
+
+        double eps = Math.sqrt(Math.pow(10., Ap / 10) - 1);
+        this.Order = setOrder;
+
+        // Kevin: Use class FastMath from Apache Math.
+        // Example: Fastmath.asinh(3);
+
+        /* acosh function does not exist in java's Math library, therefore I will use some other Math's function to
+        * recreate it like this:
+        * Math.log(x + Math.sqrt(x*x - 1.0))        where x is the value which goes in the acosh
+        *
+        * also asinh is made up of:
+        * Math.log(x + Math.sqrt(x*x + 1.0));
+        * */
+
+        if(this.Order == 0)
+            this.Order = (int) Math.ceil(Math.log(Math.sqrt((Math.pow(10, Aa / 10) - 1) / eps) + Math.sqrt(Math.sqrt((Math.pow(10, Aa / 10) - 1) / eps) * Math.sqrt((Math.pow(10, Aa / 10) - 1) / eps) - 1.0)) / Math.log(wan + Math.sqrt(wan * wan - 1.0)));
+
+        List<Complex> PolesOfTransferFunction = new ArrayList<>();
+        double realPart = 0.0;
+        double imaginaryPart = 0.0;
+
+        for (int i = 0; i < this.Order; i++) {
+            imaginaryPart = Math.cos(Math.PI * ((2 * i - 1) / (2 * this.Order))) * Math.cosh((1 / this.Order) * Math.log((1 / eps) + Math.sqrt((1 / eps) * (1 / eps) - 1.0)));
+            realPart = Math.sin(Math.PI * ((2 * i - 1) / (2 * this.Order))) * Math.sinh((1 / this.Order) * Math.log((1 / eps) + Math.sqrt((1 / eps) * (1 / eps) + 1.0)));
+            //It has to be checked that the real part has to be negative
+            if (realPart > 0) {
+                realPart = -realPart;
+            }
+            PolesOfTransferFunction.add(new Complex(realPart, imaginaryPart));
+        }
+        //I have poles, and it has no zeroes, therefore I would only have format the poles to fit in with TransferFunction
+
+
+
     }
     private void Cheby2(SuperTemplate temp, int setOrder, double maxQ){}
     private void Legendre(SuperTemplate temp, int setOrder, double maxQ){}

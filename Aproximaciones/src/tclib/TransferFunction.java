@@ -1,14 +1,12 @@
 package tclib;
 
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.analysis.solvers.LaguerreSolver;
 import org.apache.commons.math3.complex.Complex;
 import org.apache.commons.math3.util.CombinatoricsUtils;
-import tclib.templates.BandpassTemplate;
-import tclib.templates.BandrejectTemplate;
-import tclib.templates.HighpassTemplate;
-import tclib.templates.LowpassTemplate;
+import tclib.templates.*;
 
 import java.util.*;
 
@@ -179,6 +177,21 @@ public class TransferFunction {
         return numerador.degree() == 0;
     }
 
+    public TransferFunction denormalize(SuperTemplate Template) {
+        if(Template instanceof LowpassTemplate)
+            return denormalize((LowpassTemplate) Template);
+        else if(Template instanceof HighpassTemplate)
+            return denormalize((HighpassTemplate) Template);
+        else if(Template instanceof BandpassTemplate)
+            return denormalize((BandpassTemplate) Template);
+        else if(Template instanceof BandrejectTemplate)
+            return denormalize((BandrejectTemplate) Template);
+        else if(Template instanceof DelayTemplate)
+            return denormalize((DelayTemplate) Template);
+        else
+            return new TransferFunction(new double[] {1},new double[] {1});
+    }
+
     public TransferFunction denormalize(LowpassTemplate lowpassTemplate) {
         double[] currentDen = denominador.getCoefficients();
         double[] currentNum = numerador.getCoefficients();
@@ -236,6 +249,25 @@ public class TransferFunction {
         PolynomialFunction numpol = finalPolinomeBandReject(currentNum, denominatorDegree, bandrejectTemplate);
         return new TransferFunction(numpol, denpol);
     }
+
+    public TransferFunction denormalize(DelayTemplate delayTemplate) {
+        double[] currentDen = denominador.getCoefficients();
+        double[] currentNum = numerador.getCoefficients();
+
+        double[] denormalizedDen = new double[currentDen.length];
+        double[] denormalizedNum = new double[currentNum.length];
+
+        for (int i = 0; i < currentDen.length; i++) {
+            denormalizedDen[i] = currentDen[i] * Math.pow(1.0 / delayTemplate.wp, i);
+        }
+
+        for (int i = 0; i < currentNum.length; i++) {
+            denormalizedNum[i] = currentNum[i] * Math.pow(1.0 / delayTemplate.wp, i);
+        }
+
+        return new TransferFunction(denormalizedNum, denormalizedDen);
+    }
+
 
     //<editor-fold desc="Internal Functions of Passband and Bandreject Approximations">
     private PolynomialFunction finalPolinomeBandPass(double[] originalpol, int multiplicatororder, BandpassTemplate bandpassTemplate) {
