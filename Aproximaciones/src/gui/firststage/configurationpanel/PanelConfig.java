@@ -18,7 +18,7 @@ public class PanelConfig extends JPanel {
 
     public PanelConfig() {
         //Configuration Panel
-        this.setMaximumSize(new Dimension(300, 1080));
+        this.setMaximumSize(new Dimension(300, 2080));
         //this.setMinimumSize(new Dimension(300, 768));
         //this.setPreferredSize(new Dimension(300, 768));
 

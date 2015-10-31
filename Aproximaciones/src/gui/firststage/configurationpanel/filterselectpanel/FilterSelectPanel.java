@@ -19,7 +19,6 @@ public class FilterSelectPanel extends JPanel {
     private ButtonFilterType buttonFilterType = new ButtonFilterType();
     private static int TEXT_HEIGH = 50;
     private static int TEXT_WIDTH = 65;
-    //FilterStrings va a ser un parámetro
     private static String[] filterStrings = {"Low Pass", "High Pass", "Band Pass", "Reject Band"};
     private static JComboBox filterList = new JComboBox(filterStrings);
 
@@ -45,7 +44,6 @@ public class FilterSelectPanel extends JPanel {
         }
 
         filterList.setSelectedIndex(0); //Low Pass as Default
-
         filterList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -53,6 +51,10 @@ public class FilterSelectPanel extends JPanel {
                 buttonFilterType.selectConfigurator(index);  //This function
             }
         });
+
+        filterList.setMaximumSize(new Dimension(150, 30));
+        filterList.setPreferredSize(new Dimension(150, 30));
+        filterList.setMinimumSize(new Dimension(150, 30));
 
         //Adds everything to the FilterSelectPanel
         this.add(filterList);

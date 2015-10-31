@@ -17,7 +17,7 @@ public class ListPanel extends JPanel{
         this.add(sliderDesnorm);
     }
 
-    public void addItemToList(String aproximationToAdd) { listOfAprox.AddToList(aproximationToAdd); }
+    //public void addItemToList(String aproximationToAdd) { listOfAprox.AddToList(aproximationToAdd); }
     public ListOfAprox getListOfAprox() { return listOfAprox; }
     public SliderDesnorm getSliderDesnorm() { return sliderDesnorm; }
 }

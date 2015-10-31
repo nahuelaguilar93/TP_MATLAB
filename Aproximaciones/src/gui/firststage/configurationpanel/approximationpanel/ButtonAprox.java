@@ -20,8 +20,7 @@ public class ButtonAprox extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 //ToDo: Ojo! creo que pasé mal esto... es un ListPanel y no un ListOfAprox!
-                ListPanel listPanel = (ListPanel) listOfAproxPanel;
-                ListOfAprox listOfAprox = (ListOfAprox) listPanel.getListOfAprox();
+                ListOfAprox listOfAprox = (ListOfAprox) listOfAproxPanel;
                 ComboBoxAprox comboBoxAprox = (ComboBoxAprox) comboBoxAproxPanel;
                 RadioButtonAprox radioButtonAprox = (RadioButtonAprox) radioButtonAproxPanel;
                 double Q = 0;
@@ -35,7 +34,6 @@ public class ButtonAprox extends JPanel{
                 Approximation newAprox = new Approximation(comboBoxAprox.getComboBoxAproxIndex(), UserData.CurrentTemplate, order, Q);
                 UserData.ApproximationList.add(newAprox);
                 //listOfAprox.AddToList(/* newAprox.getDetails*/);
-                //listOfAprox.addItemToList(/* newAprox.getDetails */);
             }
         });
         this.add(buttonAprox);
