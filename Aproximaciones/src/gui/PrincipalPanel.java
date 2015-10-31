@@ -15,6 +15,11 @@ import java.awt.event.ActionListener;
 public class PrincipalPanel extends JPanel {
     private static int currentPanel = 0;        //Registry of the stage I'm in.
 
+    /*The configuration goes like this:
+       *           There is a principalPanel with two Panels. One is the bigPanel where it has everything of the stage
+       *           The other is a buttonPanel which only has two buttons to go back and forth between panels
+        */
+
     public PrincipalPanel() {
         JPanel bigPanel = new JPanel();
         StageOne stageOne = new StageOne();
@@ -59,7 +64,7 @@ public class PrincipalPanel extends JPanel {
         buttonPanel.setLayout(new BorderLayout());
         buttonPanel.add(nextStageButton, BorderLayout.LINE_END);
         buttonPanel.add(previousStageButton, BorderLayout.LINE_START);
-        buttonPanel.setMaximumSize(new Dimension(1920, 400));
+        buttonPanel.setMaximumSize(new Dimension(1920, 400));         //TODO: Revisar este hardcode feo
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.add(bigPanel);

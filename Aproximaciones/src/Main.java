@@ -16,21 +16,18 @@ import static javax.swing.SwingUtilities.invokeLater;
 public class Main extends JFrame {
 
     public Main() {
-        /*The configuration goes like this:
-        *           There is a principalPanel with two Panels. One is the bigPanel where it has everything of the stage
-        *           The other is a button panel which only has two buttons to go back and forth between panels
-         */
+
         PrincipalPanel principalPanel = new PrincipalPanel();
 
         this.add(principalPanel);
 
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH); //Full-Screen at Start
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TP de Aproximaciones en Java");
         setLocationRelativeTo(null);
         //setPreferredSize(new Dimension(1024, 768));
-        setMinimumSize(new Dimension(800, 600));
+        setMinimumSize(new Dimension(800, 600)); //Minimum Screen Size
     }
 
     public static void main(String[] args) {

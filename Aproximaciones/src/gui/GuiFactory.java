@@ -1,5 +1,6 @@
 package gui;
 
+import data.UserData;
 import gui.firststage.drawingpanel.PlotPlot;
 import gui.firststage.StageOne;
 import gui.secondstage.StageTwo;
@@ -35,10 +36,11 @@ public class GuiFactory {
         return stageThree;
     }
 
+/*
     public static PlotPlot getPlot() {
         if (plot == null) {
-            plot = new PlotPlot();
+            plot = new PlotPlot(UserData.ApproximationList, UserData.CurrentTemplate);
         }
         return plot;
-    }
+    }*/
 }

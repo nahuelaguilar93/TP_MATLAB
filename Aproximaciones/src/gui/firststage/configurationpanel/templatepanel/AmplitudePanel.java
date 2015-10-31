@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by NEGU on 31/10/2015.
  */
-public class GenericConfiguratorPanel extends JPanel {
+public class AmplitudePanel extends JPanel {
     private int TEXT_HEIGH = 50;
     private int TEXT_WIDTH = 65;
     JTextField textFilterAp = new JTextField("[dB]");
@@ -16,7 +16,7 @@ public class GenericConfiguratorPanel extends JPanel {
     JLabel labelAa = new JLabel("Aa");
     JLabel labelAp = new JLabel("Ap");
 
-    public GenericConfiguratorPanel() {
+    public AmplitudePanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         textFilterAa.setMinimumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
         textFilterAp.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));

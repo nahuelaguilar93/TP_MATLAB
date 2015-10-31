@@ -1,5 +1,7 @@
 package gui.firststage.drawingpanel;
 
+import data.UserData;
+
 import javax.swing.*;
 
 /**
@@ -14,9 +16,11 @@ public class DrawingPanel extends JPanel {
         if (choosePlotPanel == null) {
             choosePlotPanel = new CheckBoxChoosePlot();
         }
+
         if (plotPanel == null) {
             plotPanel = new PlotPlot();
         }
+
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 //        this.setMaximumSize(new Dimension(724, 768));
 //        this.setMinimumSize(new Dimension(724, 768));

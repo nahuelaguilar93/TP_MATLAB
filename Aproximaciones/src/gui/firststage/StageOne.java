@@ -1,14 +1,17 @@
 package gui.firststage;
 
-import data.UserData;
-import gui.firststage.configurationpanel.PanelConfig;
+import gui.firststage.configurationpanel.ConfigPanel;
 import gui.firststage.drawingpanel.DrawingPanel;
 
 import javax.swing.*;
 import java.awt.*;
 
+/*
+*   Stage One is divided into two different big panels. One with all the configuration buttons and panels and another with the plot
+ */
+
 public class StageOne extends JPanel {
-    public PanelConfig panelConfig;
+    public ConfigPanel configPanel;
     public DrawingPanel drawingPanel;
 
     public StageOne() {
@@ -16,8 +19,8 @@ public class StageOne extends JPanel {
         this.setBackground(Color.ORANGE);   //No se debería ver. Lo hago para darme cuenta si me queda corto algún panel o siempre lo cubro
 
         //Configuration Panel
-        panelConfig = new PanelConfig();
-        this.add(panelConfig);
+        configPanel = new ConfigPanel();
+        this.add(configPanel);
 
         //Plot Panel
         drawingPanel = new DrawingPanel();

@@ -10,12 +10,12 @@ import java.awt.*;
 /**
  * Created by NEGU on 7/10/2015.
  */
-public class PanelConfig extends JPanel {
+public class ConfigPanel extends JPanel {
     private ListPanel panelList = new ListPanel();
     private AproximationPanel panelAprox = new AproximationPanel(this.panelList.getListOfAprox());
     private TemplateConfigurationPanel panelFiltro = new TemplateConfigurationPanel(this.panelAprox.getComboBoxAprox());
 
-    public PanelConfig() {
+    public ConfigPanel() {
         //Configuration Panel
         this.setMaximumSize(new Dimension(300, 2080));
         //this.setMinimumSize(new Dimension(300, 768));
@@ -23,7 +23,7 @@ public class PanelConfig extends JPanel {
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         //this.setLayout(new GridLayout(4,1));
-        //panelConfig.setBorder(BorderFactory.createTitledBorder("Configuration"));
+        //configPanel.setBorder(BorderFactory.createTitledBorder("Configuration"));
 
         this.add(panelFiltro);
         this.add(panelAprox);
