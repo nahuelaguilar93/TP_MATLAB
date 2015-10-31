@@ -3,6 +3,7 @@ package data;
 import java.util.*;
 
 import tclib.*;
+import tclib.templates.LowpassTemplate;
 import tclib.templates.SuperTemplate;
 
 /**
@@ -11,14 +12,8 @@ import tclib.templates.SuperTemplate;
 
 public class UserData {
 
-    public static List<TransferFunction> ApproximationList = new ArrayList<>();
-    public static SuperTemplate CurrentTemplate = null;
+    public static List<Approximation> ApproximationList = new ArrayList<>();
+    public static SuperTemplate CurrentTemplate = new LowpassTemplate(2*Math.PI*1000, 2*Math.PI*3000, 3, 10);
 
-    private static int FilterType = 0;
-    private static int Aprox = 0;
-
-    private static int n = 1;
     private static SuperTemplate temp;
-
-
 }

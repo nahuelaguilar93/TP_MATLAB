@@ -10,10 +10,11 @@ import java.awt.event.*;
  * Created by NEGU on 7/10/2015.
  */
 public class RadioButtonAprox extends JPanel {
-    JRadioButton minOrder = new JRadioButton("Min Order");
-    JRadioButton maxQ = new JRadioButton("Max Q");
-    JRadioButton selectOrder = new JRadioButton("Set Order");
-    JTextField textSelectOrder = new JTextField("Set Order");
+    private ButtonGroup groupOfRadioButtons = new ButtonGroup();
+    private JRadioButton minOrder = new JRadioButton("Min Order");
+    private JRadioButton maxQ = new JRadioButton("Max Q");
+    private JRadioButton selectOrder = new JRadioButton("Set Order");
+    private JTextField textSelectOrder = new JTextField("Set Order");
 
     //Hacer que no puedas deseleccionar el check box
     public RadioButtonAprox() {
@@ -38,8 +39,6 @@ public class RadioButtonAprox extends JPanel {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
-                    maxQ.setSelected(false);
-                    selectOrder.setSelected(false);
                     textSelectOrder.setEnabled(false);
                 }
             }
@@ -48,8 +47,6 @@ public class RadioButtonAprox extends JPanel {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
-                    minOrder.setSelected(false);
-                    selectOrder.setSelected(false);
                     textSelectOrder.setEnabled(true);
                     textSelectOrder.setText("Set max Q");
                 }
@@ -59,8 +56,6 @@ public class RadioButtonAprox extends JPanel {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
-                    maxQ.setSelected(false);
-                    minOrder.setSelected(false);
                     textSelectOrder.setEnabled(true);
                     textSelectOrder.setText("Set Order");
                 }
@@ -69,17 +64,17 @@ public class RadioButtonAprox extends JPanel {
         textSelectOrder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(isDataValid()) {
-                    //this line doesn't work, I neeed to know why
-                    //ud.setN(Integer.parseInt(textSelectOrder.getText()));
-                }
-                else {
+                if(!isDataValid()) {
                     //error Message for order
                     JInternalFrame frame = new JInternalFrame();
                     JOptionPane.showMessageDialog(frame, "Invalid order Number, it must be a positive integer number", "Input Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
+
+        groupOfRadioButtons.add(minOrder);
+        groupOfRadioButtons.add(maxQ);
+        groupOfRadioButtons.add(selectOrder);
 
         this.add(minOrder);
         this.add(maxQ);
@@ -90,24 +85,16 @@ public class RadioButtonAprox extends JPanel {
     private boolean isDataValid() {
         try {
             int i = Integer.parseInt(textSelectOrder.getText());
-            if ( i > 1) {return true;}
-            else {return false;}
+            return (i > 1);
         }
         catch (NumberFormatException nfe){
             return false;
         }
     }
 
-    public JRadioButton getMinOrder() {
-        return minOrder;
-    }
-    public JRadioButton getMaxQ() {
-        return maxQ;
-    }
-    public JRadioButton getSelectOrder() {
-        return selectOrder;
-    }
-    public JTextField getTextSelectOrder() {
-        return textSelectOrder;
-    }
+    public boolean isMinOrderSelected () { return minOrder.isSelected(); }
+    public boolean isMaxQSelected() { return maxQ.isSelected(); }
+    public boolean isSelectOrderSelected() { return selectOrder.isSelected(); }
+
+    public int getTextSelectorOrder() { return Integer.parseInt(textSelectOrder.getText()); }
 }

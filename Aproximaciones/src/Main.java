@@ -14,49 +14,25 @@ import static javax.swing.SwingUtilities.invokeLater;
 
 public class Main extends JFrame {
 
-    private StageOne stageOne = new StageOne();
-    private StageTwo stageTwo = new StageTwo();
-    private StageThree stageThree = new StageThree();
-    private CardLayout cardLayout = new CardLayout();
-    private JPanel principalPanel = new JPanel();
-    private JPanel buttonPanel = new JPanel();
-
     public Main() {
-        PrincipalPanel principalPanel = new PrincipalPanel();
-        this.add(principalPanel);
-        /*
-        JTabbedPane jTabbedPane = new JTabbedPane();
-        jTabbedPane.addTab("Stage One", GuiFactory.getStageOne());
-        jTabbedPane.addTab("Stage Two", GuiFactory.getStageTwo());
-        jTabbedPane.addTab("Stage Three", GuiFactory.getStageThree());
-        this.add(jTabbedPane);
+        JPanel principalPanel = new JPanel();
+        JPanel bigPanel = new JPanel();
+        StageOne stageOne = new StageOne();
+        StageTwo stageTwo = new StageTwo();
+        StageThree stageThree = new StageThree();
+        CardLayout cardLayout = new CardLayout();
+        JButton nextStageButton = new JButton();
 
-        principalPanel.setLayout(cardLayout);
+        bigPanel.setLayout(cardLayout);
+        bigPanel.add(stageOne, "One");
+        bigPanel.add(stageTwo, "Two");
+        bigPanel.add(stageThree, "Three");
 
-        principalPanel.add(stageOne, "One");
-        principalPanel.add(stageTwo, "Two");
+        //Falta hacer que esto ande bien
+        //cardLayout.show(bigPanel, "Three");
 
-        JButton nextStage = new JButton("Next Stage");
-        nextStage.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cardLayout.show(principalPanel, "Two");
-            }
-        });
-
-        buttonPanel.add(nextStage);
-
-        this.add(principalPanel);
-        this.add(buttonPanel);
-*/
-
-
-
-
-
-
-
-
+        principalPanel.add(bigPanel);
+        this.add(bigPanel);
 
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 
@@ -85,3 +61,32 @@ public class Main extends JFrame {
         invokeLater(() -> new Main().setVisible(true));
     }
 }
+
+
+  /* Esto dentro del main, no lo quiero perder por eso lo dejo acá
+        JTabbedPane jTabbedPane = new JTabbedPane();
+        jTabbedPane.addTab("Stage One", GuiFactory.getStageOne());
+        jTabbedPane.addTab("Stage Two", GuiFactory.getStageTwo());
+        jTabbedPane.addTab("Stage Three", GuiFactory.getStageThree());
+        this.add(jTabbedPane);
+
+        principalPanel.setLayout(cardLayout);
+
+        principalPanel.add(stageOne, "One");
+        principalPanel.add(stageTwo, "Two");
+
+        JButton nextStage = new JButton("Next Stage");
+        nextStage.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                cardLayout.show(principalPanel, "Two");
+            }
+        });
+
+        buttonPanel.add(nextStage);
+
+        this.add(principalPanel);
+        this.add(buttonPanel);
+*/
+
+

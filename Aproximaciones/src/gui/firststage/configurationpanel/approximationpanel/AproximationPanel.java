@@ -6,17 +6,24 @@ import javax.swing.*;
  * Created by NEGU on 7/10/2015.
  */
 public class AproximationPanel extends JPanel{
-    private ComboBoxAprox comboBoxAprox = new ComboBoxAprox();
-    private ButtonAprox buttonAprox = new ButtonAprox();
-    private CheckBoxAprox checkBoxAprox = new CheckBoxAprox();
+    private ComboBoxAprox comboBoxAprox;
+    private RadioButtonAprox radioButtonAprox;
+    private ButtonAprox buttonAprox;
 
+    public ComboBoxAprox getComboBoxAprox() {
+        return comboBoxAprox;
+    }
 
-    public AproximationPanel() {
-            this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-            this.setBorder(BorderFactory.createTitledBorder("Aproximation Configuration"));
+    public AproximationPanel(JPanel listPanel) {
+        comboBoxAprox = new ComboBoxAprox();
+        radioButtonAprox = new RadioButtonAprox();
+        buttonAprox = new ButtonAprox(comboBoxAprox, radioButtonAprox, listPanel);
 
-            this.add(comboBoxAprox);
-            this.add(checkBoxAprox);
-            this.add(buttonAprox);
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setBorder(BorderFactory.createTitledBorder("Aproximation Configuration"));
+
+        this.add(comboBoxAprox);
+        this.add(radioButtonAprox);
+        this.add(buttonAprox);
     }
 }

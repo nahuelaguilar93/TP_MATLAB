@@ -15,7 +15,6 @@ import java.util.List;
  */
 public class ComboBoxAprox extends JPanel{
     private static String[] AproxStrings = { "Butterworth", "Chebyshev", "Inverse Chebyshev", "Legendre", "Cauer", "Bessel", "Gauss" };
-
     private JComboBox AproxList = new JComboBox(AproxStrings);
 
     public ComboBoxAprox(){
@@ -31,11 +30,12 @@ public class ComboBoxAprox extends JPanel{
 
     public void UpdateComboBoxAproximation() {
         //Here I update the ComboBox. ex. I don't want the Aproximation list to have Bessel if I have a HighPass template
-        HighpassTemplate a = new HighpassTemplate(1, 2, 3, 4);
-        List<String> AproxString = Approximation.getStringsToComboBox(a);
+        List<String> AproxString = Approximation.getStringsToComboBox(UserData.CurrentTemplate);
         AproxList.removeAllItems();
         for (String x : AproxString) {
             AproxList.addItem(x);
         }
     }
+
+    public int getComboBoxAproxIndex() { return AproxList.getSelectedIndex(); }
 }

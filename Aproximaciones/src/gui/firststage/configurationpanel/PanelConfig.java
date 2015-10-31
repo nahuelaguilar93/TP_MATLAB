@@ -12,10 +12,9 @@ import java.awt.*;
  * Created by NEGU on 7/10/2015.
  */
 public class PanelConfig extends JPanel {
-
-    private static FilterSelectPanel panelFiltro = new FilterSelectPanel();
-    private static AproximationPanel panelAprox = new AproximationPanel();
-    private static ListPanel panelList = new ListPanel();
+    private ListPanel panelList = new ListPanel();
+    private AproximationPanel panelAprox = new AproximationPanel(this.panelList.getListOfAprox());
+    private FilterSelectPanel panelFiltro = new FilterSelectPanel(this.panelAprox.getComboBoxAprox());
 
     public PanelConfig() {
         //Configuration Panel
