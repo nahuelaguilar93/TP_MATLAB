@@ -9,15 +9,16 @@ import java.awt.event.*;
 /**
  * Created by NEGU on 7/10/2015.
  */
-public class CheckBoxAprox extends JPanel {
+public class RadioButtonAprox extends JPanel {
     JRadioButton minOrder = new JRadioButton("Min Order");
     JRadioButton maxQ = new JRadioButton("Max Q");
     JRadioButton selectOrder = new JRadioButton("Set Order");
     JTextField textSelectOrder = new JTextField("Set Order");
 
     //Hacer que no puedas deseleccionar el check box
-    public CheckBoxAprox() {
-        minOrder.setMnemonic(KeyEvent.VK_M);
+    public RadioButtonAprox() {
+        //ToDo: Revisar esto para que funcione.
+        minOrder.setMnemonic(KeyEvent.VK_M); //Te subraya la letra y apretas y funciona
         maxQ.setMnemonic(KeyEvent.VK_Q);
         selectOrder.setMnemonic(KeyEvent.VK_S);
 
@@ -40,7 +41,6 @@ public class CheckBoxAprox extends JPanel {
                     maxQ.setSelected(false);
                     selectOrder.setSelected(false);
                     textSelectOrder.setEnabled(false);
-                    //Here we must change UserData, get minOrder=true and reset the other 2 fields! The same aplies to the other checkbox items.
                 }
             }
         });
@@ -96,5 +96,18 @@ public class CheckBoxAprox extends JPanel {
         catch (NumberFormatException nfe){
             return false;
         }
+    }
+
+    public JRadioButton getMinOrder() {
+        return minOrder;
+    }
+    public JRadioButton getMaxQ() {
+        return maxQ;
+    }
+    public JRadioButton getSelectOrder() {
+        return selectOrder;
+    }
+    public JTextField getTextSelectOrder() {
+        return textSelectOrder;
     }
 }
