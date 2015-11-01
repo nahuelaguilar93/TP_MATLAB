@@ -105,6 +105,16 @@ public class TransferFunction {
         return result;
     }
 
+    public Complex[] getZeros() {
+        LaguerreSolver laguerreSolver = new LaguerreSolver();
+        return laguerreSolver.solveAllComplex(numerador.getCoefficients(), 0);
+    }
+
+    public Complex[] getPoles() {
+        LaguerreSolver laguerreSolver = new LaguerreSolver();
+        return laguerreSolver.solveAllComplex(denominador.getCoefficients(), 0);
+    }
+
     public double[] getModule(double[] omegaRange) {
         Complex[] approximationResult = evaluateApproximationAtRange(omegaRange);
         double[] moduleResult = new double[omegaRange.length];
@@ -178,18 +188,18 @@ public class TransferFunction {
     }
 
     public TransferFunction denormalize(SuperTemplate Template) {
-        if(Template instanceof LowpassTemplate)
+        if (Template instanceof LowpassTemplate)
             return denormalize((LowpassTemplate) Template);
-        else if(Template instanceof HighpassTemplate)
+        else if (Template instanceof HighpassTemplate)
             return denormalize((HighpassTemplate) Template);
-        else if(Template instanceof BandpassTemplate)
+        else if (Template instanceof BandpassTemplate)
             return denormalize((BandpassTemplate) Template);
-        else if(Template instanceof BandrejectTemplate)
+        else if (Template instanceof BandrejectTemplate)
             return denormalize((BandrejectTemplate) Template);
-        else if(Template instanceof DelayTemplate)
+        else if (Template instanceof DelayTemplate)
             return denormalize((DelayTemplate) Template);
         else
-            return new TransferFunction(new double[] {1},new double[] {1});
+            return new TransferFunction(new double[]{1}, new double[]{1});
     }
 
     public TransferFunction denormalize(LowpassTemplate lowpassTemplate) {
