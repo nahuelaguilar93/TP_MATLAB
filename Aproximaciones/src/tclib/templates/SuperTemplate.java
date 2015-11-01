@@ -1,9 +1,9 @@
 package tclib.templates;
 
 public abstract class SuperTemplate implements TemplatesInterface {
-    public double wan;
-    public double Ap;
-    public double Aa;
+    public double wan;  //rad/s
+    public double Ap;   //dB
+    public double Aa;   //dB
 
     public double getWan() { return wan; }
     public double getAp() { return Ap; }

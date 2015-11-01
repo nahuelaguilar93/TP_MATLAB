@@ -1,6 +1,7 @@
 package mathematics;
 
 import org.apache.commons.math3.complex.Complex;
+import tclib.MathUtils;
 import tclib.TransferFunction;
 import tclib.templates.*;
 
@@ -10,11 +11,11 @@ import java.util.List;
 
 public class Approximation {
 
-    private static final List<String> lowpassList = Arrays.asList("LP-List","Butterworth","Chebyshev","Bessel","Legendre");
-    private static final List<String> highpassList = Arrays.asList("HP-List","Butterworth","Chebyshev","Legendre");
-    private static final List<String> bandpassList = Arrays.asList("BP-List","Butterworth","Chebyshev","Legendre");
-    private static final List<String> bandrejectList = Arrays.asList("BR-List","Butterworth","Chebyshev","Legendre");
-    private static final List<String> delayList = Arrays.asList("DelayList","Butterworth","Chebyshev","Legendre");
+    private static final List<String> lowpassList = Arrays.asList("LP-List","Butterworth","Chebyshev");
+    private static final List<String> highpassList = Arrays.asList("HP-List","Butterworth","Chebyshev");
+    private static final List<String> bandpassList = Arrays.asList("BP-List","Butterworth","Chebyshev");
+    private static final List<String> bandrejectList = Arrays.asList("BR-List","Butterworth","Chebyshev");
+    private static final List<String> delayList = Arrays.asList("DelayList","Butterworth","Chebyshev");
 
     //Este método lo llama el botón SetTemplate, y el constructor de esta clase.
     public static List<String> getStringsToComboBox(SuperTemplate template) {
@@ -33,13 +34,12 @@ public class Approximation {
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    private TransferFunction NTF;
-
-
-    private TransferFunction TF;
+    private TransferFunction NTF;   //Normalized Transfer Function
+    private TransferFunction TF;    //Denormalized Transfer Function
     private double maxQobtained;
     private int Order;
     private String Details;
+    private String ApproxName;
 
     public String getDetails() { return Details; }
     public TransferFunction getNTF() { return NTF; }
@@ -57,44 +57,40 @@ public class Approximation {
         List<String> approxList = getStringsToComboBox(temp);
         if(approxList.get(index).equals("Butterworth")) {
             Butter(temp, setOrder, maxQ);
-            Details = "Butterworth " + "/ Orden " + Order + " / Max Q " + maxQobtained;
+            ApproxName = "Butterworth";
         }
         else /*if (approxList.get(index).equals("Chebyshev"))*/ {
             Cheby1(temp, setOrder, maxQ);
-            Details = "Cheby 1 " + "/ Orden " + Order + " / Max Q " + maxQobtained;
+            ApproxName = "Cheby 1";
         }
         TF = NTF.denormalize(temp);
+        Details = ApproxName + " / Orden " + Order + " / Max Q " + String.format("%.2f", maxQobtained);
+
     }
-
-/*ATENCIÓN AUGUSTO:
-    Necesito que pases las aproximaciones que hiciste a este archivo. Las mismas deben ser Métodos de esta clase
-    y van a ser llamados de la siguiente manera: Butterworth(SuperTemplate temp, int setOrder, double maxQ)
-    Explicación de los parámetros:
-        SuperTemplate es una clase en la cual vas a encontrar los valores normalizados de la plantilla. Los vas a
-        llamar de la siguiente forma al comienzo de tu función y listo:
-            double Ap = temp.Ap;    //En dB
-            double Aa = temp.Aa;    //En dB
-            double wan = temp.wan;  //En rad/s
-
-        setOrder es el valor especificado del orden. Si el valor ingresado es 0, significa que no se declaró ningún
-        valor de orden máximo. IDEM para maxQ.
-
-        Por último, los métodos no tienen que tener Output, pero tienen que setear las siguientes variables
-        propias de la clase:
-            this.NTF     (TransferFunction)  //La Función Transferencia resultante.
-            this.maxQobtained   (double)    //El Q más alto de la función Transferencia.
-            this.Order          (int)       //El orden alcanzado.
- */
 
     private void Butter(SuperTemplate temp, int setOrder, double maxQ){
         double Ap = temp.Ap;
         double Aa = temp.Aa;
         double wan = temp.wan;
+        double eps = Math.sqrt(Math.pow(10, Ap / 10) - 1);
 
-        double eps = Math.sqrt(Math.pow(10., Ap / 10) - 1);
         this.Order = setOrder;
-        if(this.Order == 0)
-            this.Order = (int) Math.ceil(Math.log10((Math.pow(10., Aa / 10) - 1) / (Math.pow(eps, 2))) / (2 * Math.log10(wan)));
+        if(maxQ > 0.5) {
+            //<editor-fold defaultstate="collapsed" desc="Deduction of minOrder given maxQ">
+        /* MaxQobtained = 1 / 2sin(pi/2n) < MaxQ
+           2sin(pi/2n) > 1/MaxQ
+           sin(pi/2n) > 1/2MaxQ
+           pi/2n > asin(1/2MaxQ)
+           n < pi/2asin(1/2Q)
+         */
+            //</editor-fold>
+            int minOrder = (int) Math.floor(Math.PI / (2 * Math.asin(1. / (2 * maxQ))));
+            if(setOrder == 0)
+                this.Order = minOrder;
+            else this.Order = Math.min(setOrder,minOrder);
+        }
+        else if(setOrder == 0)
+            this.Order = (int) Math.ceil(Math.log10((Math.pow(10, Aa / 10) - 1) / (Math.pow(eps, 2))) / (2 * Math.log10(wan)));
 
         List<Complex> Poles = new ArrayList<>();
 
@@ -111,51 +107,34 @@ public class Approximation {
     }
 
     private void Cheby1(SuperTemplate temp, int setOrder, double maxQ){
-        double[] numer = {1};
-        double[] denom = {1,2,1};
-        this.NTF = new TransferFunction(numer, denom);
-        this.Order = 7;
-        this.maxQobtained = 8.3;
-
         double Ap = temp.Ap;
         double Aa = temp.Aa;
         double wan = temp.wan;
 
-        double eps = Math.sqrt(Math.pow(10., Ap / 10) - 1);
+        double eps = Math.sqrt(Math.pow(10, Ap / 10) - 1);
         this.Order = setOrder;
-
-        // Kevin: Use class FastMath from Apache Math.
-        // Example: Fastmath.asinh(3);
-
-        /* acosh function does not exist in java's Math library, therefore I will use some other Math's function to
-        * recreate it like this:
-        * Math.log(x + Math.sqrt(x*x - 1.0))        where x is the value which goes in the acosh
-        *
-        * also asinh is made up of:
-        * Math.log(x + Math.sqrt(x*x + 1.0));
-        * */
-
         if(this.Order == 0)
-            this.Order = (int) Math.ceil(Math.log(Math.sqrt((Math.pow(10, Aa / 10) - 1) / eps) + Math.sqrt(Math.sqrt((Math.pow(10, Aa / 10) - 1) / eps) * Math.sqrt((Math.pow(10, Aa / 10) - 1) / eps) - 1.0)) / Math.log(wan + Math.sqrt(wan * wan - 1.0)));
+            this.Order = (int) Math.ceil( MathUtils.acosh( Math.sqrt(Math.pow(10, Aa / 10) - 1) / eps) / MathUtils.acosh(wan) );
 
-        List<Complex> PolesOfTransferFunction = new ArrayList<>();
+        List<Complex> Poles = new ArrayList<>();
         double realPart = 0.0;
         double imaginaryPart = 0.0;
 
         for (int i = 0; i < this.Order; i++) {
-            imaginaryPart = Math.cos(Math.PI * ((2 * i - 1) / (2 * this.Order))) * Math.cosh((1 / this.Order) * Math.log((1 / eps) + Math.sqrt((1 / eps) * (1 / eps) - 1.0)));
-            realPart = Math.sin(Math.PI * ((2 * i - 1) / (2 * this.Order))) * Math.sinh((1 / this.Order) * Math.log((1 / eps) + Math.sqrt((1 / eps) * (1 / eps) + 1.0)));
-            //It has to be checked that the real part has to be negative
-            if (realPart > 0) {
+            imaginaryPart = Math.cos(Math.PI * ((2. * i + 1) / (2. * this.Order))) * Math.cosh((1. / this.Order) * MathUtils.asinh(1./eps));
+            realPart = Math.sin(Math.PI * ((2. * i + 1) / (2. * this.Order))) * Math.sinh((1. / this.Order) * MathUtils.asinh(1./eps));
+            if (realPart > 0)   //It has to be checked that the real part has to be negative
                 realPart = -realPart;
-            }
-            PolesOfTransferFunction.add(new Complex(realPart, imaginaryPart));
+            Poles.add(new Complex(realPart, imaginaryPart));
         }
-        //I have poles, and it has no zeroes, therefore I would only have format the poles to fit in with TransferFunction
-
-
-
+        Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
+        Complex[] ZerosArray = new Complex[0];
+        this.NTF = new TransferFunction(ZerosArray,PolesArray);
+        this.maxQobtained = 1./(2*Math.sin(PolesArray[0].getArgument()-Math.PI/2));
+        if (maxQ > 0.5 && this.maxQobtained > maxQ)
+            Cheby1(temp,this.Order-1, maxQ);        //If maxQ is overflowed, retry with a minor order.
     }
+
     private void Cheby2(SuperTemplate temp, int setOrder, double maxQ){}
     private void Legendre(SuperTemplate temp, int setOrder, double maxQ){}
     private void Bessel(SuperTemplate temp, int setOrder, double maxQ, double delay, double psi){}
