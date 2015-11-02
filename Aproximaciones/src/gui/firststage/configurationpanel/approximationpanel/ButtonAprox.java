@@ -29,7 +29,7 @@ public class ButtonAprox extends JPanel{
                 else if (radioButtonAprox.isSelectOrderSelected()) {
                     order = radioButtonAprox.getTextSelectorOrder();
                 }
-                Approximation newAprox = new Approximation(comboBoxAprox.getComboBoxAproxIndex(), UserData.CurrentTemplate, order, Q);
+                Approximation newAprox = new Approximation(comboBoxAprox.getComboBoxAproxIndex(), UserData.CurrentTemplate, 0, order, Q);   //El cero harcodeado es el porcentaje de denormalizacion
                 UserData.ApproximationList.add(newAprox);
                 listOfAprox.AddToList(newAprox.getDetails());
             }

@@ -187,100 +187,102 @@ public class TransferFunction {
         return numerador.degree() == 0;
     }
 
-    public TransferFunction denormalize(SuperTemplate Template) {
+    public TransferFunction denormalize(SuperTemplate Template, double denorm) {
         if (Template instanceof LowpassTemplate)
-            return denormalize((LowpassTemplate) Template);
+            return denormalize((LowpassTemplate) Template, denorm);
         else if (Template instanceof HighpassTemplate)
-            return denormalize((HighpassTemplate) Template);
+            return denormalize((HighpassTemplate) Template, denorm);
         else if (Template instanceof BandpassTemplate)
-            return denormalize((BandpassTemplate) Template);
+            return denormalize((BandpassTemplate) Template, denorm);
         else if (Template instanceof BandrejectTemplate)
-            return denormalize((BandrejectTemplate) Template);
+            return denormalize((BandrejectTemplate) Template, denorm);
         else if (Template instanceof DelayTemplate)
-            return denormalize((DelayTemplate) Template);
+            return denormalize((DelayTemplate) Template, denorm);
         else
             return new TransferFunction(new double[]{1}, new double[]{1});
     }
 
-    public TransferFunction denormalize(LowpassTemplate lowpassTemplate) {
+    public TransferFunction denormalize(LowpassTemplate lowpassTemplate, double denorm) {
+        double wd = lowpassTemplate.getWp() * denorm;
+
         double[] currentDen = denominador.getCoefficients();
         double[] currentNum = numerador.getCoefficients();
 
         double[] denormalizedDen = new double[currentDen.length];
         double[] denormalizedNum = new double[currentNum.length];
 
-        for (int i = 0; i < currentDen.length; i++) {
-            denormalizedDen[i] = currentDen[i] * Math.pow(1.0 / lowpassTemplate.wp, i);
-        }
+        for (int i = 0; i < currentDen.length; i++)
+            denormalizedDen[i] = currentDen[i] * Math.pow(1.0 / wd, i);
 
-        for (int i = 0; i < currentNum.length; i++) {
-            denormalizedNum[i] = currentNum[i] * Math.pow(1.0 / lowpassTemplate.wp, i);
-        }
+        for (int i = 0; i < currentNum.length; i++)
+            denormalizedNum[i] = currentNum[i] * Math.pow(1.0 / wd, i);
 
         return new TransferFunction(denormalizedNum, denormalizedDen);
     }
 
-    public TransferFunction denormalize(HighpassTemplate highpassTemplate) {
+    public TransferFunction denormalize(DelayTemplate delayTemplate, double denorm) {
+        double wd = delayTemplate.getWp() * denorm;
+
+        double[] currentDen = denominador.getCoefficients();
+        double[] currentNum = numerador.getCoefficients();
+
+        double[] denormalizedDen = new double[currentDen.length];
+        double[] denormalizedNum = new double[currentNum.length];
+
+        for (int i = 0; i < currentDen.length; i++)
+            denormalizedDen[i] = currentDen[i] * Math.pow(1.0 / wd, i);
+
+        for (int i = 0; i < currentNum.length; i++)
+            denormalizedNum[i] = currentNum[i] * Math.pow(1.0 / wd, i);
+
+        return new TransferFunction(denormalizedNum, denormalizedDen);
+    }
+    
+    public TransferFunction denormalize(HighpassTemplate highpassTemplate, double denorm) {
+        double wd = highpassTemplate.getWa() / denorm;
+
         double[] currentDen = denominador.getCoefficients();
         double[] currentNum = numerador.getCoefficients();
 
         double[] denormalizedDen = new double[currentDen.length];
         double[] denormalizedNum = new double[currentDen.length];
 
-        for (int i = 0; i < currentDen.length; i++) {
-            denormalizedDen[i] = currentDen[i] * Math.pow(highpassTemplate.wa, i);
-        }
+        for (int i = 0; i < currentDen.length; i++)
+            denormalizedDen[i] = currentDen[i] * Math.pow(wd, i);
 
-        for (int i = 0; i < currentNum.length; i++) {
-            denormalizedNum[i] = currentNum[i] * Math.pow(highpassTemplate.wa, i);
-        }
+        for (int i = 0; i < currentNum.length; i++)
+            denormalizedNum[i] = currentNum[i] * Math.pow(wd, i);
 
         ArrayUtils.reverse(denormalizedDen);
         ArrayUtils.reverse(denormalizedNum);
 
         return new TransferFunction(denormalizedNum, denormalizedDen);
-
     }
 
-    public TransferFunction denormalize(BandpassTemplate bandpassTemplate) {
+    public TransferFunction denormalize(BandpassTemplate bandpassTemplate, double denorm) {
+        double Bd = bandpassTemplate.getB() * denorm;
+        double wo = bandpassTemplate.getWo();
         double[] currentDen = denominador.getCoefficients();
         double[] currentNum = numerador.getCoefficients();
         int denominatorDegree = currentDen.length - currentNum.length; // Defino por que potencia de S tengo que multiplicar y dividir
-        PolynomialFunction denpol = finalPolinomeBandPass(currentDen, 0, bandpassTemplate); // creo el nuevo cociente
-        PolynomialFunction numpol = finalPolinomeBandPass(currentNum, denominatorDegree, bandpassTemplate);
+        PolynomialFunction denpol = finalPolinomeBandPass(currentDen, 0, Bd, wo); // creo el nuevo cociente
+        PolynomialFunction numpol = finalPolinomeBandPass(currentNum, denominatorDegree,  Bd, wo);
         return new TransferFunction(numpol, denpol);
     }
 
-    public TransferFunction denormalize(BandrejectTemplate bandrejectTemplate) {
+    public TransferFunction denormalize(BandrejectTemplate bandrejectTemplate, double denorm) {
+        double Bd = bandrejectTemplate.getB() * denorm;
+        double wo = bandrejectTemplate.getWo();
         double[] currentDen = denominador.getCoefficients();
         double[] currentNum = numerador.getCoefficients();
         int denominatorDegree = currentDen.length - currentNum.length;// Defino por que potencia de S tengo que multiplicar y dividir
-        PolynomialFunction denpol = finalPolinomeBandReject(currentDen, 0, bandrejectTemplate);// Creo el nuevo cociente
-        PolynomialFunction numpol = finalPolinomeBandReject(currentNum, denominatorDegree, bandrejectTemplate);
+        PolynomialFunction denpol = finalPolinomeBandReject(currentDen, 0, Bd, wo);// Creo el nuevo cociente
+        PolynomialFunction numpol = finalPolinomeBandReject(currentNum, denominatorDegree, Bd, wo);
         return new TransferFunction(numpol, denpol);
     }
 
-    public TransferFunction denormalize(DelayTemplate delayTemplate) {
-        double[] currentDen = denominador.getCoefficients();
-        double[] currentNum = numerador.getCoefficients();
-
-        double[] denormalizedDen = new double[currentDen.length];
-        double[] denormalizedNum = new double[currentNum.length];
-
-        for (int i = 0; i < currentDen.length; i++) {
-            denormalizedDen[i] = currentDen[i] * Math.pow(1.0 / delayTemplate.wp, i);
-        }
-
-        for (int i = 0; i < currentNum.length; i++) {
-            denormalizedNum[i] = currentNum[i] * Math.pow(1.0 / delayTemplate.wp, i);
-        }
-
-        return new TransferFunction(denormalizedNum, denormalizedDen);
-    }
-
-
     //<editor-fold desc="Internal Functions of Passband and Bandreject Approximations">
-    private PolynomialFunction finalPolinomeBandPass(double[] originalpol, int multiplicatororder, BandpassTemplate bandpassTemplate) {
+    private PolynomialFunction finalPolinomeBandPass(double[] originalpol, int multiplicatororder, double B, double wo) {
         int coefiterator; // Con este manejo el término del polinomio que estoy expandiendo
         double[] fix = {0}; // Para crear un polinomio vacio
         double[] addattheend = new double[originalpol.length];//aca meto el termino independiente del pol original multiplicado por s
@@ -288,7 +290,7 @@ public class TransferFunction {
         PolynomialFunction finalpolinome = new PolynomialFunction(fix);
 
         for (coefiterator = 1; coefiterator < originalpol.length; coefiterator++) {
-            polinome = turnDouble2PolynomePass(originalpol, coefiterator, bandpassTemplate.B, bandpassTemplate.wo);
+            polinome = turnDouble2PolynomePass(originalpol, coefiterator, B, wo);
             finalpolinome = finalpolinome.add(polinome); // Voy sumando los polinomios expandidos
         }
         addattheend[addattheend.length - 1] = originalpol[0]; // Al final le sumo el término independiente
@@ -316,7 +318,7 @@ public class TransferFunction {
         return returnthis;
     }
 
-    private PolynomialFunction finalPolinomeBandReject(double[] originalpol, int multiplicatororder, BandrejectTemplate bandrejectTemplate) {
+    private PolynomialFunction finalPolinomeBandReject(double[] originalpol, int multiplicatororder, double B, double wo) {
         int coefiterator;
         double[] addattheend = new double[originalpol.length];// Con esto voy a agregar el termino independiente (en este caso el coeficiente de mayor grado) al final
         double[] fix = {0};
@@ -324,7 +326,7 @@ public class TransferFunction {
         PolynomialFunction finalpolinome = new PolynomialFunction(fix);
 
         for (coefiterator = 1; coefiterator < originalpol.length; coefiterator++) {
-            polinome = turnDouble2PolynomeReject(originalpol, coefiterator, bandrejectTemplate.B, bandrejectTemplate.wo);
+            polinome = turnDouble2PolynomeReject(originalpol, coefiterator, B, wo);
             finalpolinome = finalpolinome.add(polinome);// Voy sumando los polinomios ya expandidos y corregidos
         }
 
@@ -332,7 +334,7 @@ public class TransferFunction {
         finalpolinome = finalpolinome.add(new PolynomialFunction(addattheend));// Aca agrego el que habia quedado como término independiente
 
         if (multiplicatororder > 0) {// Si el polinomio fue multiplicado por un término de grado mayor al necesario, agrego esa parte con este algoritmo:
-            double[] corrector = newtonExpands(multiplicatororder, 1, bandrejectTemplate.B, bandrejectTemplate.wo);
+            double[] corrector = newtonExpands(multiplicatororder, 1, B, wo);
             finalpolinome = finalpolinome.multiply(new PolynomialFunction(corrector));
         }
 

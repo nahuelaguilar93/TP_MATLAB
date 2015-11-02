@@ -11,11 +11,11 @@ import java.util.List;
 
 public class Approximation {
 
-    private static final List<String> lowpassList = Arrays.asList("LP-List","Butterworth","Chebyshev");
-    private static final List<String> highpassList = Arrays.asList("HP-List","Butterworth","Chebyshev");
-    private static final List<String> bandpassList = Arrays.asList("BP-List","Butterworth","Chebyshev");
-    private static final List<String> bandrejectList = Arrays.asList("BR-List","Butterworth","Chebyshev");
-    private static final List<String> delayList = Arrays.asList("DelayList","Butterworth","Chebyshev");
+    private static final List<String> lowpassList = Arrays.asList("LP-List","Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Bessel", "Better", "Letter", "Buby");
+    private static final List<String> highpassList = Arrays.asList("HP-List","Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Better", "Letter", "Buby");
+    private static final List<String> bandpassList = Arrays.asList("BP-List","Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Better", "Begendre", "Buby");
+    private static final List<String> bandrejectList = Arrays.asList("BR-List","Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Better", "Letter", "Buby");
+    private static final List<String> delayList = Arrays.asList("DelayList","Bessel","Gauss");
 
     //Este método lo llama el botón SetTemplate, y el constructor de esta clase.
     public static List<String> getStringsToComboBox(SuperTemplate template) {
@@ -47,36 +47,70 @@ public class Approximation {
     public double getMaxQobtained() { return maxQobtained; }
     public int getOrder() { return Order; }
 
-    public Approximation(int index, SuperTemplate temp) { this(index, temp, 0, 0, 0, 0); }
-    public Approximation(int index, SuperTemplate temp, int setOrder) { this(index, temp, setOrder, 0, 0, 0); }
-    public Approximation(int index, SuperTemplate temp, int setOrder, double maxQ){
-        this(index, temp, setOrder, maxQ, 0, 0);
-    }
+    public Approximation(int index, SuperTemplate temp) { this(index, temp, 0, 0, 0, 0, 0); }
+    public Approximation(int index, SuperTemplate temp, double denormPerc) { this(index, temp, denormPerc, 0, 0, 0, 0); }
+    public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder) { this(index, temp, denormPerc, setOrder, 0, 0, 0); }
+    public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder, double maxQ) { this(index, temp, denormPerc, setOrder, maxQ, 0, 0); }
 
-    public Approximation(int index, SuperTemplate temp, int setOrder, double maxQ, double delay, double psi) {
+    public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder, double maxQ, double delay, double psi) {
         List<String> approxList = getStringsToComboBox(temp);
         if(approxList.get(index).equals("Butterworth")) {
             Butter(temp, setOrder, maxQ);
             ApproxName = "Butterworth";
         }
-        else /*if (approxList.get(index).equals("Chebyshev"))*/ {
+        else if (approxList.get(index).equals("Chebyshev I")) {
             Cheby1(temp, setOrder, maxQ);
             ApproxName = "Cheby 1";
         }
-        TF = NTF.denormalize(temp);
-        Details = ApproxName + " / Orden " + Order + " / Max Q " + String.format("%.2f", maxQobtained);
+        else /*if (approxList.get(index).equals("Chebyshev II"))*/ {
+            Cheby2(temp, setOrder, maxQ);
+            ApproxName = "Cheby 2";
+        }
+        double range = getDenormalizationRange(temp);
+        double denorm = 1;
+        if(range != 0)
+            denorm = Math.pow(range,1./denormPerc);
+        TF = NTF.denormalize(temp, denorm);
+        Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained);
 
     }
 
+    private double NTFminusAp(double x, double Ap){
+        return NTF.evaluateApproximationAtOmega(x).abs() - Ap;
+    }
+
+    private double getDenormalizationRange(SuperTemplate temp) {
+        //By using the Bisection Method, it gets the frequency at which the approximation equals Ap.
+        double Ap = temp.getAp()*0.9999;    //Para evitar errores en los valles de Cauer y Cheby II.
+        double a = 1;   // 1 rad/s    Wp Normalizado.
+        double b = temp.getWan();
+        int sa = (int) Math.signum(NTFminusAp(a, Ap));
+        int sb = (int) Math.signum(NTFminusAp(b, Ap));
+        if(sa == sb) return 0;  //La función no cumple plantilla, por lo cual no acepta un corrimiento de desnormalización.
+        double maxIter = 100000;
+        double tol = Math.pow((b/a), 1./10000);
+        for(int i = 0; i < maxIter; i++) {
+            double c = Math.sqrt(a*b);
+            int sc = (int) Math.signum(NTFminusAp(c, Ap));
+            if(sc == sa)
+                a = c;  //b = b;
+            else
+                b = c;  //a = a;
+            if(b/a < tol)
+                break;
+        }
+        return temp.getWan()/Math.sqrt(a*b);
+    }
+
     private void Butter(SuperTemplate temp, int setOrder, double maxQ){
-        double Ap = temp.Ap;
-        double Aa = temp.Aa;
-        double wan = temp.wan;
+        double Ap = temp.getAp();
+        double Aa = temp.getAa();
+        double wan = temp.getWan();
         double eps = Math.sqrt(Math.pow(10, Ap / 10) - 1);
 
         this.Order = setOrder;
         if(maxQ > 0.5) {
-            //<editor-fold defaultstate="collapsed" desc="Deduction of minOrder given maxQ">
+            //<editor-fold defaultstate="collapsed" desc="Deduction of maxOrder given maxQ">
         /* MaxQobtained = 1 / 2sin(pi/2n) < MaxQ
            2sin(pi/2n) > 1/MaxQ
            sin(pi/2n) > 1/2MaxQ
@@ -84,10 +118,10 @@ public class Approximation {
            n < pi/2asin(1/2Q)
          */
             //</editor-fold>
-            int minOrder = (int) Math.floor(Math.PI / (2 * Math.asin(1. / (2 * maxQ))));
+            int maxOrder = (int) Math.floor(Math.PI / (2 * Math.asin(1. / (2 * maxQ))));
             if(setOrder == 0)
-                this.Order = minOrder;
-            else this.Order = Math.min(setOrder,minOrder);
+                this.Order = maxOrder;
+            else this.Order = Math.min(setOrder,maxOrder);
         }
         else if(setOrder == 0)
             this.Order = (int) Math.ceil(Math.log10((Math.pow(10, Aa / 10) - 1) / (Math.pow(eps, 2))) / (2 * Math.log10(wan)));
@@ -107,9 +141,9 @@ public class Approximation {
     }
 
     private void Cheby1(SuperTemplate temp, int setOrder, double maxQ){
-        double Ap = temp.Ap;
-        double Aa = temp.Aa;
-        double wan = temp.wan;
+        double Ap = temp.getAp();
+        double Aa = temp.getAa();
+        double wan = temp.getWan();
 
         double eps = Math.sqrt(Math.pow(10, Ap / 10) - 1);
         this.Order = setOrder;
@@ -117,25 +151,56 @@ public class Approximation {
             this.Order = (int) Math.ceil( MathUtils.acosh( Math.sqrt(Math.pow(10, Aa / 10) - 1) / eps) / MathUtils.acosh(wan) );
 
         List<Complex> Poles = new ArrayList<>();
-        double realPart = 0.0;
-        double imaginaryPart = 0.0;
+        double beta = (1. / this.Order) * MathUtils.asinh(1./eps);
 
         for (int i = 0; i < this.Order; i++) {
-            imaginaryPart = Math.cos(Math.PI * ((2. * i + 1) / (2. * this.Order))) * Math.cosh((1. / this.Order) * MathUtils.asinh(1./eps));
-            realPart = Math.sin(Math.PI * ((2. * i + 1) / (2. * this.Order))) * Math.sinh((1. / this.Order) * MathUtils.asinh(1./eps));
-            if (realPart > 0)   //It has to be checked that the real part has to be negative
-                realPart = -realPart;
-            Poles.add(new Complex(realPart, imaginaryPart));
+            double alpha = Math.PI*((2.*i+1)/(2*this.Order));
+            double imag =   Math.cos(alpha) * Math.cosh(beta);
+            double real = - Math.sin(alpha) * Math.sinh(beta);
+            Poles.add(new Complex(real, imag));
         }
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
         Complex[] ZerosArray = new Complex[0];
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
-        this.maxQobtained = 1./(2*Math.sin(PolesArray[0].getArgument()-Math.PI/2));
+        this.maxQobtained = Math.abs(1./(2*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
+//        for(Complex x : PolesArray)
+//            System.out.println(x.getReal() + " " + x.getImaginary() + " " + x.getArgument());
         if (maxQ > 0.5 && this.maxQobtained > maxQ)
             Cheby1(temp,this.Order-1, maxQ);        //If maxQ is overflowed, retry with a minor order.
     }
 
-    private void Cheby2(SuperTemplate temp, int setOrder, double maxQ){}
+    private void Cheby2(SuperTemplate temp, int setOrder, double maxQ){
+        double Ap = temp.getAp();
+        double Aa = temp.getAa();
+        double wan = temp.getWan();
+
+        double eps = 1. / Math.sqrt(Math.pow(10, Aa / 10) - 1);
+        this.Order = setOrder;
+        if(this.Order == 0)
+            this.Order = (int) Math.ceil( MathUtils.acosh( 1./ (Math.sqrt(Math.pow(10, Ap / 10) - 1) * eps)) / MathUtils.acosh(wan) );
+
+        List<Complex> Poles = new ArrayList<>();
+        List<Complex> Zeros = new ArrayList<>();
+        double beta = Math.abs((1. / this.Order) * MathUtils.asinh(1./eps));
+
+        for (int i = 0; i < this.Order; i++) {
+            double alpha = Math.PI*((2.*i+1)/(2*this.Order));
+            double imag =   Math.cos(alpha) * Math.cosh(beta);
+            double real = - Math.sin(alpha) * Math.sinh(beta);
+            Poles.add(new Complex(real, imag).reciprocal().multiply(wan));
+            if(2*i+1 != this.Order) //alpha != pi/2
+                Zeros.add(new Complex(0,wan/Math.cos(alpha)));
+        }
+        Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
+        Complex[] ZerosArray = Zeros.toArray(new Complex[Zeros.size()]);
+        this.NTF = new TransferFunction(ZerosArray,PolesArray);
+        this.maxQobtained = Math.abs(1./(2*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
+//        for(Complex x : PolesArray)
+//            System.out.println(x.getReal() + " " + x.getImaginary() + " " + x.getArgument());
+        if (maxQ > 0.5 && this.maxQobtained > maxQ)
+            Cheby2(temp, this.Order - 1, maxQ);        //If maxQ is overflowed, retry with a minor order.
+    }
+
     private void Legendre(SuperTemplate temp, int setOrder, double maxQ){}
     private void Bessel(SuperTemplate temp, int setOrder, double maxQ, double delay, double psi){}
     private void Gauss(SuperTemplate temp, int setOrder, double maxQ, double delay, double psi){}
