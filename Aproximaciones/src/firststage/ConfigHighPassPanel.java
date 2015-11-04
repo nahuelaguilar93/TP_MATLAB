@@ -1,4 +1,4 @@
-package gui.firststage.configurationpanel.templatepanel;
+package firststage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by NEGU on 31/10/2015.
  */
-public class HighPassConfiguratorPanel extends ConfiguratorPanel {
+class ConfigHighPassPanel extends ConfiguratorPanel {
     private int TEXT_HEIGH = 50;
     private int TEXT_WIDTH = 65;
     JTextField textFilterWp = new JTextField();
@@ -19,7 +19,7 @@ public class HighPassConfiguratorPanel extends ConfiguratorPanel {
     private double Wp;
     private double Wa;
 
-    public HighPassConfiguratorPanel() {
+    public ConfigHighPassPanel() {
         textFilterWa.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

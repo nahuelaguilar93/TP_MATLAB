@@ -1,15 +1,6 @@
-import gui.GuiFactory;
-import gui.PrincipalPanel;
-import gui.firststage.StageOne;
-import gui.secondstage.StageTwo;
-import gui.thirdstage.StageThree;
-import tclib.TransferFunction;
-
 import javax.swing.*;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import static javax.swing.SwingUtilities.invokeLater;
 

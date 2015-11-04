@@ -1,4 +1,4 @@
-package gui.firststage.drawingpanel;
+package firststage.drawingpanel;
 
 import javax.swing.*;
 import java.awt.*;

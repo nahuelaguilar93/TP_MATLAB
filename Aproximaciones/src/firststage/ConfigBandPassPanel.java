@@ -1,11 +1,11 @@
-package gui.firststage.configurationpanel.templatepanel;
+package firststage;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class BandPassConfiguratorPanel extends ConfiguratorPanel {
+class ConfigBandPassPanel extends ConfiguratorPanel {
     private int TEXT_HEIGH = 50;
     private int TEXT_WIDTH = 65;
     JTextField textFilterWo = new JTextField("[rad/seg]");
@@ -13,7 +13,7 @@ public class BandPassConfiguratorPanel extends ConfiguratorPanel {
     JLabel labelWo = new JLabel("Wo");
     JLabel labelB = new JLabel("B");
 
-    public BandPassConfiguratorPanel() {
+    public ConfigBandPassPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         textFilterB.addActionListener(new ActionListener() {

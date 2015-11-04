@@ -1,6 +1,5 @@
-package gui.firststage.configurationpanel.templatepanel;
+package firststage;
 
-import gui.firststage.configurationpanel.approximationpanel.ComboBoxAprox;
 import tclib.templates.*;
 
 import javax.swing.*;
@@ -11,26 +10,27 @@ import java.awt.event.ActionListener;
 /**
  * Created by NEGU on 8/10/2015.
  */
-public class TemplateConfigurationPanel extends JPanel implements TemplatesInterface {
-    private JPanel comboBoxAprox;
+class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
+    private JPanel approxComboBox;
     private static JComboBox filterList = new JComboBox(templateStrings);
-    private final AmplitudePanel amplitudePanel = new AmplitudePanel();
+    private final ConfigAmplitudePanel configAmplitudePanel = new ConfigAmplitudePanel();
     private ConfiguratorPanel[] configuratorPanels = new ConfiguratorPanel[4];
     private ButtonFilterType buttonFilterType;
 
     int index = 0;
 
 
-    public TemplateConfigurationPanel(JPanel carlos) {
-        comboBoxAprox = carlos;
+    public ConfigTemplatePanel() {
+        Singleton_S1 s = Singleton_S1.getInstance();
+        approxComboBox = s.getApproxComboBox();
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createTitledBorder("Template Configurator"));
 
         //Configuration panels according to the filter type selected.
-        configuratorPanels[0] = new LowPassConfiguratorPanel();
-        configuratorPanels[1] = new HighPassConfiguratorPanel();
-        configuratorPanels[2] = new BandPassConfiguratorPanel();
-        configuratorPanels[3] = new RejectBandConfiguratorPanel();
+        configuratorPanels[0] = new ConfigLowPassPanel();
+        configuratorPanels[1] = new ConfigHighPassPanel();
+        configuratorPanels[2] = new ConfigBandPassPanel();
+        configuratorPanels[3] = new ConfigBandRejectPanel();
         //
 
         buttonFilterType = new ButtonFilterType(configuratorPanels);
@@ -53,9 +53,9 @@ public class TemplateConfigurationPanel extends JPanel implements TemplatesInter
         filterList.setPreferredSize(new Dimension(150, 30));
         filterList.setMinimumSize(new Dimension(150, 30));
 
-        //Adds everything to the TemplateConfigurationPanel
+        //Adds everything to the ConfigTemplatePanel
         this.add(filterList);
-        this.add(amplitudePanel);
+        this.add(configAmplitudePanel);
         this.add(configuratorPanels[0]);
         this.add(configuratorPanels[1]);
         this.add(configuratorPanels[2]);
@@ -92,8 +92,8 @@ public class TemplateConfigurationPanel extends JPanel implements TemplatesInter
                             break;
 
                     }
-                    ComboBoxAprox asd = (ComboBoxAprox) comboBoxAprox;
-                    asd.UpdateComboBoxAproximation();
+                    ApproxComboBox asd = (ApproxComboBox) approxComboBox;
+                    asd.updateList();
                 }
             });
             this.add(buttonFilterType);

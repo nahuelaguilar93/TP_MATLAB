@@ -1,8 +1,6 @@
-package gui;
-
-import gui.firststage.StageOne;
-import gui.secondstage.StageTwo;
-import gui.thirdstage.StageThree;
+import firststage.StageOnePanel;
+import secondstage.StageTwo;
+import thirdstage.StageThree;
 
 import javax.swing.*;
 import java.awt.*;
@@ -19,19 +17,30 @@ public class PrincipalPanel extends JPanel {
        *           There is a principalPanel with two Panels. One is the bigPanel where it has everything of the stage
        *           The other is a buttonPanel which only has two buttons to go back and forth between panels
         */
+    JPanel bigPanel;
+    StageOnePanel stageOnePanel;
+    StageTwo stageTwo;
+    StageThree stageThree;
+    CardLayout cardLayout;
+    JPanel buttonPanel;
+    JButton nextStageButton;
+    JButton previousStageButton;
+
+
 
     public PrincipalPanel() {
+        Singleton s = Singleton.getInstance();
         JPanel bigPanel = new JPanel();
-        StageOne stageOne = new StageOne();
-        StageTwo stageTwo = new StageTwo();
-        StageThree stageThree = new StageThree();
+        StageOnePanel stageOnePanel = s.getStageOnePanel();
+        StageTwo stageTwo = s.getStageTwo();
+        StageThree stageThree = s.getStageThree();
         CardLayout cardLayout = new CardLayout();
         JPanel buttonPanel = new JPanel();
         JButton nextStageButton = new JButton("Next Stage");
         JButton previousStageButton = new JButton("Previous Stage");
 
         bigPanel.setLayout(cardLayout);
-        bigPanel.add(stageOne, "One");
+        bigPanel.add(stageOnePanel, "One");
         bigPanel.add(stageTwo, "Two");
         bigPanel.add(stageThree, "Three");
 

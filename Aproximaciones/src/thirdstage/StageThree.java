@@ -1,13 +1,11 @@
-package gui.thirdstage;
+package thirdstage;
 
-import org.apache.commons.math3.complex.Complex;
 import org.math.plot.Plot2DPanel;
 import tclib.TransferFunction;
 import tclib.GenericUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Arrays;
 
 public class StageThree extends JPanel {
 

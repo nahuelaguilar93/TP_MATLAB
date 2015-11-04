@@ -1,4 +1,4 @@
-package gui.secondstage;
+package secondstage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +12,6 @@ public class StageTwo extends JPanel {
     public StageTwo() {
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBackground(Color.BLUE);
-
 
         double[] num = {0,1};
         double[] den = {1, 0.25 ,1};

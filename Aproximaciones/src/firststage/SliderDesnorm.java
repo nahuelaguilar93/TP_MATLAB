@@ -1,12 +1,9 @@
-package gui.firststage.configurationpanel.listpanel;
+package firststage;
 
 import javax.swing.*;
-import javax.swing.event.ChangeListener;
-import javax.swing.text.ChangedCharSetException;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 import java.text.ParseException;
 import java.util.Hashtable;
 

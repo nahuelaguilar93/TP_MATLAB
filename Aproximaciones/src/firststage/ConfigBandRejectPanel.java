@@ -1,4 +1,4 @@
-package gui.firststage.configurationpanel.templatepanel;
+package firststage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
  * Created by NEGU on 31/10/2015.
  */
 
-public class RejectBandConfiguratorPanel extends ConfiguratorPanel {
+class ConfigBandRejectPanel extends ConfiguratorPanel {
     private int TEXT_HEIGH = 50;
     private int TEXT_WIDTH = 65;
     JTextField textFilterWo = new JTextField("[rad/seg]");
@@ -17,7 +17,7 @@ public class RejectBandConfiguratorPanel extends ConfiguratorPanel {
     JLabel labelWo = new JLabel("Wo");
     JLabel labelB = new JLabel("B");
 
-    public RejectBandConfiguratorPanel() {
+    public ConfigBandRejectPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         textFilterB.addActionListener(new ActionListener() {

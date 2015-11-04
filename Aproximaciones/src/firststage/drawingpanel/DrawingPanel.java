@@ -1,6 +1,4 @@
-package gui.firststage.drawingpanel;
-
-import data.UserData;
+package firststage.drawingpanel;
 
 import javax.swing.*;
 

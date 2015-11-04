@@ -1,17 +1,10 @@
-package gui.firststage.drawingpanel;
+package firststage.drawingpanel;
 
-import data.UserData;
-import gui.firststage.configurationpanel.approximationpanel.AproximationPanel;
-import mathematics.Approximation;
 import org.math.plot.Plot2DPanel;
 import tclib.TransferFunction;
 import tclib.GenericUtils;
-import tclib.templates.*;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.*;
-import java.util.List;
 
 /**
  * Created by NEGU on 7/10/2015.

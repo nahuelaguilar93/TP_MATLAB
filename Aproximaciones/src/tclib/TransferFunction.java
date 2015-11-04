@@ -359,14 +359,14 @@ public class TransferFunction {
         int kadvancer = 0; //este es K de la sumatoria
         double[] thispolinome = new double[2 * n + 1];// El tamaño va a ser de 2n (por la potencia maxima) +  1 (por el termino independiente)
         for (iterate = 0; iterate < 2 * n + 1; iterate = iterate + 2) { //
-            thispolinome[iterate] = (double) coef * Math.pow(1 / (bandwidth * centerFrequency), n) * newtonTerm(n, kadvancer, centerFrequency);
+            thispolinome[iterate] = coef * Math.pow(1 / (bandwidth * centerFrequency), n) * newtonTerm(n, kadvancer, centerFrequency);
             kadvancer++;
         }
         return thispolinome;
     }
 
     private double newtonTerm(int n, int k, double centerFrequency) {// Esta funcion devuelve el coeficiente del termino k del polinomio de newton
-        double tobereturned = (double) CombinatoricsUtils.binomialCoefficientDouble(n, k) * Math.pow(centerFrequency, 2 * (n - k));
+        double tobereturned = CombinatoricsUtils.binomialCoefficientDouble(n, k) * Math.pow(centerFrequency, 2 * (n - k));
         return tobereturned;
     }
     //</editor-fold>

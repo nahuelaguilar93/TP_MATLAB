@@ -1,4 +1,4 @@
-package gui.firststage.configurationpanel.templatepanel;
+package firststage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by NEGU on 31/10/2015.
  */
-public class LowPassConfiguratorPanel extends ConfiguratorPanel {
+class ConfigLowPassPanel extends ConfiguratorPanel {
     private int TEXT_HEIGH = 50;
     private int TEXT_WIDTH = 65;
     private JTextField textFilterWp = new JTextField("[rad/seg]");
@@ -16,7 +16,7 @@ public class LowPassConfiguratorPanel extends ConfiguratorPanel {
     private JLabel labelWp = new JLabel("Wp");
     private JLabel labelWa = new JLabel("Wa");
 
-    public LowPassConfiguratorPanel() {
+    public ConfigLowPassPanel() {
         //Set action after input
         textFilterWa.addActionListener(new ActionListener() {
             @Override
