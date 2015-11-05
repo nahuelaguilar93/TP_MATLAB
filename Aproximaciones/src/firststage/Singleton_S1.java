@@ -24,7 +24,13 @@ class Singleton_S1 {
     private ConfigPanel configPanel = null;
     private ConfigTemplatePanel configTemplatePanel = null;
     private ListPanel listPanel = null;
+    private ListButtonsPanel listButtonsPanel = null;
 
+    public ListButtonsPanel getListButtonsPanel() {
+        if (listButtonsPanel == null)
+            listButtonsPanel = new ListButtonsPanel();
+        return listButtonsPanel;
+    }
     public ApproxButton getApproxButton() {
         if (approxButton == null)
             approxButton = new ApproxButton();

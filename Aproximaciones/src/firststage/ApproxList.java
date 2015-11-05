@@ -20,8 +20,7 @@ class ApproxList extends JPanel{
     }
 
     public void AddToList(String aproximationToAdd) { listModel.insertElementAt(aproximationToAdd, approxList.getModel().getSize()); }
-    public void DeleteElementFromList (int index) {     //TODO: hay que hacer que deletee el item seleccionado en lugar de pasarle el indice
-        listModel.remove(index);
-        //ToDo: Acá hay que hacer botones para eleminar elementos. Una buena practica sería no dejar eliminar si no hay elementos.
-    }
+    public void DeleteElementFromList () { listModel.remove(approxList.getSelectedIndex()); }
+    public boolean IsAnItemSelected() { return !approxList.isSelectionEmpty(); }
+    public void DeleteAll() { listModel.removeAllElements(); }
 }

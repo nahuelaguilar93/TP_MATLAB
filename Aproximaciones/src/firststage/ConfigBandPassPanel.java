@@ -58,23 +58,39 @@ class ConfigBandPassPanel extends ConfiguratorPanel {
         );
     }
 
-    //TODO: basandose en esta función, hacer la apropiada para esta clase.
     public boolean isParsable(){
-        return true; //For Testing.
-//        try {
-//            double wp = Double.parseDouble(textFilterWpm.getText());
-//            double wa = Double.parseDouble(textFilterWam.getText());
-//            if(wp < wa) return true;
-//            else {
-//                JInternalFrame frame = new JInternalFrame();
-//                JOptionPane.showMessageDialog(frame, "Wa must be grater than Wp.", "Input Error", JOptionPane.ERROR_MESSAGE);
-//                return false;
-//            }
-//        } catch (NumberFormatException e) {
-//            JInternalFrame frame = new JInternalFrame();
-//            JOptionPane.showMessageDialog(frame, "Wp and Wa must be real positive numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
-//            return false;
-//        }
+       try {
+           double wpm = Double.parseDouble(textFilterWpm.getText());
+           double wam = Double.parseDouble(textFilterWam.getText());
+           double wpp = Double.parseDouble(textFilterWpp.getText());
+           double wap = Double.parseDouble(textFilterWap.getText());
+           if( wpp > wpm ) {
+               if ( wap > wam ) {
+                   if ( (wpp < wap) && (wpm > wam) ) {
+                       return true;
+                   }
+                   else {
+                       JInternalFrame frame = new JInternalFrame();
+                       JOptionPane.showMessageDialog(frame, "Bp must be contained inside Ba", "Input Error", JOptionPane.ERROR_MESSAGE);
+                       return false;
+                   }
+               }
+               else {
+                   JInternalFrame frame = new JInternalFrame();
+                   JOptionPane.showMessageDialog(frame, "Wa+ must be grater than Wa-.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                   return false;
+               }
+           }
+           else {
+                JInternalFrame frame = new JInternalFrame();
+                JOptionPane.showMessageDialog(frame, "Wp+ must be grater than Wp-.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+       } catch (NumberFormatException e) {
+           JInternalFrame frame = new JInternalFrame();
+           JOptionPane.showMessageDialog(frame, "Frequencies must be real positive numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+           return false;
+       }
     }
 
     public Double getWpm() {

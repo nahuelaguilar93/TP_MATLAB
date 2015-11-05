@@ -9,10 +9,11 @@ import java.awt.event.ItemListener;
  * Created by NEGU on 7/10/2015.
  */
 public class CheckBoxChoosePlot extends JPanel{
-    JRadioButton atenuacion = new JRadioButton("Atenuacion");
-    JRadioButton fase = new JRadioButton("Fase");
-    JRadioButton transferencia = new JRadioButton("Transferencia");
-    JRadioButton polosCeros = new JRadioButton("Polos y Ceros");
+    private ButtonGroup groupOfRadioButtons = new ButtonGroup();
+    private JRadioButton atenuacion = new JRadioButton("Atenuacion");
+    private JRadioButton fase = new JRadioButton("Fase");
+    private JRadioButton transferencia = new JRadioButton("Transferencia");
+    private JRadioButton polosCeros = new JRadioButton("Polos y Ceros");
 
     public CheckBoxChoosePlot() {
         atenuacion.setSelected(true);
@@ -20,47 +21,10 @@ public class CheckBoxChoosePlot extends JPanel{
         transferencia.setSelected(false);
         polosCeros.setSelected(false);
 
-        //AddListener
-        atenuacion.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
-                    fase.setSelected(false);
-                    transferencia.setSelected(false);
-                    polosCeros.setSelected(false);
-                }
-            }
-        });
-        fase.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
-                    atenuacion.setSelected(false);
-                    transferencia.setSelected(false);
-                    polosCeros.setSelected(false);
-                }
-            }
-        });
-        transferencia.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
-                    fase.setSelected(false);
-                    atenuacion.setSelected(false);
-                    polosCeros.setSelected(false);
-                }
-            }
-        });
-        polosCeros.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-                if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
-                    fase.setSelected(false);
-                    transferencia.setSelected(false);
-                    atenuacion.setSelected(false);
-                }
-            }
-        });
+        groupOfRadioButtons.add(atenuacion);
+        groupOfRadioButtons.add(fase);
+        groupOfRadioButtons.add(transferencia);
+        groupOfRadioButtons.add(polosCeros);
 
         this.setMinimumSize(new Dimension(500, 100));
         this.setMaximumSize(new Dimension(1980, 100));

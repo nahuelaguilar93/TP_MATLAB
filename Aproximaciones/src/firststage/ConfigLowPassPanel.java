@@ -14,6 +14,7 @@ class ConfigLowPassPanel extends ConfiguratorPanel {
         textFilterWa.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
         JLabel labelWp = new JLabel("Wp:");
         JLabel labelWa = new JLabel("Wa:");
+        JLabel units = new JLabel("rad/seg");
 
 //        this.setBackground(Color.BLUE);
 

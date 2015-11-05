@@ -6,7 +6,7 @@ import java.awt.*;
 
 /*
 *   Stage One is divided into two different big panels. One with all the configuration buttons and panels and another with the plot
- */
+*/
 
 public class StageOnePanel extends JPanel {
     private ConfigPanel configPanel;
