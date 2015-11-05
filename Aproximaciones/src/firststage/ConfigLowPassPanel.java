@@ -2,64 +2,67 @@ package firststage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-/**
- * Created by NEGU on 31/10/2015.
- */
 class ConfigLowPassPanel extends ConfiguratorPanel {
-    private int TEXT_HEIGH = 50;
-    private int TEXT_WIDTH = 65;
-    private JTextField textFilterWp = new JTextField("[rad/seg]");
-    private JTextField textFilterWa = new JTextField("[rad/seg]");
-    private JLabel labelWp = new JLabel("Wp");
-    private JLabel labelWa = new JLabel("Wa");
+    protected final int TEXT_HEIGHT = 40;
+    protected final int TEXT_WIDTH = 70;
+    protected JTextField textFilterWp = new JTextField();
+    protected JTextField textFilterWa = new JTextField();
 
     public ConfigLowPassPanel() {
-        //Set action after input
-        textFilterWa.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    //filterData.Wa = Double.parseDouble(textFilterWa.getText());
-                } catch (NumberFormatException nfe) {
-                    //error Message for input
-                    JInternalFrame frame = new JInternalFrame();
-                    JOptionPane.showMessageDialog(frame, "The Input must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
-                }
+        textFilterWp.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
+        textFilterWa.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
+        JLabel labelWp = new JLabel("Wp:");
+        JLabel labelWa = new JLabel("Wa:");
 
-            }
-        });
-        textFilterWp.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    //filterData.Wp = Double.parseDouble(textFilterWp.getText());
-                } catch (NumberFormatException nfe) {
-                    //error Message for order
-                    JInternalFrame frame = new JInternalFrame();
-                    JOptionPane.showMessageDialog(frame, "The Input must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
-                }
+//        this.setBackground(Color.BLUE);
 
-            }
-        });
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
 
-        //Set Size
-        textFilterWp.setMinimumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-        textFilterWp.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-        textFilterWa.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-        textFilterWa.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
-        this.add(labelWa);
-        this.add(textFilterWa);
-        this.add(labelWp);
-        this.add(textFilterWp);
+        layout.setHorizontalGroup(
+            layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(labelWp)
+                        .addComponent(labelWa))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(textFilterWa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textFilterWp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelWp)
+                        .addComponent(textFilterWp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelWa)
+                        .addComponent(textFilterWa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        );
     }
-
-    public double getFilterWpValue() { return Double.parseDouble(textFilterWp.getText());}
-    public double getFilterWaValue() { return Double.parseDouble(textFilterWa.getText());}
-    public void asd() {}
+    public boolean isParsable(){
+        try {
+            double wp = Double.parseDouble(textFilterWp.getText());
+            double wa = Double.parseDouble(textFilterWa.getText());
+            if(wp < wa) return true;
+            else {
+                JInternalFrame frame = new JInternalFrame();
+                JOptionPane.showMessageDialog(frame, "Wa must be grater than Wp.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JInternalFrame frame = new JInternalFrame();
+            JOptionPane.showMessageDialog(frame, "Wp and Wa must be real positive numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+    public Double getWp() {
+        try { return Double.parseDouble(textFilterWp.getText()); }
+        catch (NumberFormatException e) { return 0.; }
+    }
+    public Double getWa() {
+        try { return Double.parseDouble(textFilterWa.getText()); }
+        catch (NumberFormatException e) { return 0.; }
+    }
 }

@@ -2,58 +2,80 @@ package firststage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-/**
- * Created by NEGU on 31/10/2015.
- */
 class ConfigAmplitudePanel extends JPanel {
-    private int TEXT_HEIGH = 50;
-    private int TEXT_WIDTH = 65;
-    JTextField textFilterAp = new JTextField("[dB]");
-    JTextField textFilterAa = new JTextField("[dB]");
-    JLabel labelAa = new JLabel("Aa");
-    JLabel labelAp = new JLabel("Ap");
+    private final int TEXT_HEIGHT = 40;
+    private final int TEXT_WIDTH = 70;
+    private JTextField textFilterAp = new JTextField();
+    private JTextField textFilterAa = new JTextField();
+    private JTextField textFilterG = new JTextField();
 
     public ConfigAmplitudePanel() {
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-        textFilterAa.setMinimumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-        textFilterAp.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-        textFilterAa.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-        textFilterAp.setMinimumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
+        textFilterAp.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
+        textFilterAa.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
+        textFilterG.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
+        JLabel labelAp = new JLabel("Ap:");
+        JLabel labelAa = new JLabel("Aa:");
+        JLabel labelG = new JLabel("Gain:");
 
-        textFilterAa.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    //filterData.Aa = Double.parseDouble(textFilterAa.getText());
-                } catch (NumberFormatException nfe) {
-                    //error Message for order
-                    JInternalFrame frame = new JInternalFrame();
-                    JOptionPane.showMessageDialog(frame, "The Input must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-        textFilterAp.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    //filterData.Ap = Double.parseDouble(textFilterAp.getText());
-                } catch (NumberFormatException nfe) {
-                    //error Message for order
-                    JInternalFrame frame = new JInternalFrame();
-                    JOptionPane.showMessageDialog(frame, "The Input must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
+//        this.setBackground(Color.ORANGE);
 
-        this.add(labelAa);
-        this.add(textFilterAa);
-        this.add(labelAp);
-        this.add(textFilterAp);
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(
+            layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.TRAILING)
+                        .addComponent(labelAp)
+                        .addComponent(labelAa)
+                        .addComponent(labelG))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addComponent(textFilterAp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textFilterAa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(textFilterG, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        );
+        layout.setVerticalGroup(
+            layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelAp)
+                        .addComponent(textFilterAp, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelAa)
+                        .addComponent(textFilterAa, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                        .addComponent(labelG)
+                        .addComponent(textFilterG, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+        );
     }
-
-    public double getFilterApValue() { return Double.parseDouble(textFilterAp.getText());}
-    public double getFilterAaValue() { return Double.parseDouble(textFilterAa.getText());}
+    public boolean isParsable(){
+        try {
+            double ap = Double.parseDouble(textFilterAp.getText());
+            double aa = Double.parseDouble(textFilterAa.getText());
+            double g = Double.parseDouble(textFilterG.getText());
+            if(ap < aa) return true;
+            else {
+                JInternalFrame frame = new JInternalFrame();
+                JOptionPane.showMessageDialog(frame, "Aa must be grater than Ap.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } catch (NumberFormatException e) {
+            JInternalFrame frame = new JInternalFrame();
+            JOptionPane.showMessageDialog(frame, "G, Ap and Aa must be real positive numbers. (G not necessarily positive)", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+    public double getAp() {
+        try { return Double.parseDouble(textFilterAp.getText()); }
+        catch (NumberFormatException e) { return 0.; }
+    }
+    public double getAa() {
+        try { return Double.parseDouble(textFilterAa.getText()); }
+        catch (NumberFormatException e) { return 0.; }
+    }
+    public double getG() {
+        try { return Double.parseDouble(textFilterG.getText()); }
+        catch (NumberFormatException e) { return 0.; }
+    }
 }

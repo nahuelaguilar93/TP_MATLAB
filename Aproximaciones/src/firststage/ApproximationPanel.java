@@ -10,15 +10,11 @@ class ApproximationPanel extends JPanel{
     private ApproxRadioButton approxRadioButton;
     private ApproxButton approxButton;
 
-    public ApproxComboBox getApproxComboBox() {
-        return approxComboBox;
-    }
-
     public ApproximationPanel() {
         Singleton_S1 s = Singleton_S1.getInstance();
         approxComboBox = s.getApproxComboBox();
         approxRadioButton = s.getApproxRadioButton();
-        approxButton = new ApproxButton();
+        approxButton = s.getApproxButton();
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createTitledBorder("Aproximation Configuration"));
@@ -27,4 +23,6 @@ class ApproximationPanel extends JPanel{
         this.add(approxRadioButton);
         this.add(approxButton);
     }
+
+    public ApproxComboBox getApproxComboBox() { return approxComboBox; }
 }

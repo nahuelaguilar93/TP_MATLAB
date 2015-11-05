@@ -18,7 +18,7 @@ public class BandpassTemplate extends SuperTemplate {
     public double getB() { return B; }
     public double getWo() { return wo; }
 
-    public BandpassTemplate(double wpp, double wap, double wpm, double wam, double Ap, double Aa) {
+    public BandpassTemplate(double wpm, double wam, double wpp, double wap, double Ap, double Aa) {
         this.Ap = Ap;
         this.Aa = Aa;
         this.wpp = wpp;
@@ -32,6 +32,12 @@ public class BandpassTemplate extends SuperTemplate {
 
     @Override
     protected void Normalize() {
-        this.wan = (wap-wam)/(wpp-wpm);
+        if(wpm*wpp > wam*wap) {
+            double wam2 = wpm * wpp / wap;
+            this.wan = (wap-wam2)/(wpp-wpm);
+        } else {
+            double wap2 = wpm * wpp / wam;
+            this.wan = (wap2 - wam) / (wpp - wpm);
+        }
     }
 }

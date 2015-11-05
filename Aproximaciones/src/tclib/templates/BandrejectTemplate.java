@@ -18,7 +18,7 @@ public class BandrejectTemplate extends SuperTemplate {
     public double getB() { return B; }
     public double getWo() { return wo; }
 
-    public BandrejectTemplate(double wpp, double wap, double wpm, double wam, double Ap, double Aa) {
+    public BandrejectTemplate(double wpm, double wam, double wpp, double wap, double Ap, double Aa) {
         this.Ap = Ap;
         this.Aa = Aa;
         this.wpp = wpp;
@@ -32,6 +32,12 @@ public class BandrejectTemplate extends SuperTemplate {
 
     @Override
     protected void Normalize() {
-        this.wan = (wpp-wpm)/(wap-wam);
+        if(wam*wap > wpm*wpp) {
+            double wpm2 = wam * wap / wpp;
+            this.wan = (wpp-wpm2)/(wap-wam);
+        } else {
+            double wpp2 = wam * wap / wpm;
+            this.wan = (wpp2-wpm)/(wap-wam);
+        }
     }
 }

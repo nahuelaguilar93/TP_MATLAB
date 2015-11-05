@@ -1,3 +1,5 @@
+package Data;
+
 import javax.swing.*;
 
 import java.awt.*;

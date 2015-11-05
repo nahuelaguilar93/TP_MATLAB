@@ -1,67 +1,25 @@
 package firststage;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-/**
- * Created by NEGU on 31/10/2015.
- */
-class ConfigHighPassPanel extends ConfiguratorPanel {
-    private int TEXT_HEIGH = 50;
-    private int TEXT_WIDTH = 65;
-    JTextField textFilterWp = new JTextField();
-    JTextField textFilterWa = new JTextField();
-    JLabel labelWp = new JLabel("Wp");
-    JLabel labelWa = new JLabel("Wa");
-    JLabel units = new JLabel("Hz");
-    private double Wp;
-    private double Wa;
+class ConfigHighPassPanel extends ConfigLowPassPanel {
+    public ConfigHighPassPanel() { super(); }
 
-    public ConfigHighPassPanel() {
-        textFilterWa.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Wa = Double.parseDouble(textFilterWa.getText());
-                } catch (NumberFormatException nfe) {
-                    //error Message for order
-                    JInternalFrame frame = new JInternalFrame();
-                    JOptionPane.showMessageDialog(frame, "The Input must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
-                }
-
+    @Override
+    public boolean isParsable(){
+        try {
+            double wp = Double.parseDouble(textFilterWp.getText());
+            double wa = Double.parseDouble(textFilterWa.getText());
+            if(wa < wp) return true;
+            else {
+                JInternalFrame frame = new JInternalFrame();
+                JOptionPane.showMessageDialog(frame, "Wp must be grater than Wa.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return false;
             }
-        });
-        textFilterWp.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Wp = Double.parseDouble(textFilterWp.getText());
-                } catch (NumberFormatException nfe) {
-                    //error Message for order
-                    JInternalFrame frame = new JInternalFrame();
-                    JOptionPane.showMessageDialog(frame, "The Input must be a number", "Input Error", JOptionPane.ERROR_MESSAGE);
-                }
-
-            }
-        });
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
-
-        textFilterWa.setText("bla bla");
-        textFilterWp.setText("Def1");
-
-        textFilterWp.setMinimumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-        textFilterWp.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-        textFilterWa.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-        textFilterWa.setMaximumSize(new Dimension(TEXT_WIDTH, TEXT_HEIGH));
-
-        this.add(labelWa);
-        this.add(textFilterWa);
-        this.add(labelWp);
-        this.add(textFilterWp);
+        } catch (NumberFormatException e) {
+            JInternalFrame frame = new JInternalFrame();
+            JOptionPane.showMessageDialog(frame, "Wp and Wa must be real positive numbers.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
     }
-
-    public double getFilterWpValue() { return Double.parseDouble(textFilterWp.getText());}
-    public double getFilterWaValue() { return Double.parseDouble(textFilterWa.getText());}
 }

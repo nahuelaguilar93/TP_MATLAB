@@ -1,8 +1,9 @@
 package firststage;
 
+import Data.Singleton;
+import Data.UserData;
 import mathematics.Approximation;
 
-import Singleton;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,27 +24,20 @@ class ApproxButton extends JPanel {
                 ApproxComboBox approxComboBox = s.getApproxComboBox();
                 ApproxRadioButton approxRadioButton = s.getApproxRadioButton();
                 Singleton ss = Singleton.getInstance();
+                UserData uData = ss.getUserData();
                 double Q = 0;
                 int order = 0;
                 if (approxRadioButton.isMaxQSelected()) {
                     if (approxRadioButton.isParsable())
                         Q = Double.parseDouble(approxRadioButton.getTextSelectorOrder());
-                    else {
-                        JInternalFrame frame = new JInternalFrame();
-                        JOptionPane.showMessageDialog(frame, "Q must be a double value greater than 0.5.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+                    else return;
                 } else if (approxRadioButton.isSetOrderSelected()) {
                     if (approxRadioButton.isParsable())
                         order = Integer.parseInt(approxRadioButton.getTextSelectorOrder());
-                    else {
-                        JInternalFrame frame = new JInternalFrame();
-                        JOptionPane.showMessageDialog(frame, "Specified order must be an ingeter value greater than 1.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
+                    else return;
                 }
-                Approximation newApprox = new Approximation(approxComboBox.getIndex(), UserData.CurrentTemplate, 0, order, Q);   //El cero harcodeado es el porcentaje de denormalizacion
-                UserData.ApproximationList.add(newApprox);
+                Approximation newApprox = new Approximation(approxComboBox.getIndex(), uData.CurrentTemplate, 0, order, Q);   //El cero harcodeado es el porcentaje de denormalizacion
+                uData.ApproximationList.add(newApprox);
                 approxList.AddToList(newApprox.getDetails());
             }
         });

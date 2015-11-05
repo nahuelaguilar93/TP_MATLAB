@@ -1,3 +1,5 @@
+package Data;
+
 import firststage.drawingpanel.PlotPlot;
 import firststage.StageOnePanel;
 import secondstage.StageTwo;

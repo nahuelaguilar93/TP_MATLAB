@@ -1,3 +1,5 @@
+package Data;
+
 import firststage.StageOnePanel;
 import secondstage.StageTwo;
 import thirdstage.StageThree;
@@ -25,8 +27,6 @@ public class PrincipalPanel extends JPanel {
     JPanel buttonPanel;
     JButton nextStageButton;
     JButton previousStageButton;
-
-
 
     public PrincipalPanel() {
         Singleton s = Singleton.getInstance();

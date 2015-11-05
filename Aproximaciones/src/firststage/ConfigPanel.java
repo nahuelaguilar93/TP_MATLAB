@@ -3,9 +3,6 @@ package firststage;
 import javax.swing.*;
 import java.awt.*;
 
-/**
- * Created by NEGU on 7/10/2015.
- */
 class ConfigPanel extends JPanel {
     private ListPanel listPanel;
     private ApproximationPanel approximationPanel;

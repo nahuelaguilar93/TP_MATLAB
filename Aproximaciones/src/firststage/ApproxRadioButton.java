@@ -4,15 +4,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-/**
- * Created by NEGU on 7/10/2015.
- */
 class ApproxRadioButton extends JPanel {
     private ButtonGroup groupOfRadioButtons = new ButtonGroup();
     private JRadioButton minOrder = new JRadioButton("Min Order");
     private JRadioButton maxQ = new JRadioButton("Max Q");
     private JRadioButton setOrder = new JRadioButton("Set Order");
-    private JTextField textField = new JTextField("Set Order");
+    private JTextField textField = new JTextField();
 
     //Hacer que no puedas deseleccionar el check box
     public ApproxRadioButton() {
@@ -46,7 +43,7 @@ class ApproxRadioButton extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
                     textField.setEnabled(true);
-                    textField.setText("Set max Q");
+                    textField.grabFocus();
                 }
             }
         });
@@ -55,19 +52,8 @@ class ApproxRadioButton extends JPanel {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) { //CheckBox Selected
                     textField.setEnabled(true);
-                    textField.setText("Set Order");
+                    textField.grabFocus();
                 }
-            }
-        });
-        textField.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent e) {
-                String s = textField.getText();
-                if (s.equals("Set Order") || s.equals("Set max Q"))
-                    textField.setText("");
-            }
-            @Override
-            public void focusLost(FocusEvent e) {
             }
         });
 
@@ -75,23 +61,39 @@ class ApproxRadioButton extends JPanel {
         groupOfRadioButtons.add(maxQ);
         groupOfRadioButtons.add(setOrder);
 
-        this.add(minOrder);
-        this.add(maxQ);
-        this.add(setOrder);
+        JPanel radioPanel = new JPanel();
+        radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.X_AXIS));
+        radioPanel.add(minOrder);
+        radioPanel.add(Box.createRigidArea(new Dimension(10, 0)));
+        radioPanel.add(maxQ);
+        radioPanel.add(Box.createRigidArea(new Dimension(10,0)));
+        radioPanel.add(setOrder);
+        this.add(radioPanel);
+        this.add(Box.createRigidArea(new Dimension(0, 5)));
         this.add(textField);
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     }
 
     public boolean isParsable(){
-        try {
-            if (minOrder.isSelected()) {
+        if (minOrder.isSelected()) {
+            try {
                 int i = Integer.parseInt(textField.getText());
                 return (i > 1);
-            } else {
+            } catch (NumberFormatException e) {
+                JInternalFrame frame = new JInternalFrame();
+                JOptionPane.showMessageDialog(frame, "Specified order must be natural number greater than 1.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                return false;
+            }
+        } else if (maxQ.isSelected()){
+            try {
                 Double i = Double.parseDouble(textField.getText());
                 return (i > 0.5);
+            } catch (NumberFormatException e) {
+            JInternalFrame frame = new JInternalFrame();
+            JOptionPane.showMessageDialog(frame, "Q must be a real number greater than 0.5.", "Input Error", JOptionPane.ERROR_MESSAGE);
+            return false;
             }
-        }
-        catch (NumberFormatException e) { return false; }
+        } else return true;
     }
 
     public boolean isMinOrderSelected () { return minOrder.isSelected(); }

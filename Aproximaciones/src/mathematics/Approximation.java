@@ -162,7 +162,7 @@ public class Approximation {
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
         Complex[] ZerosArray = new Complex[0];
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
-        this.maxQobtained = Math.abs(1./(2*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
+        this.maxQobtained = Math.abs(1./(2.*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
 //        for(Complex x : PolesArray)
 //            System.out.println(x.getReal() + " " + x.getImaginary() + " " + x.getArgument());
         if (maxQ > 0.5 && this.maxQobtained > maxQ)
@@ -194,7 +194,7 @@ public class Approximation {
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
         Complex[] ZerosArray = Zeros.toArray(new Complex[Zeros.size()]);
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
-        this.maxQobtained = Math.abs(1./(2*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
+        this.maxQobtained = Math.abs(1./(2.*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
 //        for(Complex x : PolesArray)
 //            System.out.println(x.getReal() + " " + x.getImaginary() + " " + x.getArgument());
         if (maxQ > 0.5 && this.maxQobtained > maxQ)

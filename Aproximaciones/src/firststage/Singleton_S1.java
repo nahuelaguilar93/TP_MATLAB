@@ -18,6 +18,7 @@ class Singleton_S1 {
     private ConfigAmplitudePanel configAmplitudePanel = null;
     private ConfigBandPassPanel configBandPassPanel = null;
     private ConfigBandRejectPanel configBandRejectPanel = null;
+    private ConfigDelayPanel configDelayPanel = null;
     private ConfigHighPassPanel configHighPassPanel = null;
     private ConfigLowPassPanel configLowPassPanel = null;
     private ConfigPanel configPanel = null;
@@ -63,6 +64,11 @@ class Singleton_S1 {
         if (configBandRejectPanel == null)
             configBandRejectPanel = new ConfigBandRejectPanel();
         return configBandRejectPanel;
+    }
+    public ConfigDelayPanel getConfigDelayPanel() {
+        if (configDelayPanel == null)
+            configDelayPanel = new ConfigDelayPanel();
+        return configDelayPanel;
     }
     public ConfigHighPassPanel getConfigHighPassPanel() {
         if (configHighPassPanel == null)

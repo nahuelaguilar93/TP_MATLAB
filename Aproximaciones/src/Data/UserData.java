@@ -1,8 +1,11 @@
-import java.util.*;
+package Data;
 
 import mathematics.Approximation;
 import tclib.templates.LowpassTemplate;
 import tclib.templates.SuperTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by NEGU on 7/10/2015.
