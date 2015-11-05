@@ -2,6 +2,7 @@ package firststage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Arc2D;
 
 class ConfigBandPassPanel extends ConfiguratorPanel {
     protected final int TEXT_HEIGHT = 28;
