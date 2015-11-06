@@ -2,14 +2,14 @@ package firststage.drawingpanel;
 
 import Data.Singleton;
 import Data.UserData;
+import flanagan.plot.PlotPoleZero;
 import mathematics.Approximation;
 import org.math.plot.Plot2DPanel;
-import tclib.TransferFunction;
 import tclib.GenericUtils;
+import tclib.TransferFunction;
+
 import javax.swing.*;
 import java.awt.*;
-import flanagan.plot.PlotPoleZero;
-import tclib.templates.*;
 
 /**
  * Created by NEGU on 7/10/2015.
@@ -55,7 +55,7 @@ public class PlotPlot extends JPanel{
 
         double wp = 5000;
         double wa = 1000;
-        TransferFunction TF = new Approximation(1, userData.CurrentTemplate).getTF();
+        TransferFunction TF = new Approximation(1, userData.getCurrentTemplate()).getTF();
         //TODO: En estos ifs saco info de los Ap y todo eso para saber la escala en la cual plotear
 /*
         if (userData.CurrentTemplate instanceof LowpassTemplate) {

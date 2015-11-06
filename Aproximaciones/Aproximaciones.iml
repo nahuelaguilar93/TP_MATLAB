@@ -15,5 +15,15 @@
     <orderEntry type="library" name="commons-math3-3.5" level="project" />
     <orderEntry type="library" name="src" level="project" />
     <orderEntry type="library" name="commons-lang3-3.4" level="project" />
+    <orderEntry type="library" exported="" name="flanagan" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://C:/Program Files/Java/jdk1.8.0_60/jre/lib/ext/flanagan.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>

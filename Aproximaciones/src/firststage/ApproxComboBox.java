@@ -23,7 +23,7 @@ class ApproxComboBox extends JPanel{
     public void updateList() {
         //Here I update the ComboBox. ex. I don't want the Aproximation list to have Bessel if I have a HighPass template
         UserData uData = Singleton.getInstance().getUserData();
-        List<String> approxString = Approximation.getStringsToComboBox(uData.CurrentTemplate);
+        List<String> approxString = Approximation.getStringsToComboBox(uData.getCurrentTemplate());
         approxList.removeAllItems();
         for (String x : approxString)
             approxList.addItem(x);

@@ -23,14 +23,9 @@ class Singleton_S1 {
     private ConfigLowPassPanel configLowPassPanel = null;
     private ConfigPanel configPanel = null;
     private ConfigTemplatePanel configTemplatePanel = null;
-    private ListPanel listPanel = null;
     private ListButtonsPanel listButtonsPanel = null;
+    private ListPanel listPanel = null;
 
-    public ListButtonsPanel getListButtonsPanel() {
-        if (listButtonsPanel == null)
-            listButtonsPanel = new ListButtonsPanel();
-        return listButtonsPanel;
-    }
     public ApproxButton getApproxButton() {
         if (approxButton == null)
             approxButton = new ApproxButton();
@@ -95,6 +90,11 @@ class Singleton_S1 {
         if (configTemplatePanel == null)
             configTemplatePanel = new ConfigTemplatePanel();
         return configTemplatePanel;
+    }
+    public ListButtonsPanel getListButtonsPanel() {
+        if (listButtonsPanel == null)
+            listButtonsPanel = new ListButtonsPanel();
+        return listButtonsPanel;
     }
     public ListPanel getListPanel() {
         if (listPanel == null)

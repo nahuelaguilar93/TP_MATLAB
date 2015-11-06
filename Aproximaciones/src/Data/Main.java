@@ -1,4 +1,4 @@
-import Data.PrincipalPanel;
+package Data;
 
 import javax.swing.*;
 

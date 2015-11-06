@@ -96,13 +96,13 @@ class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
                             if (s.getConfigLowPassPanel().isParsable()) {
                                 double wp = s.getConfigLowPassPanel().getWp();
                                 double wa = s.getConfigLowPassPanel().getWa();
-                                uData.CurrentTemplate = new LowpassTemplate(wp, wa, ap, aa);
+                                uData.setCurrentTemplate(new LowpassTemplate(wp, wa, ap, aa));
                             } break;
                         case HIGHPASS:
                             if (s.getConfigHighPassPanel().isParsable()) {
                                 double wp = s.getConfigHighPassPanel().getWp();
                                 double wa = s.getConfigHighPassPanel().getWa();
-                                uData.CurrentTemplate = new HighpassTemplate(wp, wa, ap, aa);
+                                uData.setCurrentTemplate(new HighpassTemplate(wp, wa, ap, aa));
                             } break;
                         case BANDPASS:
                             if (s.getConfigBandPassPanel().isParsable()) {
@@ -110,7 +110,7 @@ class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
                                 double wam = s.getConfigBandPassPanel().getWam();
                                 double wpp = s.getConfigBandPassPanel().getWpm();
                                 double wap = s.getConfigBandPassPanel().getWap();
-                                uData.CurrentTemplate = new BandpassTemplate(wpm, wam, wpp, wap, ap, aa);
+                                uData.setCurrentTemplate(new BandpassTemplate(wpm, wam, wpp, wap, ap, aa));
                             } break;
                         case BANDREJECT:
                             if (s.getConfigBandRejectPanel().isParsable()) {
@@ -118,7 +118,7 @@ class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
                                 double wam = s.getConfigBandRejectPanel().getWam();
                                 double wpp = s.getConfigBandRejectPanel().getWpm();
                                 double wap = s.getConfigBandRejectPanel().getWap();
-                                uData.CurrentTemplate = new BandrejectTemplate(wpm, wam, wpp, wap, ap, aa);
+                                uData.setCurrentTemplate(new BandrejectTemplate(wpm, wam, wpp, wap, ap, aa));
                             } break;
                         case DELAY:
                             //UserData.CurrentTemplate = new DelayTemplate();
