@@ -7,6 +7,7 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.LogAxis;
+import org.jfree.chart.axis.LogarithmicAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
@@ -67,7 +68,7 @@ class PlotPlot extends JPanel{
         double Ap = currentTemplate.getAp();
 
         //Set Logarithmic axis
-        LogAxis xAxis = new LogAxis("Frequency");
+        LogarithmicAxis xAxis = new LogarithmicAxis("Frequency");
         xAxis.setRange(wmin*0.1, wmax*10);
         ValueAxis yAxis = plot.getDomainAxis();
         yAxis.setRange(0, Aa+10);   //TODO: 0 debe ser cambiado por ganancia
