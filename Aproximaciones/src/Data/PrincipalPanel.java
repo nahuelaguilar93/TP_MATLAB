@@ -46,7 +46,6 @@ public class PrincipalPanel extends JPanel {
 
         previousStageButton.setEnabled(false);
 
-        //TODO: hacer que se ponga eneble solo cuando tengo la transferencia seleccionada.
         nextStageButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

@@ -20,8 +20,8 @@ class ApproxRadioButton extends JPanel {
 
         //Set Default option
         minOrder.setSelected(true);
-        maxQ.setSelected(false);
-        setOrder.setSelected(false);
+//        maxQ.setSelected(false);
+//        setOrder.setSelected(false);
         textField.setEnabled(false);
 
         //Hardcode Size of TextField
@@ -61,17 +61,27 @@ class ApproxRadioButton extends JPanel {
         groupOfRadioButtons.add(maxQ);
         groupOfRadioButtons.add(setOrder);
 
-        JPanel radioPanel = new JPanel();
-        radioPanel.setLayout(new BoxLayout(radioPanel, BoxLayout.X_AXIS));
-        radioPanel.add(minOrder);
-        radioPanel.add(Box.createRigidArea(new Dimension(10, 0)));
-        radioPanel.add(maxQ);
-        radioPanel.add(Box.createRigidArea(new Dimension(10,0)));
-        radioPanel.add(setOrder);
-        this.add(radioPanel);
-        this.add(Box.createRigidArea(new Dimension(0, 5)));
-        this.add(textField);
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(minOrder)
+                                .addComponent(maxQ)
+                                .addComponent(setOrder))
+                        .addComponent(textField)
+        );
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                                .addComponent(minOrder)
+                                .addComponent(maxQ)
+                                .addComponent(setOrder))
+                        .addComponent(textField)
+        );
     }
 
     public boolean isParsable(){

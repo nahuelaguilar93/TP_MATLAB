@@ -4,19 +4,20 @@ import javax.swing.*;
 import java.awt.*;
 
 class ConfigDelayPanel extends ConfiguratorPanel {
-    private final int TEXT_HEIGHT = 40;
-    private final int TEXT_WIDTH = 70;
+    protected final int TEXT_HEIGHT = 28;
+    protected final int TEXT_WIDTH = 70;
     private JTextField textFilterWp = new JTextField();
     private JTextField textFilterWa = new JTextField();
+    private JTextField textFilterPsi = new JTextField();
+    private JTextField textFilterDelay = new JTextField();
 
     //TODO: Todavía no tengo idea como se hace un filtro de Delay, Yo lo dejaría para el final..
     public ConfigDelayPanel() {
         textFilterWp.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
         textFilterWa.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
-        JLabel labelWp = new JLabel("Wp:");
+        JLabel labelWp = new JLabel("Wp:\u03B4");
         JLabel labelWa = new JLabel("Wa:");
 
-        this.setBackground(Color.BLUE);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
