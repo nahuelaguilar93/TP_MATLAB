@@ -1,4 +1,4 @@
-package firststage.drawingpanel;
+package firststage;
 
 import Data.Singleton;
 import Data.UserData;
@@ -9,6 +9,10 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
+import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
+import org.jfree.data.DomainOrder;
+import org.jfree.data.general.DatasetChangeListener;
+import org.jfree.data.general.DatasetGroup;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -18,19 +22,33 @@ import tclib.templates.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 
 /**
  * Created by NEGU on 7/10/2015.
  */
-public class PlotPlot extends JPanel{
+class PlotPlot extends JPanel{
     //private static Plot2DPanel plot = new Plot2DPanel();
     private Singleton s = Singleton.getInstance();
     private UserData userData = s.getUserData();
     private SuperTemplate currentTemplate = userData.getCurrentTemplate();
+    private int datasetIndex = 0;
+    private double wmin;
+    private double wmax;
+    XYPlot plot;
 
     public PlotPlot() {
-        JPanel plot = createPlotPanel();
+        JPanel plotPanel = createPlotPanel();
+
+        /*final JButton addDataSetButton = new JButton("Add Dataset");
+        addDataSetButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                AddPlots();
+            }
+        });*/
 
         this.setLayout(new GridLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -39,19 +57,23 @@ public class PlotPlot extends JPanel{
         c.gridy = 0;
 
         this.setBorder(BorderFactory.createTitledBorder("Plot"));
-        this.add(plot, c);
+        this.add(plotPanel, c);
+        //this.add(addDataSetButton);
     }
 
     private JPanel createPlotPanel() {
 
-        XYDataset dataset = createDatasetTemplate();
-        JFreeChart chart = ChartFactory.createXYLineChart("Prueba de JFreeChart", "Frequency", "Atenuation", dataset);
+        XYDataset datasetTemplate = createDatasetTemplate();
+        JFreeChart chart = ChartFactory.createXYLineChart("Prueba de JFreeChart", "Frequency", "Atenuation", datasetTemplate);
+
 
         //Setup Color Background and grid
-        XYPlot plot = chart.getXYPlot();
+        plot = chart.getXYPlot();
         plot.setBackgroundPaint(Color.LIGHT_GRAY);
         plot.setRangeGridlinePaint(Color.BLACK);
         plot.setDomainGridlinePaint(Color.BLACK);
+
+        AddPlots();     //Agrego los filtros
 
         //Used to set default Axis
         double Aa = currentTemplate.getAa();
@@ -89,7 +111,8 @@ public class PlotPlot extends JPanel{
             series2.add(wa, Aa);
             series2.add(wa*10, Aa);
 
-            dataset = AddPlots(dataset, Math.min(wa, wp), Math.max(wa, wp));
+            wmin = wp;
+            wmax = wa;
         } else if (currentTemplate instanceof HighpassTemplate) {
             double wa = ((HighpassTemplate) currentTemplate).getWa();
             double wp = ((HighpassTemplate) currentTemplate).getWp();
@@ -100,31 +123,28 @@ public class PlotPlot extends JPanel{
             series2.add(wp, Ap);
             series2.add(wp*10, Ap);
 
-            dataset = AddPlots(dataset, Math.min(wa, wp), Math.max(wa, wp));
+            wmin = wa;
+            wmax = wp;
         } else if (currentTemplate instanceof BandpassTemplate) {
             double wpp = ((BandpassTemplate) currentTemplate).getWpp();
             double wpm = ((BandpassTemplate) currentTemplate).getWpm();
             double wap = ((BandpassTemplate) currentTemplate).getWap();
             double wam = ((BandpassTemplate) currentTemplate).getWam();
-
-            dataset = AddPlots(dataset, Math.min(wam, wpm), Math.max(wap, wpp));
             //TODO: terminar esto
         } else if (currentTemplate instanceof BandrejectTemplate) {
             double wpp = ((BandrejectTemplate) currentTemplate).getWpp();
             double wpm = ((BandrejectTemplate) currentTemplate).getWpm();
             double wap = ((BandrejectTemplate) currentTemplate).getWap();
             double wam = ((BandrejectTemplate) currentTemplate).getWam();
-
-            dataset = AddPlots(dataset, Math.min(wam, wpm), Math.max(wap, wpp));
         }
-
         dataset.addSeries(series1);
         dataset.addSeries(series2);
 
         return dataset;
     }
 
-    public XYSeriesCollection AddPlots(XYSeriesCollection dataset, double wmin, double wmax) {
+    public void AddPlots() {
+        XYSeriesCollection dataset = new XYSeriesCollection();
         double[] freq = GenericUtils.logspace(wmin * (0.1), wmax * 10, 500);
         java.util.List<Approximation> approximationList = userData.getApproximationList();
         Approximation currentAprox;
@@ -134,20 +154,38 @@ public class PlotPlot extends JPanel{
             double[] modulo = TF.getModuleDB(freq);
             dataset = addDatasetAprox(freq, modulo, currentAprox.getDetails(), dataset);
         }
-        return dataset;
+        plot.setDataset(1, dataset);
+        plot.setRenderer(1, new StandardXYItemRenderer());
     }
     /*
-    *   Función sin probar aún. Le pasas los ejes de la frecuencia y modulo y el nombre del string y te los agrega al plot
+    *  Le pasas los ejes de la frecuencia y modulo y el nombre del string y te los agrega al plot
     */
     private XYSeriesCollection addDatasetAprox(double[] freq, double[] modulo, String seriesName, XYSeriesCollection dataset) {
+        //TODO: ver que pasa cuando seriesName ya está.
         XYSeries series = new XYSeries(seriesName);
-
         for (int i = 0; i < freq.length; i++) {
-            series.add(freq[i], modulo[i]);
+            series.add(freq[i], -modulo[i]);
         }
-
         dataset.addSeries(series);
         return dataset;
+    }
+
+    private XYSeriesCollection createRandomDataset(final String name) {
+        final XYSeries series = new XYSeries(name);
+        double value = -100.0;
+        for (int i = 0; i < 5000; i++) {
+            value = value * (1.0 + Math.random() / 100);
+            series.add(i, value);
+        }
+        XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
+        xySeriesCollection.addSeries(series);
+        return xySeriesCollection;
+    }
+
+    private void AddRandPlot () {
+        datasetIndex++;
+        plot.setDataset(datasetIndex, createRandomDataset("S" + datasetIndex));
+        plot.setRenderer(datasetIndex, new StandardXYItemRenderer());
     }
 
     public void saveImage () {
@@ -161,5 +199,4 @@ public class PlotPlot extends JPanel{
             System.err.println(ex);
         }*/
     }
-
 }

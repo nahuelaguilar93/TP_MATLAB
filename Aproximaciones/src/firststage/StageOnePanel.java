@@ -1,6 +1,5 @@
 package firststage;
 
-import firststage.drawingpanel.DrawingPanel;
 import javax.swing.*;
 import java.awt.*;
 

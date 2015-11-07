@@ -39,6 +39,8 @@ class ApproxButton extends JPanel {
                 Approximation newApprox = new Approximation(approxComboBox.getIndex(), uData.getCurrentTemplate(), 0, order, Q);   //El cero harcodeado es el porcentaje de desnormalizacion
                 uData.getApproximationList().add(newApprox);
                 filterList.updateList();
+
+                s.getPlotPlot().AddPlots();
             }
         });
         this.add(approxButton);

@@ -1,4 +1,4 @@
-package firststage.drawingpanel;
+package firststage;
 
 import javax.swing.*;
 import java.awt.*;
@@ -8,7 +8,7 @@ import java.awt.event.ItemListener;
 /**
  * Created by NEGU on 7/10/2015.
  */
-public class CheckBoxChoosePlot extends JPanel{
+class CheckBoxChoosePlot extends JPanel{
     private ButtonGroup groupOfRadioButtons = new ButtonGroup();
     private JRadioButton atenuacion = new JRadioButton("Atenuacion");
     private JRadioButton fase = new JRadioButton("Fase");

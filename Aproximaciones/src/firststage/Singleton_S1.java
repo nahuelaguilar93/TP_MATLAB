@@ -26,7 +26,25 @@ class Singleton_S1 {
     private ListButtonsPanel listButtonsPanel = null;
     private ListPanel listPanel = null;
     private SliderDesnorm sliderDesnorm = null;
+    private PlotPlot plotPlot = null;
+    private DrawingPanel drawingPanel = null;
+    private CheckBoxChoosePlot checkBoxChoosePlot = null;
 
+    public CheckBoxChoosePlot getCheckBoxChoosePlot() {
+        if (checkBoxChoosePlot == null)
+            checkBoxChoosePlot = new CheckBoxChoosePlot();
+        return checkBoxChoosePlot;
+    }
+    public DrawingPanel getDrawingPanel() {
+        if (drawingPanel == null)
+            drawingPanel = new DrawingPanel();
+        return drawingPanel;
+    }
+    public PlotPlot getPlotPlot() {
+        if (plotPlot == null)
+            plotPlot = new PlotPlot();
+        return plotPlot;
+    }
     public ApproxButton getApproxButton() {
         if (approxButton == null)
             approxButton = new ApproxButton();

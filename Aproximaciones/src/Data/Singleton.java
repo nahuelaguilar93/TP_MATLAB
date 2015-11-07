@@ -1,6 +1,5 @@
 package Data;
 
-import firststage.drawingpanel.PlotPlot;
 import firststage.StageOnePanel;
 import secondstage.StageTwo;
 import thirdstage.StageThree;
@@ -16,7 +15,6 @@ public class Singleton {
     private StageOnePanel stageOnePanel = null;
     private StageTwo stageTwo = null;
     private StageThree stageThree = null;
-    private PlotPlot plot = null;
 
     public UserData getUserData() {
         if (userData == null)
