@@ -2,31 +2,24 @@ package firststage.drawingpanel;
 
 import Data.Singleton;
 import Data.UserData;
-import flanagan.plot.PlotPoleZero;
-import javafx.scene.chart.NumberAxis;
 import mathematics.Approximation;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
-import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
-import org.jfree.chart.util.LogFormat;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
-import org.math.plot.Plot2DPanel;
 import tclib.GenericUtils;
 import tclib.TransferFunction;
-import tclib.templates.LowpassTemplate;
-import tclib.templates.SuperTemplate;
+import tclib.templates.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
+import java.util.*;
 
 /**
  * Created by NEGU on 7/10/2015.
@@ -37,19 +30,8 @@ public class PlotPlot extends JPanel{
     private UserData userData = s.getUserData();
     private SuperTemplate currentTemplate = userData.getCurrentTemplate();
 
-
     public PlotPlot() {
-        /*double[] num = {0, 1};
-        double[] den = {1, 0.25, 1};
-        TransferFunction lowpass = new TransferFunction(num, den);
-
-        double[] freq = GenericUtils.logspace(0.1, 100, 500);
-        double[] modulo = lowpass.getModuleDB(freq);*/
-
-        // create your PlotPanel (you can use it as a JPanel)
-        //plot.setAxisScales( "LOG" , "LIN" );
-        //plot.addLinePlot("the template", freq, modulo);
-        JPanel plot = createChartPanel();
+        JPanel plot = createPlotPanel();
 
         this.setLayout(new GridLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -61,68 +43,9 @@ public class PlotPlot extends JPanel{
         this.add(plot, c);
     }
 
-    //Aún no probé esto... Hay que agregarlo al boton.
-    public void AddPlot() {
-        double wp = 5000;
-        double wa = 1000;
-        TransferFunction TF = new Approximation(1, userData.getCurrentTemplate()).getTF();
-        //TODO: En estos ifs saco info de los Ap y todo eso para saber la escala en la cual plotear
-/*
-        if (userData.CurrentTemplate instanceof LowpassTemplate) {
+    private JPanel createPlotPanel() {
 
-        }
-        else if (userData.CurrentTemplate instanceof HighpassTemplate) {
-
-        }
-        else if (userData.CurrentTemplate instanceof BandpassTemplate) {
-
-        }
-        else if (userData.CurrentTemplate instanceof BandrejectTemplate) {
-
-        }*/
-
-        double[] freq = GenericUtils.logspace(Math.min(wp, wa)*(1-0.9), Math.max(wp,wa)*1.9, 500);
-        double[] modulo = TF.getModuleDB(freq);
-
-        //plot.addLinePlot("my plot1", freq, modulo);
-
-        //this.add(plot);
-    }
-
-    private XYDataset createDataset() {
-        XYSeriesCollection dataset = new XYSeriesCollection();
-        //TODO: hay que crear una para cada userData y listo ^^
-        //if (currentTemplate instanceof LowpassTemplate) {
-            double Aa = currentTemplate.getAa();
-            double Ap = currentTemplate.getAp();
-            double wa = ((LowpassTemplate) currentTemplate).getWa();
-            double wp = ((LowpassTemplate) currentTemplate).getWp();
-
-            XYSeries series1 = new XYSeries("First");
-            series1.add(0, Ap);
-            series1.add(wp, Ap);
-            series1.add(wp, Aa+10);
-
-            XYSeries series2 = new XYSeries("Second");
-            series2.add(wa, 0);
-            series2.add(wa, Aa);
-            series2.add(wa*1.9, Aa);
-
-            dataset.addSeries(series1);
-            dataset.addSeries(series2);
-
-            return dataset;
-        //}
-    }
-
-    private JPanel createChartPanel() {
-        XYDataset dataset = createDataset();
-
-        LogAxis xAxis = new LogAxis("Frequency");
-        xAxis.setBase(10);
-        LogFormat format = new LogFormat(xAxis.getBase(), "", "", true);
-        xAxis.setNumberFormatOverride(format);
-
+        XYDataset dataset = createDatasetTemplate();
         JFreeChart chart = ChartFactory.createXYLineChart("Prueba de JFreeChart", "Frequency", "Atenuation", dataset);
 
         //Setup Color Background and grid
@@ -131,9 +54,101 @@ public class PlotPlot extends JPanel{
         plot.setRangeGridlinePaint(Color.BLACK);
         plot.setDomainGridlinePaint(Color.BLACK);
 
-        ValueAxis rangeAxis = plot.getRangeAxis();
+        //Used to set default Axis
+        double Aa = currentTemplate.getAa();
+        double Ap = currentTemplate.getAp();
+        //TODO: cambiar para cuando no es pasabajos
+        double wa = ((LowpassTemplate) currentTemplate).getWa();
+        double wp = ((LowpassTemplate) currentTemplate).getWp();
+
+        //Set Logarithmic axis
+        LogAxis xAxis = new LogAxis("Frequency");
+        xAxis.setRange(wp*0.1, wa*10);
+        ValueAxis yAxis = plot.getDomainAxis();
+        yAxis.setRange(0, Aa+10);   //TODO: 0 debe ser cambiado por ganancia
+
+        //Set 'y' default Axis
+        plot.setDomainAxis(xAxis);
+        plot.setRangeAxis(yAxis);
 
         return new ChartPanel(chart);
+    }
+
+    private XYDataset createDatasetTemplate() {
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        double Aa = currentTemplate.getAa();
+        double Ap = currentTemplate.getAp();
+        XYSeries series1 = new XYSeries("First");
+        XYSeries series2 = new XYSeries("Second");
+        if (currentTemplate instanceof LowpassTemplate) {
+            double wa = ((LowpassTemplate) currentTemplate).getWa();
+            double wp = ((LowpassTemplate) currentTemplate).getWp();
+            series1.add(wp*0.1, Ap);
+            series1.add(wp, Ap);
+            series1.add(wp, Aa+10);
+            series2.add(wa, 0);
+            series2.add(wa, Aa);
+            series2.add(wa*10, Aa);
+
+            dataset = AddPlots(dataset, Math.min(wa, wp), Math.max(wa, wp));
+        } else if (currentTemplate instanceof HighpassTemplate) {
+            double wa = ((HighpassTemplate) currentTemplate).getWa();
+            double wp = ((HighpassTemplate) currentTemplate).getWp();
+            series1.add(wa*0.1, Aa);
+            series1.add(wa, Aa);
+            series1.add(wa, 0);
+            series2.add(wp, Ap+10);
+            series2.add(wp, Ap);
+            series2.add(wp*10, Ap);
+
+            dataset = AddPlots(dataset, Math.min(wa, wp), Math.max(wa, wp));
+        } else if (currentTemplate instanceof BandpassTemplate) {
+            double wpp = ((BandpassTemplate) currentTemplate).getWpp();
+            double wpm = ((BandpassTemplate) currentTemplate).getWpm();
+            double wap = ((BandpassTemplate) currentTemplate).getWap();
+            double wam = ((BandpassTemplate) currentTemplate).getWam();
+
+            dataset = AddPlots(dataset, Math.min(wam, wpm), Math.max(wap, wpp));
+            //TODO: terminar esto
+        } else if (currentTemplate instanceof BandrejectTemplate) {
+            double wpp = ((BandrejectTemplate) currentTemplate).getWpp();
+            double wpm = ((BandrejectTemplate) currentTemplate).getWpm();
+            double wap = ((BandrejectTemplate) currentTemplate).getWap();
+            double wam = ((BandrejectTemplate) currentTemplate).getWam();
+
+            dataset = AddPlots(dataset, Math.min(wam, wpm), Math.max(wap, wpp));
+        }
+
+        dataset.addSeries(series1);
+        dataset.addSeries(series2);
+
+        return dataset;
+    }
+
+    public XYSeriesCollection AddPlots(XYSeriesCollection dataset, double wmin, double wmax) {
+        double[] freq = GenericUtils.logspace(wmin * (0.1), wmax * 10, 500);
+        java.util.List<Approximation> approximationList = userData.getApproximationList();
+        Approximation currentAprox;
+        for (int i = 0; i < approximationList.size(); i++) {
+            currentAprox = approximationList.get(i);
+            TransferFunction TF = currentAprox.getTF();
+            double[] modulo = TF.getModuleDB(freq);
+            dataset = addDatasetAprox(freq, modulo, currentAprox.getDetails(), dataset);
+        }
+        return dataset;
+    }
+    /*
+    *   Función sin probar aún. Le pasas los ejes de la frecuencia y modulo y el nombre del string y te los agrega al plot
+    */
+    private XYSeriesCollection addDatasetAprox(double[] freq, double[] modulo, String seriesName, XYSeriesCollection dataset) {
+        XYSeries series = new XYSeries(seriesName);
+
+        for (int i = 0; i < freq.length; i++) {
+            series.add(freq[i], modulo[i]);
+        }
+
+        dataset.addSeries(series);
+        return dataset;
     }
 
     public void saveImage () {
