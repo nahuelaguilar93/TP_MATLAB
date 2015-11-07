@@ -163,6 +163,7 @@ class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
                         uData.setSelection(-1);
                         s.getFilterList().updateList();
                         approxComboBox.updateList();
+                        s.getPlotPlot().recreateTemplate();
                     }
                 }
             });

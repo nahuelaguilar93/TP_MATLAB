@@ -30,25 +30,15 @@ import java.io.File;
  * Created by NEGU on 7/10/2015.
  */
 class PlotPlot extends JPanel{
-    //private static Plot2DPanel plot = new Plot2DPanel();
     private Singleton s = Singleton.getInstance();
     private UserData userData = s.getUserData();
-    private SuperTemplate currentTemplate = userData.getCurrentTemplate();
-    private int datasetIndex = 0;
+    private SuperTemplate currentTemplate;
     private double wmin;
     private double wmax;
     XYPlot plot;
 
     public PlotPlot() {
         JPanel plotPanel = createPlotPanel();
-
-        /*final JButton addDataSetButton = new JButton("Add Dataset");
-        addDataSetButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                AddPlots();
-            }
-        });*/
 
         this.setLayout(new GridLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -58,14 +48,11 @@ class PlotPlot extends JPanel{
 
         this.setBorder(BorderFactory.createTitledBorder("Plot"));
         this.add(plotPanel, c);
-        //this.add(addDataSetButton);
     }
 
     private JPanel createPlotPanel() {
-
         XYDataset datasetTemplate = createDatasetTemplate();
         JFreeChart chart = ChartFactory.createXYLineChart("Prueba de JFreeChart", "Frequency", "Atenuation", datasetTemplate);
-
 
         //Setup Color Background and grid
         plot = chart.getXYPlot();
@@ -78,13 +65,10 @@ class PlotPlot extends JPanel{
         //Used to set default Axis
         double Aa = currentTemplate.getAa();
         double Ap = currentTemplate.getAp();
-        //TODO: cambiar para cuando no es pasabajos
-        double wa = ((LowpassTemplate) currentTemplate).getWa();
-        double wp = ((LowpassTemplate) currentTemplate).getWp();
 
         //Set Logarithmic axis
         LogAxis xAxis = new LogAxis("Frequency");
-        xAxis.setRange(wp*0.1, wa*10);
+        xAxis.setRange(wmin*0.1, wmax*10);
         ValueAxis yAxis = plot.getDomainAxis();
         yAxis.setRange(0, Aa+10);   //TODO: 0 debe ser cambiado por ganancia
 
@@ -96,11 +80,13 @@ class PlotPlot extends JPanel{
     }
 
     private XYDataset createDatasetTemplate() {
+        currentTemplate = userData.getCurrentTemplate();
         XYSeriesCollection dataset = new XYSeriesCollection();
         double Aa = currentTemplate.getAa();
         double Ap = currentTemplate.getAp();
         XYSeries series1 = new XYSeries("First");
         XYSeries series2 = new XYSeries("Second");
+        XYSeries series3 = new XYSeries("Third");
         if (currentTemplate instanceof LowpassTemplate) {
             double wa = ((LowpassTemplate) currentTemplate).getWa();
             double wp = ((LowpassTemplate) currentTemplate).getWp();
@@ -119,7 +105,7 @@ class PlotPlot extends JPanel{
             series1.add(wa*0.1, Aa);
             series1.add(wa, Aa);
             series1.add(wa, 0);
-            series2.add(wp, Ap+10);
+            series2.add(wp, Aa+10);
             series2.add(wp, Ap);
             series2.add(wp*10, Ap);
 
@@ -130,12 +116,42 @@ class PlotPlot extends JPanel{
             double wpm = ((BandpassTemplate) currentTemplate).getWpm();
             double wap = ((BandpassTemplate) currentTemplate).getWap();
             double wam = ((BandpassTemplate) currentTemplate).getWam();
-            //TODO: terminar esto
+            series1.add(wam*0.1, Aa);
+            series1.add(wam, Aa);
+            series1.add(wam, 0);
+            series2.add(wpm, Aa+10);
+            series2.add(wpm, Ap);
+            series2.add(wpp, Ap);
+            series2.add(wpp, Aa+10);
+            series3.add(wap, 0);
+            series3.add(wap, Aa);
+            series3.add(wap*10, Aa);
+
+            wmin = wam;
+            wmax = wap;
+
+            dataset.addSeries(series3);
         } else if (currentTemplate instanceof BandrejectTemplate) {
             double wpp = ((BandrejectTemplate) currentTemplate).getWpp();
             double wpm = ((BandrejectTemplate) currentTemplate).getWpm();
             double wap = ((BandrejectTemplate) currentTemplate).getWap();
             double wam = ((BandrejectTemplate) currentTemplate).getWam();
+
+            series1.add(wpm*0.1, Ap);
+            series1.add(wpm, Ap);
+            series1.add(wpm, Aa+10);
+            series2.add(wam, 0);
+            series2.add(wam, Aa);
+            series2.add(wap, Aa);
+            series2.add(wap, 0);
+            series3.add(wpp, Aa+10);
+            series3.add(wpp, Ap);
+            series3.add(wpp*10, Ap);
+
+            wmin = wpm;
+            wmax = wpp;
+
+            dataset.addSeries(series3);
         }
         dataset.addSeries(series1);
         dataset.addSeries(series2);
@@ -144,8 +160,9 @@ class PlotPlot extends JPanel{
     }
 
     public void AddPlots() {
+        plot.setDataset(1, null);   //Cabeceada pero funciona para borrar
         XYSeriesCollection dataset = new XYSeriesCollection();
-        double[] freq = GenericUtils.logspace(wmin * (0.1), wmax * 10, 500);
+        double[] freq = GenericUtils.logspace(wmin * (0.1), wmax * 10, 10000);
         java.util.List<Approximation> approximationList = userData.getApproximationList();
         Approximation currentAprox;
         for (int i = 0; i < approximationList.size(); i++) {
@@ -157,9 +174,26 @@ class PlotPlot extends JPanel{
         plot.setDataset(1, dataset);
         plot.setRenderer(1, new StandardXYItemRenderer());
     }
-    /*
-    *  Le pasas los ejes de la frecuencia y modulo y el nombre del string y te los agrega al plot
-    */
+
+    public void recreateTemplate() {
+        plot.setDataset(0, createDatasetTemplate());
+        plot.setDataset(1, null);
+
+       //Used to set default Axis
+        double Aa = currentTemplate.getAa();
+        double Ap = currentTemplate.getAp();
+
+        //Set Logarithmic axis
+        ValueAxis xAxis = plot.getDomainAxis();
+        xAxis.setRange(wmin*0.1, wmax*10);
+        ValueAxis yAxis = plot.getRangeAxis();
+        yAxis.setRange(0, Aa+10);   //TODO: 0 debe ser cambiado por ganancia
+
+        //Set 'y' default Axis
+        plot.setDomainAxis(xAxis);
+        plot.setRangeAxis(yAxis);
+    }
+
     private XYSeriesCollection addDatasetAprox(double[] freq, double[] modulo, String seriesName, XYSeriesCollection dataset) {
         //TODO: ver que pasa cuando seriesName ya está.
         XYSeries series = new XYSeries(seriesName);
@@ -170,24 +204,7 @@ class PlotPlot extends JPanel{
         return dataset;
     }
 
-    private XYSeriesCollection createRandomDataset(final String name) {
-        final XYSeries series = new XYSeries(name);
-        double value = -100.0;
-        for (int i = 0; i < 5000; i++) {
-            value = value * (1.0 + Math.random() / 100);
-            series.add(i, value);
-        }
-        XYSeriesCollection xySeriesCollection = new XYSeriesCollection();
-        xySeriesCollection.addSeries(series);
-        return xySeriesCollection;
-    }
-
-    private void AddRandPlot () {
-        datasetIndex++;
-        plot.setDataset(datasetIndex, createRandomDataset("S" + datasetIndex));
-        plot.setRenderer(datasetIndex, new StandardXYItemRenderer());
-    }
-
+    //TODO: hacer si hay tiempo
     public void saveImage () {
         File imageFile = new File("XYLineChar.png");
         int width = 640;

@@ -13,8 +13,8 @@ class Singleton_S1 {
     private ApproxButton approxButton = null;
     private ApproxComboBox approxComboBox = null;
     private ApproximationPanel approximationPanel = null;
-    private FilterList filterList = null;
     private ApproxRadioButton approxRadioButton = null;
+    private CheckBoxChoosePlot checkBoxChoosePlot = null;
     private ConfigAmplitudePanel configAmplitudePanel = null;
     private ConfigBandPassPanel configBandPassPanel = null;
     private ConfigBandRejectPanel configBandRejectPanel = null;
@@ -23,28 +23,13 @@ class Singleton_S1 {
     private ConfigLowPassPanel configLowPassPanel = null;
     private ConfigPanel configPanel = null;
     private ConfigTemplatePanel configTemplatePanel = null;
+    private DrawingPanel drawingPanel = null;
+    private FilterList filterList = null;
     private ListButtonsPanel listButtonsPanel = null;
     private ListPanel listPanel = null;
-    private SliderDesnorm sliderDesnorm = null;
     private PlotPlot plotPlot = null;
-    private DrawingPanel drawingPanel = null;
-    private CheckBoxChoosePlot checkBoxChoosePlot = null;
+    private SliderDesnorm sliderDesnorm = null;
 
-    public CheckBoxChoosePlot getCheckBoxChoosePlot() {
-        if (checkBoxChoosePlot == null)
-            checkBoxChoosePlot = new CheckBoxChoosePlot();
-        return checkBoxChoosePlot;
-    }
-    public DrawingPanel getDrawingPanel() {
-        if (drawingPanel == null)
-            drawingPanel = new DrawingPanel();
-        return drawingPanel;
-    }
-    public PlotPlot getPlotPlot() {
-        if (plotPlot == null)
-            plotPlot = new PlotPlot();
-        return plotPlot;
-    }
     public ApproxButton getApproxButton() {
         if (approxButton == null)
             approxButton = new ApproxButton();
@@ -60,15 +45,15 @@ class Singleton_S1 {
             approximationPanel = new ApproximationPanel();
         return approximationPanel;
     }
-    public FilterList getFilterList() {
-        if (filterList == null)
-            filterList = new FilterList();
-        return filterList;
-    }
     public ApproxRadioButton getApproxRadioButton() {
         if (approxRadioButton == null)
             approxRadioButton = new ApproxRadioButton();
         return approxRadioButton;
+    }
+    public CheckBoxChoosePlot getCheckBoxChoosePlot() {
+        if (checkBoxChoosePlot == null)
+            checkBoxChoosePlot = new CheckBoxChoosePlot();
+        return checkBoxChoosePlot;
     }
     public ConfigAmplitudePanel getConfigAmplitudePanel() {
         if (configAmplitudePanel == null)
@@ -110,6 +95,16 @@ class Singleton_S1 {
             configTemplatePanel = new ConfigTemplatePanel();
         return configTemplatePanel;
     }
+    public DrawingPanel getDrawingPanel() {
+        if (drawingPanel == null)
+            drawingPanel = new DrawingPanel();
+        return drawingPanel;
+    }
+    public FilterList getFilterList() {
+        if (filterList == null)
+            filterList = new FilterList();
+        return filterList;
+    }
     public ListButtonsPanel getListButtonsPanel() {
         if (listButtonsPanel == null)
             listButtonsPanel = new ListButtonsPanel();
@@ -119,6 +114,11 @@ class Singleton_S1 {
         if (listPanel == null)
             listPanel = new ListPanel();
         return listPanel;
+    }
+    public PlotPlot getPlotPlot() {
+        if (plotPlot == null)
+            plotPlot = new PlotPlot();
+        return plotPlot;
     }
     public SliderDesnorm getSliderDesnorm() {
         if (sliderDesnorm == null)
