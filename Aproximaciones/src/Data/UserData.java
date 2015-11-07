@@ -22,5 +22,4 @@ public class UserData {
     public void setCurrentTemplate(SuperTemplate currentTemplate) { CurrentTemplate = currentTemplate; }
     public int getSelection() { return selection; }
     public void setSelection(int selection) { this.selection = selection; }
-
 }

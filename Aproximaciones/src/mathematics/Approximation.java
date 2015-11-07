@@ -70,6 +70,10 @@ public class Approximation {
             denorm = Math.pow(range,1./denormPerc);
         TF = NTF.denormalize(temp, denorm);
         Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained);
+        Complex[] PolesArray = TF.getPoles();
+        for ( Complex x : PolesArray) {
+            System.out.println("K real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
+        } System.out.println();
 
     }
 
@@ -100,6 +104,8 @@ public class Approximation {
         return temp.getWan()/Math.sqrt(a*b);
     }
 
+    ////////////////////////////////////APPROXIMATIONS//////////////////////////////////////////////
+
     private void Butter(SuperTemplate temp, int setOrder, double maxQ){
         double Ap = temp.getAp();
         double Aa = temp.getAa();
@@ -129,10 +135,18 @@ public class Approximation {
         double arg = Math.PI / 2 + Math.PI / (2 * this.Order);
         double module = Math.pow(1. / eps, 1. / this.Order);
         for (int i = 0; i < this.Order; i++) {
-            Poles.add(new Complex(module * Math.cos(arg), module * Math.sin(arg)));
+            double real = module * Math.cos(arg);
+            double imag = module * Math.sin(arg);
+            if(Math.abs(imag) < 10e-6) imag = 0;
+            Poles.add(new Complex(real, imag));
             arg += Math.PI / this.Order;
         }
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
+
+        for ( Complex x : PolesArray) {
+            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
+        } System.out.println();
+
         Complex[] ZerosArray = new Complex[0];
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
         this.maxQobtained = 1./(2*Math.sin(Math.PI/(2*this.Order)));
