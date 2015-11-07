@@ -13,7 +13,7 @@ class Singleton_S1 {
     private ApproxButton approxButton = null;
     private ApproxComboBox approxComboBox = null;
     private ApproximationPanel approximationPanel = null;
-    private ApproxList approxList = null;
+    private FilterList filterList = null;
     private ApproxRadioButton approxRadioButton = null;
     private ConfigAmplitudePanel configAmplitudePanel = null;
     private ConfigBandPassPanel configBandPassPanel = null;
@@ -25,6 +25,7 @@ class Singleton_S1 {
     private ConfigTemplatePanel configTemplatePanel = null;
     private ListButtonsPanel listButtonsPanel = null;
     private ListPanel listPanel = null;
+    private SliderDesnorm sliderDesnorm = null;
 
     public ApproxButton getApproxButton() {
         if (approxButton == null)
@@ -41,10 +42,10 @@ class Singleton_S1 {
             approximationPanel = new ApproximationPanel();
         return approximationPanel;
     }
-    public ApproxList getApproxList() {
-        if (approxList == null)
-            approxList = new ApproxList();
-        return approxList;
+    public FilterList getFilterList() {
+        if (filterList == null)
+            filterList = new FilterList();
+        return filterList;
     }
     public ApproxRadioButton getApproxRadioButton() {
         if (approxRadioButton == null)
@@ -101,5 +102,9 @@ class Singleton_S1 {
             listPanel = new ListPanel();
         return listPanel;
     }
-
+    public SliderDesnorm getSliderDesnorm() {
+        if (sliderDesnorm == null)
+            sliderDesnorm = new SliderDesnorm();
+        return sliderDesnorm;
+    }
 }

@@ -10,12 +10,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Approximation {
-
-    private static final List<String> lowpassList = Arrays.asList("LP-List","Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Bessel", "Better", "Letter", "Buby");
-    private static final List<String> highpassList = Arrays.asList("HP-List","Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Better", "Letter", "Buby");
-    private static final List<String> bandpassList = Arrays.asList("BP-List","Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Better", "Begendre", "Buby");
-    private static final List<String> bandrejectList = Arrays.asList("BR-List","Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Better", "Letter", "Buby");
-    private static final List<String> delayList = Arrays.asList("DelayList","Bessel","Gauss");
+    private static final List<String> lowpassList = Arrays.asList("Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Bessel", "Better", "Letter", "Buby");
+    private static final List<String> highpassList = Arrays.asList("Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Better", "Letter", "Buby");
+    private static final List<String> bandpassList = Arrays.asList("Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Better", "Begendre", "Buby");
+    private static final List<String> bandrejectList = Arrays.asList("Butterworth","Chebyshev I","Chebyshev II", "Legendre", "Cauer", "Better", "Letter", "Buby");
+    private static final List<String> delayList = Arrays.asList("Bessel","Gauss");
 
     //Este método lo llama el botón SetTemplate, y el constructor de esta clase.
     public static List<String> getStringsToComboBox(SuperTemplate template) {
@@ -47,12 +46,11 @@ public class Approximation {
     public double getMaxQobtained() { return maxQobtained; }
     public int getOrder() { return Order; }
 
-    public Approximation(int index, SuperTemplate temp) { this(index, temp, 0, 0, 0, 0, 0); }
-    public Approximation(int index, SuperTemplate temp, double denormPerc) { this(index, temp, denormPerc, 0, 0, 0, 0); }
-    public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder) { this(index, temp, denormPerc, setOrder, 0, 0, 0); }
-    public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder, double maxQ) { this(index, temp, denormPerc, setOrder, maxQ, 0, 0); }
+    public Approximation(int index, SuperTemplate temp) { this(index, temp, 0, 0, 0); }
+    public Approximation(int index, SuperTemplate temp, double denormPerc) { this(index, temp, denormPerc, 0, 0); }
+    public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder) { this(index, temp, denormPerc, setOrder, 0); }
 
-    public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder, double maxQ, double delay, double psi) {
+    public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder, double maxQ) {
         List<String> approxList = getStringsToComboBox(temp);
         if(approxList.get(index).equals("Butterworth")) {
             Butter(temp, setOrder, maxQ);

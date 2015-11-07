@@ -24,10 +24,10 @@ class ListButtonsPanel extends JPanel{
         deleteItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ApproxList approxList = Singleton_S1.getInstance().getApproxList();
+                FilterList filterList = Singleton_S1.getInstance().getFilterList();
 
-                if (approxList.isAnItemSelected()){
-                    int index = approxList.getIndex();
+                if (filterList.isAnItemSelected()){
+                    int index = filterList.getIndex();
                     UserData uData = Singleton.getInstance().getUserData();
                     uData.getApproximationList().remove(index);
 
@@ -36,7 +36,7 @@ class ListButtonsPanel extends JPanel{
                     else if (index == uData.getSelection())
                         uData.setSelection(-1);
 
-                    approxList.updateList();
+                    filterList.updateList();
                 }
             }
         });
@@ -45,19 +45,19 @@ class ListButtonsPanel extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 Singleton.getInstance().getUserData().getApproximationList().clear();
                 Singleton.getInstance().getUserData().setSelection(-1);
-                Singleton_S1.getInstance().getApproxList().updateList();
+                Singleton_S1.getInstance().getFilterList().updateList();
             }
         });
         selectFilter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Singleton_S1 s = Singleton_S1.getInstance();
-                ApproxList approxList = s.getApproxList();
+                FilterList filterList = s.getFilterList();
 
-                if (approxList.isAnItemSelected()) {
-                    int index = approxList.getIndex();
+                if (filterList.isAnItemSelected()) {
+                    int index = filterList.getIndex();
                     Singleton.getInstance().getUserData().setSelection(index);
-                    approxList.updateList();
+                    filterList.updateList();
                     //TODO: Guardar el TF selccionado para pasar al StageTwo
                 }
                 else {

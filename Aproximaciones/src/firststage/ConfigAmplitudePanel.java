@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 class ConfigAmplitudePanel extends JPanel {
-    private final int TEXT_HEIGHT = 40;
+    private final int TEXT_HEIGHT = 34;
     private final int TEXT_WIDTH = 70;
     private JTextField textFilterAp = new JTextField();
     private JTextField textFilterAa = new JTextField();
@@ -17,8 +17,6 @@ class ConfigAmplitudePanel extends JPanel {
         JLabel labelAp = new JLabel("Ap:");
         JLabel labelAa = new JLabel("Aa:");
         JLabel labelG = new JLabel("Gain:");
-
-//        this.setBackground(Color.ORANGE);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -77,5 +75,10 @@ class ConfigAmplitudePanel extends JPanel {
     public double getG() {
         try { return Double.parseDouble(textFilterG.getText()); }
         catch (NumberFormatException e) { return 0.; }
+    }
+    public void setTextBoxes(double ap, double aa, double g){
+        textFilterAp.setText(String.valueOf(ap));
+        textFilterAa.setText(String.valueOf(aa));
+        textFilterG.setText(String.valueOf(g));
     }
 }

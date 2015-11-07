@@ -19,7 +19,6 @@ import tclib.templates.*;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
-import java.util.*;
 
 /**
  * Created by NEGU on 7/10/2015.

@@ -2,22 +2,33 @@ package tclib.templates;
 
 public class LowpassTemplate extends SuperTemplate {
 
-    public final double wp;
-    public final double wa;
+    private final double wp;
+    private final double wa;
 
     public double getWp() { return wp; }
     public double getWa() { return wa; }
 
-    public LowpassTemplate(double wp, double wa, double Ap, double Aa) {
+    public LowpassTemplate(double Ap, double Aa, double G, double wp, double wa) {
         this.Ap = Ap;
         this.Aa = Aa;
+        this.G = G;
         this.wp = wp;
         this.wa = wa;
-        Normalize();
+        normalize();
     }
 
     @Override
-    protected void Normalize() {
+    protected void normalize() {
         this.wan = wa/wp;
+    }
+
+    @Override
+    public boolean equals(SuperTemplate t) {
+        if(t instanceof LowpassTemplate) {
+            LowpassTemplate that = (LowpassTemplate) t;
+            if (this.Ap == that.Ap && this.Aa == that.Aa && this.G == that.G && this.wp == that.wp && this.wa == that.wa)
+                return true;
+            else return false;
+        } else return false;
     }
 }

@@ -7,15 +7,15 @@ import mathematics.Approximation;
 import javax.swing.*;
 import java.awt.*;
 
-class ApproxList extends JPanel{
+class FilterList extends JPanel{
     private DefaultListModel<String> listModel = new DefaultListModel<String>();
     private JList<String> approxList = new JList<String>(listModel);
 
-    public ApproxList() {
+    public FilterList() {
         approxList.setCellRenderer(new MyCellRenderer());
         approxList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);  //You can only choose one option.
         approxList.setLayoutOrientation(JList.VERTICAL);
-        approxList.setVisibleRowCount(5); //Acá va la máxima cantidad de nombres que tira sin el scroller. Si se pone -1 trata de poner todas las que entren.
+        approxList.setVisibleRowCount(4); //Acá va la máxima cantidad de nombres que tira sin el scroller. Si se pone -1 trata de poner todas las que entren.
         JScrollPane listScroller = new JScrollPane(approxList);
 
         this.add(listScroller);

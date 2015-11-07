@@ -2,10 +2,9 @@ package firststage;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Arc2D;
 
-class ConfigBandPassPanel extends ConfiguratorPanel {
-    protected final int TEXT_HEIGHT = 28;
+class ConfigBandPassPanel extends JPanel {
+    protected final int TEXT_HEIGHT = 24;
     protected final int TEXT_WIDTH = 70;
     protected JTextField textFilterWpm = new JTextField();
     protected JTextField textFilterWam = new JTextField();
@@ -21,8 +20,6 @@ class ConfigBandPassPanel extends ConfiguratorPanel {
         JLabel labelWam = new JLabel("Wa-:");
         JLabel labelWpp = new JLabel("Wp+:");
         JLabel labelWap = new JLabel("Wa+:");
-
-//        this.setBackground(Color.BLUE);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -109,5 +106,11 @@ class ConfigBandPassPanel extends ConfiguratorPanel {
     public Double getWap() {
         try { return Double.parseDouble(textFilterWap.getText()); }
         catch (NumberFormatException e) { return 0.; }
+    }
+    public void setTextBoxes(double wpm, double wam, double wpp, double wap){
+        textFilterWpm.setText(String.valueOf(wpm));
+        textFilterWam.setText(String.valueOf(wam));
+        textFilterWpp.setText(String.valueOf(wpp));
+        textFilterWap.setText(String.valueOf(wap));
     }
 }

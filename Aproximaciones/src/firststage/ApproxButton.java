@@ -18,9 +18,9 @@ class ApproxButton extends JPanel {
         approxButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ToDo: Ojo! creo que pasé mal esto... es un ListPanel y no un ApproxList!
+                //ToDo: Ojo! creo que pasé mal esto... es un ListPanel y no un FilterList!
                 Singleton_S1 s = Singleton_S1.getInstance();
-                ApproxList approxList = s.getApproxList();
+                FilterList filterList = s.getFilterList();
                 ApproxComboBox approxComboBox = s.getApproxComboBox();
                 ApproxRadioButton approxRadioButton = s.getApproxRadioButton();
                 Singleton ss = Singleton.getInstance();
@@ -38,7 +38,7 @@ class ApproxButton extends JPanel {
                 }
                 Approximation newApprox = new Approximation(approxComboBox.getIndex(), uData.getCurrentTemplate(), 0, order, Q);   //El cero harcodeado es el porcentaje de desnormalizacion
                 uData.getApproximationList().add(newApprox);
-                approxList.updateList();
+                filterList.updateList();
             }
         });
         this.add(approxButton);

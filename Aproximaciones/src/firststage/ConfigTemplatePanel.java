@@ -13,7 +13,7 @@ import java.util.List;
 
 class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
     private ApproxComboBox approxComboBox;
-    private JComboBox filterList = new JComboBox(templateStrings);
+    private JComboBox filterTypeList = new JComboBox(templateStrings);
     private ConfigAmplitudePanel configAmplitudePanel;
     private ButtonFilterType buttonFilterType;
     private CardLayout cardLayout = new CardLayout();
@@ -36,18 +36,42 @@ class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
         this.setBorder(BorderFactory.createTitledBorder("Template Configurator"));
 
         buttonFilterType = new ButtonFilterType();
-        //This is used to select the default panel. By default it will start in LowPass TODO:get the index "0" from user data
 
-        filterList.setSelectedIndex(0);     //Low Pass as Default TODO:get it from user data
-        filterList.addActionListener(new ActionListener() {
+        SuperTemplate t = Singleton.getInstance().getUserData().getCurrentTemplate();
+        if (t instanceof LowpassTemplate) {
+            index = 0;
+            LowpassTemplate temp = (LowpassTemplate) t;
+            s.getConfigLowPassPanel().setTextBoxes(temp.getWp(), temp.getWa());
+        } else if (t instanceof HighpassTemplate) {
+            index = 1;
+            HighpassTemplate temp = (HighpassTemplate) t;
+            s.getConfigHighPassPanel().setTextBoxes(temp.getWp(),temp.getWa());
+        } else if (t instanceof BandpassTemplate) {
+            index = 2;
+            BandpassTemplate temp = (BandpassTemplate) t;
+            s.getConfigBandPassPanel().setTextBoxes(temp.getWpm(), temp.getWam(), temp.getWpp(), temp.getWap());
+        } else if (t instanceof BandrejectTemplate) {
+            index = 3;
+            BandrejectTemplate temp = (BandrejectTemplate) t;
+            s.getConfigBandRejectPanel().setTextBoxes(temp.getWpm(), temp.getWam(), temp.getWpp(), temp.getWap());
+        }  else { //(t instanceof DelayTemplate)
+            index = 4;
+            DelayTemplate temp = (DelayTemplate) t;
+            s.getConfigDelayPanel().setTextBoxes(temp.getWp(), temp.getWa(), temp.getDelay(), temp.getPsi());
+        }
+        s.getConfigAmplitudePanel().setTextBoxes(t.getAp(), t.getAa(), t.getG());
+        cardLayout.show(freqPanel,cardList.get(index));
+        filterTypeList.setSelectedIndex(index);
+
+        filterTypeList.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                index = filterList.getSelectedIndex();
+                index = filterTypeList.getSelectedIndex();
                 cardLayout.show(freqPanel, cardList.get(index));
             }
         });
 
-        filterList.setPreferredSize(new Dimension(150, 30));
+        filterTypeList.setPreferredSize(new Dimension(150, 30));
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -56,7 +80,7 @@ class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
 
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.CENTER)
-                        .addComponent(filterList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(filterTypeList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createSequentialGroup()
                                 .addComponent(configAmplitudePanel)
                                 .addComponent(freqPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -64,7 +88,7 @@ class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
         );
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
-                        .addComponent(filterList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(filterTypeList, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
                         .addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                 .addComponent(configAmplitudePanel)
                                 .addComponent(freqPanel, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -76,6 +100,7 @@ class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
         JButton buttonFilterType = new JButton("Create Template");
 
         public ButtonFilterType() {
+            this.add(buttonFilterType);
             buttonFilterType.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -83,52 +108,64 @@ class ConfigTemplatePanel extends JPanel implements TemplatesInterface {
                     Singleton_S1 s = Singleton_S1.getInstance();
                     UserData uData = Singleton.getInstance().getUserData();
 
-                    double ap;
-                    double aa;
+                    double ap, aa, g;
                     if (s.getConfigAmplitudePanel().isParsable()) {
                         ap = s.getConfigAmplitudePanel().getAp();
                         aa = s.getConfigAmplitudePanel().getAa();
+                        g = s.getConfigAmplitudePanel().getG();
                     } else return;
 
-                    int index = filterList.getSelectedIndex();
+                    int index = filterTypeList.getSelectedIndex();
+                    SuperTemplate newTemplate;
                     switch ( templateType.values()[index] ) {
                         case LOWPASS:
                             if (s.getConfigLowPassPanel().isParsable()) {
                                 double wp = s.getConfigLowPassPanel().getWp();
                                 double wa = s.getConfigLowPassPanel().getWa();
-                                uData.setCurrentTemplate(new LowpassTemplate(wp, wa, ap, aa));
-                            } break;
+                                newTemplate = new LowpassTemplate(ap, aa, g, wp, wa);
+                            } else return; break;
                         case HIGHPASS:
                             if (s.getConfigHighPassPanel().isParsable()) {
                                 double wp = s.getConfigHighPassPanel().getWp();
                                 double wa = s.getConfigHighPassPanel().getWa();
-                                uData.setCurrentTemplate(new HighpassTemplate(wp, wa, ap, aa));
-                            } break;
+                                newTemplate = new HighpassTemplate(ap, aa, g, wp, wa);
+                            } else return; break;
                         case BANDPASS:
                             if (s.getConfigBandPassPanel().isParsable()) {
                                 double wpm = s.getConfigBandPassPanel().getWpm();
                                 double wam = s.getConfigBandPassPanel().getWam();
-                                double wpp = s.getConfigBandPassPanel().getWpm();
+                                double wpp = s.getConfigBandPassPanel().getWpp();
                                 double wap = s.getConfigBandPassPanel().getWap();
-                                uData.setCurrentTemplate(new BandpassTemplate(wpm, wam, wpp, wap, ap, aa));
-                            } break;
+                                newTemplate = new BandpassTemplate(ap, aa, g, wpm, wam, wpp, wap);
+                            } else return; break;
                         case BANDREJECT:
                             if (s.getConfigBandRejectPanel().isParsable()) {
                                 double wpm = s.getConfigBandRejectPanel().getWpm();
                                 double wam = s.getConfigBandRejectPanel().getWam();
-                                double wpp = s.getConfigBandRejectPanel().getWpm();
+                                double wpp = s.getConfigBandRejectPanel().getWpp();
                                 double wap = s.getConfigBandRejectPanel().getWap();
-                                uData.setCurrentTemplate(new BandrejectTemplate(wpm, wam, wpp, wap, ap, aa));
-                            } break;
-                        case DELAY:
-                            //UserData.CurrentTemplate = new DelayTemplate();
-                            break;
+                                newTemplate = new BandrejectTemplate(ap, aa, g, wpm, wam, wpp, wap);
+                            } else return; break;
+                        default: //case DELAY:
+                            if (s.getConfigDelayPanel().isParsable()) {
+                                double wp = s.getConfigDelayPanel().getWp();
+                                double wa = s.getConfigDelayPanel().getWa();
+                                double delay = s.getConfigDelayPanel().getDelay();
+                                double psi = s.getConfigDelayPanel().getPsi();
+                                newTemplate = new DelayTemplate(ap, aa, g, wp, wa, delay, psi);
+                            } else return; break;
                     }
-                    approxComboBox.updateList();
+                    if (newTemplate.equals(uData.getCurrentTemplate()))
+                        return;
+                    else {
+                        uData.setCurrentTemplate(newTemplate);
+                        uData.getApproximationList().clear();
+                        uData.setSelection(-1);
+                        s.getFilterList().updateList();
+                        approxComboBox.updateList();
+                    }
                 }
             });
-            this.add(buttonFilterType);
         }
     }
 }
-

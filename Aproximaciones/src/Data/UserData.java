@@ -14,7 +14,7 @@ import java.util.List;
 public class UserData {
 
     private List<Approximation> ApproximationList = new ArrayList<>();
-    private SuperTemplate CurrentTemplate = new LowpassTemplate(2*Math.PI*1000, 2*Math.PI*1200, 3, 10);
+    private SuperTemplate CurrentTemplate = new LowpassTemplate(3., 10., 6., 1000, 1200);
     private int selection = -1;
 
     public List<Approximation> getApproximationList() { return ApproximationList; }

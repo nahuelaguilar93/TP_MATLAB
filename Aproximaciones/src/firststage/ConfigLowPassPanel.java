@@ -3,8 +3,8 @@ package firststage;
 import javax.swing.*;
 import java.awt.*;
 
-class ConfigLowPassPanel extends ConfiguratorPanel {
-    protected final int TEXT_HEIGHT = 40;
+class ConfigLowPassPanel extends JPanel {
+    protected final int TEXT_HEIGHT = 34;
     protected final int TEXT_WIDTH = 70;
     protected JTextField textFilterWp = new JTextField();
     protected JTextField textFilterWa = new JTextField();
@@ -15,8 +15,6 @@ class ConfigLowPassPanel extends ConfiguratorPanel {
         JLabel labelWp = new JLabel("Wp:");
         JLabel labelWa = new JLabel("Wa:");
         JLabel units = new JLabel("rad/seg");
-
-//        this.setBackground(Color.BLUE);
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
@@ -65,5 +63,9 @@ class ConfigLowPassPanel extends ConfiguratorPanel {
     public Double getWa() {
         try { return Double.parseDouble(textFilterWa.getText()); }
         catch (NumberFormatException e) { return 0.; }
+    }
+    public void setTextBoxes(double wp, double wa){
+        textFilterWp.setText(String.valueOf(wp));
+        textFilterWa.setText(String.valueOf(wa));
     }
 }

@@ -4,12 +4,12 @@ import static java.lang.Math.sqrt;
 
 public class BandpassTemplate extends SuperTemplate {
 
-    public final double wpp;
-    public final double wap;
-    public final double wpm;
-    public final double wam;
-    public final double B;
-    public final double wo;
+    private final double wpp;
+    private final double wap;
+    private final double wpm;
+    private final double wam;
+    private final double B;
+    private final double wo;
 
     public double getWpp() { return wpp; }
     public double getWap() { return wap; }
@@ -18,20 +18,21 @@ public class BandpassTemplate extends SuperTemplate {
     public double getB() { return B; }
     public double getWo() { return wo; }
 
-    public BandpassTemplate(double wpm, double wam, double wpp, double wap, double Ap, double Aa) {
+    public BandpassTemplate(double Ap, double Aa, double G, double wpm, double wam, double wpp, double wap) {
         this.Ap = Ap;
         this.Aa = Aa;
+        this.G = G;
         this.wpp = wpp;
         this.wap = wap;
         this.wpm = wpm;
         this.wam = wam;
         this.wo = sqrt(wpm*wpp);
         this.B = (wpp-wpm)/wo;
-        Normalize();
+        normalize();
     }
 
     @Override
-    protected void Normalize() {
+    protected void normalize() {
         if(wpm*wpp > wam*wap) {
             double wam2 = wpm * wpp / wap;
             this.wan = (wap-wam2)/(wpp-wpm);
@@ -39,5 +40,16 @@ public class BandpassTemplate extends SuperTemplate {
             double wap2 = wpm * wpp / wam;
             this.wan = (wap2 - wam) / (wpp - wpm);
         }
+    }
+
+    @Override
+    public boolean equals(SuperTemplate t) {
+        if(t instanceof BandpassTemplate) {
+            BandpassTemplate that = (BandpassTemplate) t;
+            if (this.Ap == that.Ap && this.Aa == that.Aa && this.G == that.G && this.wpp == that.wpp &&
+                    this.wap == that.wap && this.wpm == that.wpm && this.wam == that.wam)
+                return true;
+            else return false;
+        } else return false;
     }
 }

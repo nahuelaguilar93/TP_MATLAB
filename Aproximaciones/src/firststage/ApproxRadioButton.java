@@ -85,7 +85,7 @@ class ApproxRadioButton extends JPanel {
     }
 
     public boolean isParsable(){
-        if (minOrder.isSelected()) {
+        if (setOrder.isSelected()) {
             try {
                 int i = Integer.parseInt(textField.getText());
                 return (i > 1);
