@@ -1,7 +1,8 @@
 package secondstage;
 
-import org.math.plot.Plot2DPanel;
-import tclib.GenericUtils;
+import Data.Singleton;
+import Data.UserData;
+import org.apache.commons.math3.complex.Complex;
 import tclib.TransferFunction;
 
 import javax.swing.*;
@@ -10,28 +11,18 @@ import java.awt.*;
 public class StageTwo extends JPanel {
 
     public StageTwo() {
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(Color.BLUE);
 
-        double[] num = {0,1};
-        double[] den = {1, 0.25 ,1};
-        TransferFunction lowpass = new TransferFunction(num,den);
 
-        double[] freq = GenericUtils.logspace(0.1,10,500);
-//        double[] modulo = lowpass.getModuleDB(freq);
-//        double[] phase = lowpass.getPhase(freq);
+    }
 
-        // create your PlotPanel (you can use it as a JPanel)
-        Plot2DPanel plot = new Plot2DPanel();
-        plot.setAxisScales("LOG", "LIN");
-//        plot.addLinePlot("my plot", freq, modulo);
-
-        Plot2DPanel plot2 = new Plot2DPanel();
-        plot2.setAxisScales("LOG", "LIN");
-//        plot2.addLinePlot("my plot", freq, phase);
-
-
-        this.add(plot);
-        this.add(plot2);
+    void set(){
+        UserData uData = Singleton.getInstance().getUserData();
+        TransferFunction t = uData.getApproximationList().get(uData.getSelection()).getTF();
+        for(Complex x : t.getPoles())
+            uData.getUnmatchedPoles().add(x);
+        for(Complex x : t.getZeros())
+            uData.getUnmatchedZeros().add(x);
     }
 }

@@ -1,8 +1,5 @@
 package firststage;
 
-/**
- * Created by Nahuel on 3/11/2015.
- */
 class Singleton_S1 {
     private static final Singleton_S1 INSTANCE = new Singleton_S1();
     private Singleton_S1() {}
