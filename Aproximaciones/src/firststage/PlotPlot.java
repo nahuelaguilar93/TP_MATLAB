@@ -43,7 +43,7 @@ class PlotPlot extends JPanel{
         this.setBorder(BorderFactory.createTitledBorder("Plot"));
         this.add(poleZeroPanel, "PoleZero");
         this.add(plotPanel, "Atenuation");
-        //cardLayout.show(this, "Atenuation");
+        cardLayout.show(this, "Atenuation");
     }
 
     public void recreateTemplate() {
