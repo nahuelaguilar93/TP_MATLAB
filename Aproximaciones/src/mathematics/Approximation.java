@@ -65,35 +65,31 @@ public class Approximation {
             ApproxName = "Cheby 2";
         }
         double range = getDenormalizationRange(temp);
-        double denorm = 1;
-//        if(range != 0)
-//            denorm = Math.pow(range,1./denormPerc);
-        System.out.println(denormPerc + " " + denorm + " " + range);
+        double denorm = Math.pow(range,denormPerc);
         TF = NTF.denormalize(temp, denorm);
-        Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained);
+        Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained) + " / " + (int)(denormPerc*100);
         Complex[] PolesArray = TF.getPoles();
         for ( Complex x : PolesArray) {
             System.out.println("K real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
         } System.out.println();
     }
 
-    private double NTFminusAp(double x, double Ap){
-        return NTF.evaluateApproximationAtOmega(x).abs() - Ap;
+    private double NTFminusAp(double x, double Aa){
+        return -20*Math.log10(NTF.evaluateApproximationAtOmega(x).abs()) - Aa;
     }
-
     private double getDenormalizationRange(SuperTemplate temp) {
-        //By using the Bisection Method, it gets the frequency at which the approximation equals Ap.
-        double Ap = temp.getAp()*0.9999;    //Para evitar errores en los valles de Cauer y Cheby II.
+        //By using the Bisection Method, it gets the frequency at which the approximation equals Aa.
+        double Aa = temp.getAa()*0.9999;    //Para evitar errores en los valles de Cauer y Cheby II.
         double a = 1;   // 1 rad/s    Wp Normalizado.
         double b = temp.getWan();
-        int sa = (int) Math.signum(NTFminusAp(a, Ap));
-        int sb = (int) Math.signum(NTFminusAp(b, Ap));
-        if(sa == sb) return 0;  //La función no cumple plantilla, por lo cual no acepta un corrimiento de desnormalización.
+        int sa = (int) Math.signum(NTFminusAp(a, Aa));
+        int sb = (int) Math.signum(NTFminusAp(b, Aa));
+        if(sa == sb) return 1;  //La función no cumple plantilla, por lo cual no acepta un corrimiento de desnormalización.
         double maxIter = 100000;
         double tol = Math.pow((b/a), 1./10000);
         for(int i = 0; i < maxIter; i++) {
             double c = Math.sqrt(a*b);
-            int sc = (int) Math.signum(NTFminusAp(c, Ap));
+            int sc = (int) Math.signum(NTFminusAp(c, Aa));
             if(sc == sa)
                 a = c;  //b = b;
             else
@@ -177,12 +173,15 @@ public class Approximation {
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
         this.maxQobtained = Math.abs(1./(2.*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
 
-        for ( Complex x : PolesArray) {
-            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
-        } System.out.println();
+//        for ( Complex x : PolesArray) {
+//            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
+//        } System.out.println();
 
         if (maxQ > 0.5 && this.maxQobtained > maxQ)
             Cheby1(temp,this.Order-1, maxQ);        //If maxQ is overflowed, retry with a minor order.
+
+        System.out.println(this.NTF.evaluateApproximationAtOmega(0.00001).abs());
+
     }
 
     private void Cheby2(SuperTemplate temp, int setOrder, double maxQ){
@@ -213,9 +212,9 @@ public class Approximation {
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
         this.maxQobtained = Math.abs(1./(2.*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
 
-        for ( Complex x : PolesArray) {
-            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
-        } System.out.println();
+//        for ( Complex x : PolesArray) {
+//            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
+//        } System.out.println();
 
         if (maxQ > 0.5 && this.maxQobtained > maxQ)
             Cheby2(temp, this.Order - 1, maxQ);        //If maxQ is overflowed, retry with a minor order.

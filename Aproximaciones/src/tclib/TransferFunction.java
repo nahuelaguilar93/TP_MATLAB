@@ -96,6 +96,8 @@ public class TransferFunction {
             denValue = denValue.add(evaluationPoint.pow(i).multiply(denCoefficient[i]));
         }
 
+//        System.out.println("Num: " + numValue + "Den: " + denValue);
+
         return numValue.divide(denValue);
     }
 
@@ -116,11 +118,6 @@ public class TransferFunction {
 
     public Complex[] getPoles() {
         LaguerreSolver laguerreSolver = new LaguerreSolver();
-
-        int i = 1;
-        for(double x : denominador.getCoefficients())
-            System.out.println("Coef " + i++ +  ": " + x);
-
         return laguerreSolver.solveAllComplex(denominador.getCoefficients(), 0);
     }
 
