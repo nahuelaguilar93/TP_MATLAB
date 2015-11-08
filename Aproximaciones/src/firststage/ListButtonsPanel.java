@@ -37,7 +37,7 @@ class ListButtonsPanel extends JPanel{
                         uData.setSelection(-1);
 
                     filterList.updateList();
-                    Singleton_S1.getInstance().getPlotPlot().addPlots();
+                    Singleton_S1.getInstance().getPlotPlot().updatePlot();
                 }
             }
         });
@@ -47,7 +47,7 @@ class ListButtonsPanel extends JPanel{
                 Singleton.getInstance().getUserData().getApproximationList().clear();
                 Singleton.getInstance().getUserData().setSelection(-1);
                 Singleton_S1.getInstance().getFilterList().updateList();
-                Singleton_S1.getInstance().getPlotPlot().addPlots();
+                Singleton_S1.getInstance().getPlotPlot().updatePlot();
             }
         });
         selectFilter.addActionListener(new ActionListener() {
@@ -60,7 +60,6 @@ class ListButtonsPanel extends JPanel{
                     int index = filterList.getIndex();
                     Singleton.getInstance().getUserData().setSelection(index);
                     filterList.updateList();
-                    s.getPlotPlot().addPlots();
                     //TODO: Guardar el TF selccionado para pasar al StageTwo
                 }
                 else {

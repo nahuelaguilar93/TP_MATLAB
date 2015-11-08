@@ -40,7 +40,7 @@ class ApproxButton extends JPanel {
                 uData.getApproximationList().add(newApprox);
                 filterList.updateList();
 
-                s.getPlotPlot().addPlots();
+                s.getPlotPlot().updatePlot();
             }
         });
         this.add(approxButton);
