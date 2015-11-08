@@ -13,21 +13,24 @@ public class StageTwoPanel extends JPanel {
     private PoleZeroPanel poleZeroPanel;
 
     public StageTwoPanel() {
-        Singleton_S2 s = Singleton_S2.getInstance();
-
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(Color.BLUE);
 
-        stagePanel = s.getStagePanel();
-        poleZeroPanel = s.getPoleZeroPanel();
+        stagePanel = new StagePanel();
+        poleZeroPanel = new PoleZeroPanel();
 
-        this.add(poleZeroPanel);
         this.add(stagePanel);
+        this.add(poleZeroPanel);
     }
 
-    void set(){
+    public void set(){
         UserData uData = Singleton.getInstance().getUserData();
         TransferFunction t = uData.getApproximationList().get(uData.getSelection()).getTF();
+        if (t.equals(uData.getTransferFunction())) return;
+        uData.setTransferFunction(t);
+        uData.getUnmatchedPoles().clear();
+        uData.getUnmatchedZeros().clear();
+        uData.getStageList().clear();
         for(Complex x : t.getPoles())
             uData.getUnmatchedPoles().add(x);
         for(Complex x : t.getZeros())
