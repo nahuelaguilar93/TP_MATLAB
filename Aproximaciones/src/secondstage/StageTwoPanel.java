@@ -23,9 +23,14 @@ public class StageTwoPanel extends JPanel {
         this.add(poleZeroPanel);
     }
 
-    void set(){
+    public void set(){
         UserData uData = Singleton.getInstance().getUserData();
         TransferFunction t = uData.getApproximationList().get(uData.getSelection()).getTF();
+        if (t.equals(uData.getTransferFunction())) return;
+        uData.setTransferFunction(t);
+        uData.getUnmatchedPoles().clear();
+        uData.getUnmatchedZeros().clear();
+        uData.getStageList().clear();
         for(Complex x : t.getPoles())
             uData.getUnmatchedPoles().add(x);
         for(Complex x : t.getZeros())
