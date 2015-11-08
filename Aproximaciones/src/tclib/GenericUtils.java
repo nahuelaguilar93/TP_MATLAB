@@ -1,7 +1,5 @@
 package tclib;
 
-import org.apache.commons.math3.complex.Complex;
-
 public class GenericUtils {
 
     public static double[] linspace(double start, double end, int pointCount){
@@ -22,12 +20,4 @@ public class GenericUtils {
         return result;
     }
 
-    public static String getPZString(Complex x, boolean isPole){
-        String str = "Zero ";
-        if(isPole) str = "Pole ";
-        double real = x.getReal();
-        double imag = x.getImaginary();
-        double Q = 1./(2.*Math.sin(x.getArgument()));
-        return str + "r: " + String.format("%.1f", real) + " i: " + String.format("%.2f", imag) + " Q: " + String.format("%.2f", Q);
-    }
 }

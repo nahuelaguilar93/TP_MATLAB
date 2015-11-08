@@ -81,20 +81,6 @@ public class TransferFunction {
         return numerador.getCoefficients()[0] / denominador.getCoefficients()[0];
     }
 
-    public boolean equals(TransferFunction that) {
-        double thisNum[] = this.numerador.getCoefficients();
-        double thatNum[] = that.numerador.getCoefficients();
-        double thisDen[] = this.denominador.getCoefficients();
-        double thatDen[] = that.denominador.getCoefficients();
-        if(thisNum.length == thatNum.length && thisDen.length == thatDen.length) {
-            for (int i = 0; i < thisNum.length; i++)
-                if (thisNum[i] != thatNum[i]) return false;
-            for (int i = 0; i < thisDen.length; i++)
-                if (thisDen[i] != thatDen[i]) return false;
-            return true;
-        } else return false;
-    }
-
     public Complex evaluateApproximationAtOmega(double omega) {
         Complex evaluationPoint = new Complex(0, omega);
         Complex numValue = new Complex(0);

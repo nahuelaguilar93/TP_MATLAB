@@ -50,15 +50,12 @@ public class PrincipalPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 UserData uData = Singleton.getInstance().getUserData();
-                if(currentPanel == 0) {
-                    if (uData.getApproximationList().size() == 1)
-                        uData.setSelection(0);
-                    if (uData.getSelection() == -1) {
-                        JInternalFrame frame = new JInternalFrame();
-                        JOptionPane.showMessageDialog(frame, "Please select a filter before moving on.", "Input Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    Singleton.getInstance().getStageTwo().set();
+                if(uData.getApproximationList().size() == 1)
+                    uData.setSelection(0);
+                if(uData.getSelection() == -1) {
+                    JInternalFrame frame = new JInternalFrame();
+                    JOptionPane.showMessageDialog(frame, "Please select a filter before moving on.", "Input Error", JOptionPane.ERROR_MESSAGE);
+                    return;
                 }
                 cardLayout.next(bigPanel);
                 currentPanel++;
