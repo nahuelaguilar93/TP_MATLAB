@@ -2,6 +2,7 @@ package secondstage;
 
 import Data.Singleton;
 import Data.UserData;
+import org.apache.commons.math3.analysis.function.Sin;
 import org.apache.commons.math3.complex.Complex;
 import tclib.TransferFunction;
 
@@ -13,14 +14,15 @@ public class StageTwoPanel extends JPanel {
     private PoleZeroPanel poleZeroPanel;
 
     public StageTwoPanel() {
+        Singleton_S2 s = Singleton_S2.getInstance();
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(Color.BLUE);
 
-        stagePanel = new StagePanel();
-        poleZeroPanel = new PoleZeroPanel();
+        stagePanel = s.getStagePanel();
+        poleZeroPanel = s.getPoleZeroPanel();
 
-        this.add(stagePanel);
         this.add(poleZeroPanel);
+        this.add(stagePanel);
     }
 
     public void set(){
