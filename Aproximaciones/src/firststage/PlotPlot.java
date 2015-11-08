@@ -68,12 +68,6 @@ class PlotPlot extends JPanel{
 
     private JPanel createPoleZeroPanel() {
         XYSeriesCollection poleZeroDataset = createPoleZeroPlot();
-        /*XYSeriesCollection poleZeroDataset = new XYSeriesCollection();
-        XYSeries series = new XYSeries("prueba");
-        series.add(1,1);
-        series.add(0,1);
-        series.add(1,0.5);
-        poleZeroDataset.addSeries(series);*/
         JFreeChart chart = ChartFactory.createScatterPlot("Poles/Zeros", "Real", "Imaginary", poleZeroDataset);
 
         //TODO: Falta agregar la configuración de los ejes y esas cosas
@@ -215,17 +209,17 @@ class PlotPlot extends JPanel{
     }
     public void poleZeroPlot() {
         XYSeriesCollection dataset = new XYSeriesCollection();
-        XYSeriesCollection poleZeroDataset = new XYSeriesCollection();
+        /*XYSeriesCollection poleZeroDataset = new XYSeriesCollection();
         XYSeries series = new XYSeries("prueba");
         series.add(1,1);
         series.add(0,1);
         series.add(1,0.5);
-        poleZeroDataset.addSeries(series);
+        poleZeroDataset.addSeries(series);*/
         for ( Approximation x : userData.getApproximationList()) {
             dataset = getPolesZeroDataset(x, dataset);
         }
         plotPZ.setDataset(0, dataset);
-        plotPZ.setDataset(0, poleZeroDataset);
+        //plotPZ.setDataset(0, poleZeroDataset);
         cardLayout.show(this, "PoleZero");
     }
 
@@ -249,9 +243,6 @@ class PlotPlot extends JPanel{
         for (int i = 0; i < polesArray.length; i++) {
             polesSeries.add(polesArray[i].getReal(), polesArray[i].getImaginary());
         }
-        polesSeries.add(1,1);
-        polesSeries.add(1,0.5);
-        polesSeries.add(1,0);
         dataset.addSeries(polesSeries);
         dataset.addSeries(zerosSeries);
         return dataset;
