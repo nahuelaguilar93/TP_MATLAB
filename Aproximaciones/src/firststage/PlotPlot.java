@@ -3,10 +3,10 @@ package firststage;
 import Data.Singleton;
 import Data.UserData;
 import mathematics.Approximation;
+import org.apache.commons.math3.complex.Complex;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
-import org.jfree.chart.axis.LogAxis;
 import org.jfree.chart.axis.LogarithmicAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
@@ -23,9 +23,8 @@ import tclib.templates.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
+import java.util.ArrayList;
 
 /**
  * Created by NEGU on 7/10/2015.
@@ -40,6 +39,7 @@ class PlotPlot extends JPanel{
 
     public PlotPlot() {
         JPanel plotPanel = createPlotPanel();
+        JPanel poleZeroPanel = createPoleZeroPanel();
 
         this.setLayout(new GridLayout());
         GridBagConstraints c = new GridBagConstraints();
@@ -49,6 +49,16 @@ class PlotPlot extends JPanel{
 
         this.setBorder(BorderFactory.createTitledBorder("Plot"));
         this.add(plotPanel, c);
+    }
+
+    private JPanel createPoleZeroPanel() {
+        /*XYDataset poleZeroDataset = createPoleZeroPlot();
+        JFreeChart chart = ChartFactory.createScatterPlot("Poles/Zeros", "Real", "Imaginary", poleZeroDataset);
+
+        //TODO: Falta agregar la configuración de los ejes y esas cosas
+
+        return new ChartPanel(chart);*/
+        return new JPanel();
     }
 
     private JPanel createPlotPanel() {
@@ -61,7 +71,7 @@ class PlotPlot extends JPanel{
         plot.setRangeGridlinePaint(Color.BLACK);
         plot.setDomainGridlinePaint(Color.BLACK);
 
-        AddPlots();     //Agrego los filtros
+        addPlots();     //Agrego los filtros
 
         //Used to set default Axis
         double Aa = currentTemplate.getAa();
@@ -160,7 +170,7 @@ class PlotPlot extends JPanel{
         return dataset;
     }
 
-    public void AddPlots() {
+    public void addPlots() {
         plot.setDataset(1, null);   //Cabeceada pero funciona para borrar
         XYSeriesCollection dataset = new XYSeriesCollection();
         double[] freq = GenericUtils.logspace(wmin * (0.1), wmax * 10, 10000);
@@ -205,16 +215,36 @@ class PlotPlot extends JPanel{
         return dataset;
     }
 
-    //TODO: hacer si hay tiempo
-    public void saveImage () {
-        File imageFile = new File("XYLineChar.png");
-        int width = 640;
-        int height = 480;
+    public void createPoleZeroPlot() {
+        //plot.setDataset(0, null);
+        //plot.setDataset(1, null);
+        XYSeriesCollection polesDataset = new XYSeriesCollection();
+        XYSeriesCollection zerosDataset = new XYSeriesCollection();
 
-        /*try {
-            ChartUtilities.saveChartAsPNG(imageFile, chart, width, height);
-        } catch (IOException ex) {
-            System.err.println(ex);
-        }*/
+        for ( Approximation x : userData.getApproximationList()) {
+            polesDataset = getPolesDataset(x.getDetails() + "poles", polesDataset, x);
+            zerosDataset = getZerosDataset(x.getDetails() + "zeros", polesDataset, x);
+        }
+        plot.setDataset(0, polesDataset);
+        plot.setDataset(1, zerosDataset);
+    }
+
+    private XYSeriesCollection getZerosDataset(String seriesName, XYSeriesCollection dataset, Approximation x) {
+        XYSeries zerosSeries = new XYSeries(seriesName);
+        Complex[] zerosArray = x.getTF().getZeros();
+        for (int i = 0; i < zerosArray.length; i++) {
+            zerosSeries.add(zerosArray[i].getReal(), zerosArray[i].getImaginary());
+        }
+        dataset.addSeries(zerosSeries);
+        return dataset;
+    }
+    private XYSeriesCollection getPolesDataset(String seriesName, XYSeriesCollection dataset, Approximation x) {
+        XYSeries polesSeries = new XYSeries(seriesName);
+        Complex[] polesArray = x.getTF().getPoles();
+        for (int i = 0; i < polesArray.length; i++) {
+            polesSeries.add(polesArray[i].getReal(), polesArray[i].getImaginary());
+        }
+        dataset.addSeries(polesSeries);
+        return dataset;
     }
 }

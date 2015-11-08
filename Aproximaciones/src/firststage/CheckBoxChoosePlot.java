@@ -2,6 +2,8 @@ package firststage;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
@@ -9,6 +11,7 @@ import java.awt.event.ItemListener;
  * Created by NEGU on 7/10/2015.
  */
 class CheckBoxChoosePlot extends JPanel{
+    private Singleton_S1 s = Singleton_S1.getInstance();
     private ButtonGroup groupOfRadioButtons = new ButtonGroup();
     private JRadioButton atenuacion = new JRadioButton("Atenuacion");
     private JRadioButton fase = new JRadioButton("Fase");
@@ -20,6 +23,20 @@ class CheckBoxChoosePlot extends JPanel{
         fase.setSelected(false);
         transferencia.setSelected(false);
         polosCeros.setSelected(false);
+
+        polosCeros.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                s.getPlotPlot().createPoleZeroPlot();
+            }
+        });
+        atenuacion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                s.getPlotPlot().recreateTemplate();
+                s.getPlotPlot().addPlots();
+            }
+        });
 
         groupOfRadioButtons.add(atenuacion);
         groupOfRadioButtons.add(fase);

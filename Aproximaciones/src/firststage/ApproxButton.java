@@ -36,11 +36,12 @@ class ApproxButton extends JPanel {
                         order = Integer.parseInt(approxRadioButton.getTextSelectorOrder());
                     else return;
                 }
-                Approximation newApprox = new Approximation(approxComboBox.getIndex(), uData.getCurrentTemplate(), 0, order, Q);   //El cero harcodeado es el porcentaje de desnormalizacion
+                double sliderPercentage = s.getSliderDesnorm().getSliderValue();
+                Approximation newApprox = new Approximation(approxComboBox.getIndex(), uData.getCurrentTemplate(), sliderPercentage, order, Q);
                 uData.getApproximationList().add(newApprox);
                 filterList.updateList();
 
-                s.getPlotPlot().AddPlots();
+                s.getPlotPlot().addPlots();
             }
         });
         this.add(approxButton);

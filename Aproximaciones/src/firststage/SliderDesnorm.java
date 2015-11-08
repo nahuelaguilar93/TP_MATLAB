@@ -4,13 +4,14 @@ import javax.swing.*;
 import javax.swing.text.NumberFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.geom.Arc2D;
 import java.text.ParseException;
 import java.util.Hashtable;
 
 class SliderDesnorm extends JPanel{
-    JSlider sliderDesnorm = new JSlider(JSlider.HORIZONTAL, 0, 20, 0);
-    NumberFormatter formatter = new NumberFormatter();
-    JFormattedTextField textField;
+    private JSlider sliderDesnorm = new JSlider(JSlider.HORIZONTAL, 0, 20, 0);
+    //private NumberFormatter formatter = new NumberFormatter();
+//    JFormattedTextField textField;
     Hashtable labelTable = new Hashtable();
 
     public SliderDesnorm(){
@@ -25,12 +26,12 @@ class SliderDesnorm extends JPanel{
         sliderDesnorm.setLabelTable(labelTable);
         sliderDesnorm.setPaintLabels(true);
 
-        formatter.setMaximum(100);  //Formats the max and min value of the TextField
-        formatter.setMinimum(0);
+//        formatter.setMaximum(100);  //Formats the max and min value of the TextField
+//        formatter.setMinimum(0);
 
-        textField = new JFormattedTextField(formatter); //Makes an editable Text Field
+        /*textField = new JFormattedTextField(formatter); //Makes an editable Text Field
         textField.setValue(0);
-        textField.setColumns(5);    //Get some space
+        textField.setColumns(5);    //Get some space*/
 /*
         textField.addPropertyChangeListener(this);
 
@@ -40,12 +41,15 @@ class SliderDesnorm extends JPanel{
 */
         this.setLayout(new BoxLayout(this,BoxLayout.Y_AXIS));
         this.add(sliderDesnorm);
-        this.add(textField);
+//        this.add(textField);
     }
 
+    public double getSliderValue() {
+        return ((double)sliderDesnorm.getValue())/20;
+    }
 
     //TODO: QUE MIERDA ES ESTO?
-    abstract class AbstractAction extends SliderDesnorm{
+/*    abstract class AbstractAction extends SliderDesnorm{
 
         public void acionPerformed(ActionEvent e) {
             if (!textField.isEditValid()) {     //The text is invalid
@@ -58,6 +62,6 @@ class SliderDesnorm extends JPanel{
                 } catch (ParseException exc) {}
             }
         }
-    }
+    }*/
 }
 
