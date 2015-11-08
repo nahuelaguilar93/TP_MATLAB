@@ -58,6 +58,7 @@ public class TransferFunction {
                 PolynomialFunction aux = new PolynomialFunction(roots);
                 numerador = numerador.multiply(aux);
             }
+
         }
 
         for (Complex pole : poles) {
@@ -73,6 +74,10 @@ public class TransferFunction {
                 PolynomialFunction aux = new PolynomialFunction(roots);
                 denominador = denominador.multiply(aux);
             }
+
+            int i = 1;
+            for(double x : denominador.getCoefficients())
+                System.out.println("Coef " + i++ +  ": " + x);
         }
 
     }
@@ -111,6 +116,11 @@ public class TransferFunction {
 
     public Complex[] getPoles() {
         LaguerreSolver laguerreSolver = new LaguerreSolver();
+
+        int i = 1;
+        for(double x : denominador.getCoefficients())
+            System.out.println("Coef " + i++ +  ": " + x);
+
         return laguerreSolver.solveAllComplex(denominador.getCoefficients(), 0);
     }
 

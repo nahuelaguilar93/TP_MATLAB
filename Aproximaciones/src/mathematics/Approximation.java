@@ -66,15 +66,15 @@ public class Approximation {
         }
         double range = getDenormalizationRange(temp);
         double denorm = 1;
-        if(range != 0)
-            denorm = Math.pow(range,1./denormPerc);
+//        if(range != 0)
+//            denorm = Math.pow(range,1./denormPerc);
+        System.out.println(denormPerc + " " + denorm + " " + range);
         TF = NTF.denormalize(temp, denorm);
         Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained);
         Complex[] PolesArray = TF.getPoles();
         for ( Complex x : PolesArray) {
             System.out.println("K real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
         } System.out.println();
-
     }
 
     private double NTFminusAp(double x, double Ap){
@@ -137,7 +137,7 @@ public class Approximation {
         for (int i = 0; i < this.Order; i++) {
             double real = module * Math.cos(arg);
             double imag = module * Math.sin(arg);
-            if(Math.abs(imag) < 10e-6) imag = 0;
+            if(Math.abs(imag) < 10e-3) imag = 0;    //Floating point error correction.
             Poles.add(new Complex(real, imag));
             arg += Math.PI / this.Order;
         }
@@ -169,14 +169,18 @@ public class Approximation {
             double alpha = Math.PI*((2.*i+1)/(2*this.Order));
             double imag =   Math.cos(alpha) * Math.cosh(beta);
             double real = - Math.sin(alpha) * Math.sinh(beta);
+            if (Math.abs(imag) < 10e-3) imag = 0;   //Floating point error correction.
             Poles.add(new Complex(real, imag));
         }
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
         Complex[] ZerosArray = new Complex[0];
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
         this.maxQobtained = Math.abs(1./(2.*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
-//        for(Complex x : PolesArray)
-//            System.out.println(x.getReal() + " " + x.getImaginary() + " " + x.getArgument());
+
+        for ( Complex x : PolesArray) {
+            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
+        } System.out.println();
+
         if (maxQ > 0.5 && this.maxQobtained > maxQ)
             Cheby1(temp,this.Order-1, maxQ);        //If maxQ is overflowed, retry with a minor order.
     }
@@ -199,6 +203,7 @@ public class Approximation {
             double alpha = Math.PI*((2.*i+1)/(2*this.Order));
             double imag =   Math.cos(alpha) * Math.cosh(beta);
             double real = - Math.sin(alpha) * Math.sinh(beta);
+            if (Math.abs(imag) < 10e-3) imag = 0;   //Floating point error correction.
             Poles.add(new Complex(real, imag).reciprocal().multiply(wan));
             if(2*i+1 != this.Order) //alpha != pi/2
                 Zeros.add(new Complex(0,wan/Math.cos(alpha)));
@@ -207,8 +212,11 @@ public class Approximation {
         Complex[] ZerosArray = Zeros.toArray(new Complex[Zeros.size()]);
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
         this.maxQobtained = Math.abs(1./(2.*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
-//        for(Complex x : PolesArray)
-//            System.out.println(x.getReal() + " " + x.getImaginary() + " " + x.getArgument());
+
+        for ( Complex x : PolesArray) {
+            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
+        } System.out.println();
+
         if (maxQ > 0.5 && this.maxQobtained > maxQ)
             Cheby2(temp, this.Order - 1, maxQ);        //If maxQ is overflowed, retry with a minor order.
     }

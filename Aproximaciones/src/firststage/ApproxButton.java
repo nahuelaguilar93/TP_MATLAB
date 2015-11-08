@@ -18,7 +18,6 @@ class ApproxButton extends JPanel {
         approxButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                //ToDo: Ojo! creo que pasé mal esto... es un ListPanel y no un FilterList!
                 Singleton_S1 s = Singleton_S1.getInstance();
                 FilterList filterList = s.getFilterList();
                 ApproxComboBox approxComboBox = s.getApproxComboBox();
