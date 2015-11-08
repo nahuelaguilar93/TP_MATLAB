@@ -10,11 +10,12 @@ class ConfigLowPassPanel extends JPanel {
     protected JTextField textFilterWa = new JTextField();
 
     public ConfigLowPassPanel() {
+        setTextBoxes(1000,1200);
         textFilterWp.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
         textFilterWa.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
         JLabel labelWp = new JLabel("Wp:");
         JLabel labelWa = new JLabel("Wa:");
-        JLabel units = new JLabel("rad/seg");
+//        JLabel units = new JLabel("rad/seg");
 
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);

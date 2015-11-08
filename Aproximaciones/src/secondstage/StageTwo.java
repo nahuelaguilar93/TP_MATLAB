@@ -1,11 +1,11 @@
 package secondstage;
 
+import org.math.plot.Plot2DPanel;
+import tclib.GenericUtils;
+import tclib.TransferFunction;
+
 import javax.swing.*;
 import java.awt.*;
-
-import org.math.plot.*;
-import tclib.TransferFunction;
-import tclib.GenericUtils;
 
 public class StageTwo extends JPanel {
 
@@ -18,17 +18,17 @@ public class StageTwo extends JPanel {
         TransferFunction lowpass = new TransferFunction(num,den);
 
         double[] freq = GenericUtils.logspace(0.1,10,500);
-        double[] modulo = lowpass.getModuleDB(freq);
-        double[] phase = lowpass.getPhase(freq);
+//        double[] modulo = lowpass.getModuleDB(freq);
+//        double[] phase = lowpass.getPhase(freq);
 
         // create your PlotPanel (you can use it as a JPanel)
         Plot2DPanel plot = new Plot2DPanel();
         plot.setAxisScales("LOG", "LIN");
-        plot.addLinePlot("my plot", freq, modulo);
+//        plot.addLinePlot("my plot", freq, modulo);
 
         Plot2DPanel plot2 = new Plot2DPanel();
         plot2.setAxisScales("LOG", "LIN");
-        plot2.addLinePlot("my plot", freq, phase);
+//        plot2.addLinePlot("my plot", freq, phase);
 
 
         this.add(plot);

@@ -10,7 +10,7 @@ import java.util.List;
 public class UserData {
 
     private List<Approximation> ApproximationList = new ArrayList<>();
-    private SuperTemplate CurrentTemplate = new LowpassTemplate(3., 10., 6., 1, 1.2);
+    private SuperTemplate CurrentTemplate = new LowpassTemplate(3., 13., 6., 1, 1.2);
     private int selection = -1;
 
     public List<Approximation> getApproximationList() { return ApproximationList; }

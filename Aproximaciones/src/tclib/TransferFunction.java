@@ -77,6 +77,10 @@ public class TransferFunction {
         }
     }
 
+    public double getModuleAtOrigin() {
+        return numerador.getCoefficients()[0] / denominador.getCoefficients()[0];
+    }
+
     public Complex evaluateApproximationAtOmega(double omega) {
         Complex evaluationPoint = new Complex(0, omega);
         Complex numValue = new Complex(0);
@@ -91,8 +95,6 @@ public class TransferFunction {
             denValue = denValue.add(evaluationPoint.pow(i).multiply(denCoefficient[i]));
         }
 
-        System.out.println("Num: " + numValue.abs() + " Den: " + denValue.abs() + " Omega: " + omega);
-
         return numValue.divide(denValue);
     }
 
@@ -104,6 +106,12 @@ public class TransferFunction {
         }
 
         return result;
+    }
+
+    public void multiply(double gain) {
+        double p[] = {gain};
+        PolynomialFunction aux = new PolynomialFunction(p);
+        numerador = numerador.multiply(aux);
     }
 
     public Complex[] getZeros() {
@@ -546,7 +554,6 @@ public class TransferFunction {
     }
     //</editor-fold>
 
-
     public static void executeTest() {
 
         Complex zero1 = new Complex(2, 3);
@@ -560,5 +567,4 @@ public class TransferFunction {
         System.out.println(Arrays.toString(tf.denominador.getCoefficients()));
 
     }
-
 }

@@ -3,7 +3,10 @@ package firststage;
 import javax.swing.*;
 
 class ConfigHighPassPanel extends ConfigLowPassPanel {
-    public ConfigHighPassPanel() { super(); }
+    public ConfigHighPassPanel() {
+        super();
+        setTextBoxes(1200,1000);
+    }
 
     @Override
     public boolean isParsable(){

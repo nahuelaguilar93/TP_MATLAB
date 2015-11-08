@@ -6,9 +6,9 @@ import java.awt.*;
 class ConfigAmplitudePanel extends JPanel {
     private final int TEXT_HEIGHT = 34;
     private final int TEXT_WIDTH = 70;
-    private JTextField textFilterAp = new JTextField();
-    private JTextField textFilterAa = new JTextField();
-    private JTextField textFilterG = new JTextField();
+    private JTextField textFilterAp = new JTextField("3.0");
+    private JTextField textFilterAa = new JTextField("13.0");
+    private JTextField textFilterG = new JTextField("6.0");
 
     public ConfigAmplitudePanel() {
         textFilterAp.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));

@@ -52,6 +52,7 @@ public class Approximation {
 
     public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder, double maxQ) {
         List<String> approxList = getStringsToComboBox(temp);
+        boolean  inverseDenormalization = false;
         if(approxList.get(index).equals("Butterworth")) {
             Butter(temp, setOrder, maxQ);
             ApproxName = "Butterworth";
@@ -63,8 +64,10 @@ public class Approximation {
         else /*if (approxList.get(index).equals("Chebyshev II"))*/ {
             Cheby2(temp, setOrder, maxQ);
             ApproxName = "Cheby 2";
+            inverseDenormalization = true;
+            denormPerc = 1.-denormPerc;
         }
-        double range = getDenormalizationRange(temp);
+        double range = getDenormalizationRange(temp, inverseDenormalization);
         double denorm = Math.pow(range,denormPerc);
         TF = NTF.denormalize(temp, denorm);
         Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained) + " / " + (int)(denormPerc*100);
@@ -73,9 +76,10 @@ public class Approximation {
     private double NTFminusAp(double x, double Aa){
         return -20*Math.log10(NTF.evaluateApproximationAtOmega(x).abs()) - Aa;
     }
-    private double getDenormalizationRange(SuperTemplate temp) {
+    private double getDenormalizationRange(SuperTemplate temp, boolean inverseDenormalization) {
         //By using the Bisection Method, it gets the frequency at which the approximation equals Aa.
         double Aa = temp.getAa()*0.9999;    //Para evitar errores en los valles de Cauer y Cheby II.
+        if(inverseDenormalization == true) Aa = temp.getAp()*0.9999;
         double a = 1;   // 1 rad/s    Wp Normalizado.
         double b = temp.getWan();
         int sa = (int) Math.signum(NTFminusAp(a, Aa));
@@ -93,7 +97,8 @@ public class Approximation {
             if(b/a < tol)
                 break;
         }
-        return temp.getWan()/Math.sqrt(a*b);
+        if(inverseDenormalization == true) return 1./Math.sqrt(a*b);
+        else return temp.getWan()/Math.sqrt(a*b);
     }
 
     ////////////////////////////////////APPROXIMATIONS//////////////////////////////////////////////
@@ -134,16 +139,10 @@ public class Approximation {
             arg += Math.PI / this.Order;
         }
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
-
-//        for ( Complex x : PolesArray) {
-//            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
-//        } System.out.println();
-
         Complex[] ZerosArray = new Complex[0];
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
         this.maxQobtained = 1./(2*Math.sin(Math.PI/(2*this.Order)));
     }
-
     private void Cheby1(SuperTemplate temp, int setOrder, double maxQ){
         double Ap = temp.getAp();
         double Aa = temp.getAa();
@@ -167,19 +166,14 @@ public class Approximation {
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
         Complex[] ZerosArray = new Complex[0];
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
+        double origin = this.NTF.getModuleAtOrigin();
+        if(this.Order%2 == 0) origin /= Math.pow(10, -Ap / 20);
+        this.NTF.multiply(1./origin);
+
         this.maxQobtained = Math.abs(1./(2.*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
-
-//        for ( Complex x : PolesArray) {
-//            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
-//        } System.out.println();
-
         if (maxQ > 0.5 && this.maxQobtained > maxQ)
             Cheby1(temp,this.Order-1, maxQ);        //If maxQ is overflowed, retry with a minor order.
-
-        System.out.println(this.NTF.evaluateApproximationAtOmega(0.00001).abs());
-
     }
-
     private void Cheby2(SuperTemplate temp, int setOrder, double maxQ){
         double Ap = temp.getAp();
         double Aa = temp.getAa();
@@ -206,12 +200,10 @@ public class Approximation {
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
         Complex[] ZerosArray = Zeros.toArray(new Complex[Zeros.size()]);
         this.NTF = new TransferFunction(ZerosArray,PolesArray);
+        double origin = this.NTF.getModuleAtOrigin();
+        this.NTF.multiply(1./origin);
+
         this.maxQobtained = Math.abs(1./(2.*Math.sin(PolesArray[0].getArgument()-Math.PI/2)));
-
-//        for ( Complex x : PolesArray) {
-//            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
-//        } System.out.println();
-
         if (maxQ > 0.5 && this.maxQobtained > maxQ)
             Cheby2(temp, this.Order - 1, maxQ);        //If maxQ is overflowed, retry with a minor order.
     }
