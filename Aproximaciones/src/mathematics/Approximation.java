@@ -68,10 +68,6 @@ public class Approximation {
         double denorm = Math.pow(range,denormPerc);
         TF = NTF.denormalize(temp, denorm);
         Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained) + " / " + (int)(denormPerc*100);
-        Complex[] PolesArray = TF.getPoles();
-        for ( Complex x : PolesArray) {
-            System.out.println("K real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
-        } System.out.println();
     }
 
     private double NTFminusAp(double x, double Aa){
@@ -139,9 +135,9 @@ public class Approximation {
         }
         Complex[] PolesArray = Poles.toArray(new Complex[Poles.size()]);
 
-        for ( Complex x : PolesArray) {
-            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
-        } System.out.println();
+//        for ( Complex x : PolesArray) {
+//            System.out.println("real: " + x.getReal() + " Imag:" + x.getImaginary() + " abs:" + x.abs() + " pha:" + x.getArgument());
+//        } System.out.println();
 
         Complex[] ZerosArray = new Complex[0];
         this.NTF = new TransferFunction(ZerosArray,PolesArray);

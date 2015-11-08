@@ -74,12 +74,7 @@ public class TransferFunction {
                 PolynomialFunction aux = new PolynomialFunction(roots);
                 denominador = denominador.multiply(aux);
             }
-
-            int i = 1;
-            for(double x : denominador.getCoefficients())
-                System.out.println("Coef " + i++ +  ": " + x);
         }
-
     }
 
     public Complex evaluateApproximationAtOmega(double omega) {
@@ -96,7 +91,7 @@ public class TransferFunction {
             denValue = denValue.add(evaluationPoint.pow(i).multiply(denCoefficient[i]));
         }
 
-//        System.out.println("Num: " + numValue + "Den: " + denValue);
+        System.out.println("Num: " + numValue.abs() + " Den: " + denValue.abs() + " Omega: " + omega);
 
         return numValue.divide(denValue);
     }
@@ -113,7 +108,9 @@ public class TransferFunction {
 
     public Complex[] getZeros() {
         LaguerreSolver laguerreSolver = new LaguerreSolver();
-        return laguerreSolver.solveAllComplex(numerador.getCoefficients(), 0);
+        if(numerador.getCoefficients().length > 1)
+            return laguerreSolver.solveAllComplex(numerador.getCoefficients(), 0);
+        else return new Complex[0];
     }
 
     public Complex[] getPoles() {
