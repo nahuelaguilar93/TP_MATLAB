@@ -199,7 +199,6 @@ class PlotPlot extends JPanel{
     }
 
     public void addPlots() {
-        plotA.setDataset(1, null);   //Cabeceada pero funciona para borrar
         XYSeriesCollection dataset = new XYSeriesCollection();
         double[] freq = GenericUtils.logspace(wmin * (0.1), wmax * 10, 10000);
         java.util.List<Approximation> approximationList = userData.getApproximationList();
@@ -244,15 +243,11 @@ class PlotPlot extends JPanel{
         Complex[] zerosArray = x.getTF().getZeros();
         for (int i = 0; i < zerosArray.length; i++) {
             zerosSeries.add(zerosArray[i].getReal(), zerosArray[i].getImaginary());
-            System.out.println(zerosArray[i].getReal());
-            System.out.println(zerosArray[i].getImaginary());
         }
         XYSeries polesSeries = new XYSeries(x.getDetails() + "poles");
         Complex[] polesArray = x.getTF().getPoles();
         for (int i = 0; i < polesArray.length; i++) {
             polesSeries.add(polesArray[i].getReal(), polesArray[i].getImaginary());
-            System.out.println(polesArray[i].getReal());
-            System.out.println(polesArray[i].getImaginary());
         }
         polesSeries.add(1,1);
         polesSeries.add(1,0.5);
