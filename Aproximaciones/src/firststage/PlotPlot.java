@@ -11,9 +11,6 @@ import org.jfree.chart.axis.LogarithmicAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
-import org.jfree.data.DomainOrder;
-import org.jfree.data.general.DatasetChangeListener;
-import org.jfree.data.general.DatasetGroup;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -23,8 +20,6 @@ import tclib.templates.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
 
 /**
  * Created by NEGU on 7/10/2015.
@@ -35,41 +30,66 @@ class PlotPlot extends JPanel{
     private SuperTemplate currentTemplate;
     private double wmin;
     private double wmax;
-    XYPlot plot;
+    XYPlot plotA;
+    XYPlot plotPZ;
+    CardLayout cardLayout = new CardLayout();
 
     public PlotPlot() {
-        JPanel plotPanel = createPlotPanel();
+        JPanel plotPanel = createAttenuationPanel();
         JPanel poleZeroPanel = createPoleZeroPanel();
 
-        this.setLayout(new GridLayout());
-        GridBagConstraints c = new GridBagConstraints();
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
+        this.setLayout(cardLayout);
 
         this.setBorder(BorderFactory.createTitledBorder("Plot"));
-        this.add(plotPanel, c);
+        this.add(poleZeroPanel, "PoleZero");
+        this.add(plotPanel, "Atenuation");
+        //cardLayout.show(this, "Atenuation");
+    }
+
+    public void recreateTemplate() {
+        plotA.setDataset(0, createDatasetTemplate());
+        plotA.setDataset(1, null);
+
+        //Used to set default Axis
+        double Aa = currentTemplate.getAa();
+        double Ap = currentTemplate.getAp();
+
+        //Set Logarithmic axis
+        ValueAxis xAxis = plotA.getDomainAxis();
+        xAxis.setRange(wmin * 0.1, wmax * 10);
+        ValueAxis yAxis = plotA.getRangeAxis();
+        yAxis.setRange(0, Aa+10);   //TODO: 0 debe ser cambiado por ganancia
+
+        //Set 'y' default Axis
+        plotA.setDomainAxis(xAxis);
+        plotA.setRangeAxis(yAxis);
+        cardLayout.show(this, "Atenuation");
     }
 
     private JPanel createPoleZeroPanel() {
-        /*XYDataset poleZeroDataset = createPoleZeroPlot();
+        XYSeriesCollection poleZeroDataset = createPoleZeroPlot();
+        /*XYSeriesCollection poleZeroDataset = new XYSeriesCollection();
+        XYSeries series = new XYSeries("prueba");
+        series.add(1,1);
+        series.add(0,1);
+        series.add(1,0.5);
+        poleZeroDataset.addSeries(series);*/
         JFreeChart chart = ChartFactory.createScatterPlot("Poles/Zeros", "Real", "Imaginary", poleZeroDataset);
 
         //TODO: Falta agregar la configuración de los ejes y esas cosas
+        plotPZ = chart.getXYPlot();
 
-        return new ChartPanel(chart);*/
-        return new JPanel();
+        return new ChartPanel(chart);
     }
-
-    private JPanel createPlotPanel() {
+    private JPanel createAttenuationPanel() {
         XYDataset datasetTemplate = createDatasetTemplate();
         JFreeChart chart = ChartFactory.createXYLineChart("Prueba de JFreeChart", "Frequency", "Atenuation", datasetTemplate);
 
         //Setup Color Background and grid
-        plot = chart.getXYPlot();
-        plot.setBackgroundPaint(Color.LIGHT_GRAY);
-        plot.setRangeGridlinePaint(Color.BLACK);
-        plot.setDomainGridlinePaint(Color.BLACK);
+        plotA = chart.getXYPlot();
+        plotA.setBackgroundPaint(Color.LIGHT_GRAY);
+        plotA.setRangeGridlinePaint(Color.BLACK);
+        plotA.setDomainGridlinePaint(Color.BLACK);
 
         addPlots();     //Agrego los filtros
 
@@ -79,13 +99,13 @@ class PlotPlot extends JPanel{
 
         //Set Logarithmic axis
         LogarithmicAxis xAxis = new LogarithmicAxis("Frequency");
-        xAxis.setRange(wmin*0.1, wmax*10);
-        ValueAxis yAxis = plot.getDomainAxis();
+        xAxis.setRange(wmin * 0.1, wmax * 10);
+        ValueAxis yAxis = plotA.getDomainAxis();
         yAxis.setRange(0, Aa+10);   //TODO: 0 debe ser cambiado por ganancia
 
         //Set 'y' default Axis
-        plot.setDomainAxis(xAxis);
-        plot.setRangeAxis(yAxis);
+        plotA.setDomainAxis(xAxis);
+        plotA.setRangeAxis(yAxis);
 
         return new ChartPanel(chart);
     }
@@ -169,9 +189,17 @@ class PlotPlot extends JPanel{
 
         return dataset;
     }
+    private XYSeriesCollection createPoleZeroPlot() {
+        XYSeriesCollection dataset = new XYSeriesCollection();
+
+        for ( Approximation x : userData.getApproximationList()) {
+            dataset = getPolesZeroDataset(x, dataset);
+        }
+        return dataset;
+    }
 
     public void addPlots() {
-        plot.setDataset(1, null);   //Cabeceada pero funciona para borrar
+        plotA.setDataset(1, null);   //Cabeceada pero funciona para borrar
         XYSeriesCollection dataset = new XYSeriesCollection();
         double[] freq = GenericUtils.logspace(wmin * (0.1), wmax * 10, 10000);
         java.util.List<Approximation> approximationList = userData.getApproximationList();
@@ -182,27 +210,24 @@ class PlotPlot extends JPanel{
             double[] modulo = TF.getModuleDB(freq);
             dataset = addDatasetAprox(freq, modulo, currentAprox.getDetails(), dataset);
         }
-        plot.setDataset(1, dataset);
-        plot.setRenderer(1, new StandardXYItemRenderer());
+        plotA.setDataset(1, dataset);
+        plotA.setRenderer(1, new StandardXYItemRenderer());
+        //cardLayout.show(this, "Atenuation");
     }
-
-    public void recreateTemplate() {
-        plot.setDataset(0, createDatasetTemplate());
-        plot.setDataset(1, null);
-
-       //Used to set default Axis
-        double Aa = currentTemplate.getAa();
-        double Ap = currentTemplate.getAp();
-
-        //Set Logarithmic axis
-        ValueAxis xAxis = plot.getDomainAxis();
-        xAxis.setRange(wmin*0.1, wmax*10);
-        ValueAxis yAxis = plot.getRangeAxis();
-        yAxis.setRange(0, Aa+10);   //TODO: 0 debe ser cambiado por ganancia
-
-        //Set 'y' default Axis
-        plot.setDomainAxis(xAxis);
-        plot.setRangeAxis(yAxis);
+    public void poleZeroPlot() {
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        XYSeriesCollection poleZeroDataset = new XYSeriesCollection();
+        XYSeries series = new XYSeries("prueba");
+        series.add(1,1);
+        series.add(0,1);
+        series.add(1,0.5);
+        poleZeroDataset.addSeries(series);
+        for ( Approximation x : userData.getApproximationList()) {
+            dataset = getPolesZeroDataset(x, dataset);
+        }
+        plotPZ.setDataset(0, dataset);
+        plotPZ.setDataset(0, poleZeroDataset);
+        cardLayout.show(this, "PoleZero");
     }
 
     private XYSeriesCollection addDatasetAprox(double[] freq, double[] modulo, String seriesName, XYSeriesCollection dataset) {
@@ -214,37 +239,26 @@ class PlotPlot extends JPanel{
         dataset.addSeries(series);
         return dataset;
     }
-
-    public void createPoleZeroPlot() {
-        //plot.setDataset(0, null);
-        //plot.setDataset(1, null);
-        XYSeriesCollection polesDataset = new XYSeriesCollection();
-        XYSeriesCollection zerosDataset = new XYSeriesCollection();
-
-        for ( Approximation x : userData.getApproximationList()) {
-            polesDataset = getPolesDataset(x.getDetails() + "poles", polesDataset, x);
-            zerosDataset = getZerosDataset(x.getDetails() + "zeros", polesDataset, x);
-        }
-        plot.setDataset(0, polesDataset);
-        plot.setDataset(1, zerosDataset);
-    }
-
-    private XYSeriesCollection getZerosDataset(String seriesName, XYSeriesCollection dataset, Approximation x) {
-        XYSeries zerosSeries = new XYSeries(seriesName);
+    private XYSeriesCollection getPolesZeroDataset(Approximation x, XYSeriesCollection dataset) {
+        XYSeries zerosSeries = new XYSeries(x.getDetails() + "zeros");
         Complex[] zerosArray = x.getTF().getZeros();
         for (int i = 0; i < zerosArray.length; i++) {
             zerosSeries.add(zerosArray[i].getReal(), zerosArray[i].getImaginary());
+            System.out.println(zerosArray[i].getReal());
+            System.out.println(zerosArray[i].getImaginary());
         }
-        dataset.addSeries(zerosSeries);
-        return dataset;
-    }
-    private XYSeriesCollection getPolesDataset(String seriesName, XYSeriesCollection dataset, Approximation x) {
-        XYSeries polesSeries = new XYSeries(seriesName);
+        XYSeries polesSeries = new XYSeries(x.getDetails() + "poles");
         Complex[] polesArray = x.getTF().getPoles();
         for (int i = 0; i < polesArray.length; i++) {
             polesSeries.add(polesArray[i].getReal(), polesArray[i].getImaginary());
+            System.out.println(polesArray[i].getReal());
+            System.out.println(polesArray[i].getImaginary());
         }
+        polesSeries.add(1,1);
+        polesSeries.add(1,0.5);
+        polesSeries.add(1,0);
         dataset.addSeries(polesSeries);
+        dataset.addSeries(zerosSeries);
         return dataset;
     }
 }

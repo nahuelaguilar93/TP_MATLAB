@@ -27,7 +27,7 @@ class CheckBoxChoosePlot extends JPanel{
         polosCeros.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                s.getPlotPlot().createPoleZeroPlot();
+                s.getPlotPlot().poleZeroPlot();
             }
         });
         atenuacion.addActionListener(new ActionListener() {

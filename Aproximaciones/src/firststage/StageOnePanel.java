@@ -4,7 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 /*
-*   Stage One is divided into two different big panels. One with all the configuration buttons and panels and another with the plot
+*   Stage One is divided into two different big panels. One with all the configuration buttons and panels and another with the plotA
 */
 
 public class StageOnePanel extends JPanel {
