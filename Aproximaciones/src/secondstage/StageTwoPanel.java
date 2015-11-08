@@ -8,13 +8,19 @@ import tclib.TransferFunction;
 import javax.swing.*;
 import java.awt.*;
 
-public class StageTwo extends JPanel {
+public class StageTwoPanel extends JPanel {
+    private StagePanel stagePanel;
+    private PoleZeroPanel poleZeroPanel;
 
-    public StageTwo() {
+    public StageTwoPanel() {
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         this.setBackground(Color.BLUE);
 
+        stagePanel = new StagePanel();
+        poleZeroPanel = new PoleZeroPanel();
 
+        this.add(stagePanel);
+        this.add(poleZeroPanel);
     }
 
     void set(){

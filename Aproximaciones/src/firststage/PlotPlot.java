@@ -7,7 +7,9 @@ import org.apache.commons.math3.complex.Complex;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.annotations.XYShapeAnnotation;
 import org.jfree.chart.axis.LogarithmicAxis;
+import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
@@ -399,9 +401,15 @@ class PlotPlot extends JPanel{
         Complex[] polesArray = x.getTF().getPoles();
         for (int i = 0; i < polesArray.length; i++) {
             polesSeries.add(polesArray[i].getReal(), polesArray[i].getImaginary());
+            double mod = Math.sqrt(Math.pow(polesArray[i].getReal(),2) + Math.pow(polesArray[i].getImaginary(),2));
+            XYShapeAnnotation unitCircle = new XYShapeAnnotation(new Ellipse2D.Double(-1, -1, 2*mod, 2*mod), new BasicStroke(1.0f, BasicStroke.CAP_BUTT, BasicStroke.JOIN_MITER, 10.0f), Color.black);
+            plotPZ.addAnnotation(unitCircle);
         }
         dataset.addSeries(polesSeries);
         dataset.addSeries(zerosSeries);
+
+
+
         return dataset;
     }
     private XYSeriesCollection addStepOrImpulseSeriesToDataset(double[] temp, double[] step, String seriesName, XYSeriesCollection dataset) {

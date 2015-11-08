@@ -1,7 +1,7 @@
 package Data;
 
 import firststage.StageOnePanel;
-import secondstage.StageTwo;
+import secondstage.StageTwoPanel;
 import thirdstage.StageThree;
 
 import javax.swing.*;
@@ -21,7 +21,7 @@ public class PrincipalPanel extends JPanel {
         */
     JPanel bigPanel;
     StageOnePanel stageOnePanel;
-    StageTwo stageTwo;
+    StageTwoPanel stageTwoPanel;
     StageThree stageThree;
     CardLayout cardLayout;
     JPanel buttonPanel;
@@ -32,7 +32,7 @@ public class PrincipalPanel extends JPanel {
         Singleton s = Singleton.getInstance();
         JPanel bigPanel = new JPanel();
         StageOnePanel stageOnePanel = s.getStageOnePanel();
-        StageTwo stageTwo = s.getStageTwo();
+        StageTwoPanel stageTwoPanel = s.getStageTwoPanel();
         StageThree stageThree = s.getStageThree();
         CardLayout cardLayout = new CardLayout();
         JPanel buttonPanel = new JPanel();
@@ -41,7 +41,7 @@ public class PrincipalPanel extends JPanel {
 
         bigPanel.setLayout(cardLayout);
         bigPanel.add(stageOnePanel, "One");
-        bigPanel.add(stageTwo, "Two");
+        bigPanel.add(stageTwoPanel, "Two");
         bigPanel.add(stageThree, "Three");
 
         previousStageButton.setEnabled(false);

@@ -60,7 +60,7 @@ class ListButtonsPanel extends JPanel{
                     int index = filterList.getIndex();
                     Singleton.getInstance().getUserData().setSelection(index);
                     filterList.updateList();
-                    //TODO: Guardar el TF selccionado para pasar al StageTwo
+                    //TODO: Guardar el TF selccionado para pasar al StageTwoPanel
                 }
                 else {
                     JInternalFrame frame = new JInternalFrame();
