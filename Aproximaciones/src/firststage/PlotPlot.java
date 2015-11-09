@@ -73,6 +73,7 @@ class PlotPlot extends JPanel{
         plotA.setDomainAxis(xAxis);
         plotA.setRangeAxis(yAxis);
         cardLayout.show(this, "Atenuation");
+        s1.getCheckBoxChoosePlot().setAtenuation();
     }
 
     public void updatePlot() {

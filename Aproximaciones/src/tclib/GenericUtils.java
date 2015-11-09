@@ -22,12 +22,16 @@ public class GenericUtils {
         return result;
     }
 
+    public static double getQ(Complex x){
+        return Math.abs(1./(2.*Math.cos(x.getArgument())));
+    }
+
     public static String getPZString(Complex x, boolean isPole){
         String str = "Zero ";
         if(isPole) str = "Pole ";
         double real = x.getReal();
         double imag = x.getImaginary();
-        double Q = 1./(2.*Math.sin(x.getArgument()));
+        double Q = getQ(x);
         return str + "r: " + String.format("%.1f", real) + " i: " + String.format("%.2f", imag) + " Q: " + String.format("%.2f", Q);
     }
 }

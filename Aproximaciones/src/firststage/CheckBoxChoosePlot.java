@@ -85,4 +85,5 @@ class CheckBoxChoosePlot extends JPanel{
     public JRadioButton getAtenuacion() { return atenuacion; }
     public JRadioButton getStep() { return step; }
     public JRadioButton getImpulse() { return impulse; }
+    public void setAtenuation() { atenuacion.setSelected(true); }
 }

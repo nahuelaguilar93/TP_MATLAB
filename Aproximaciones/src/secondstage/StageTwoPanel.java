@@ -33,9 +33,16 @@ public class StageTwoPanel extends JPanel {
         uData.getUnmatchedPoles().clear();
         uData.getUnmatchedZeros().clear();
         uData.getStageList().clear();
-        for(Complex x : t.getPoles())
-            uData.getUnmatchedPoles().add(x);
-        for(Complex x : t.getZeros())
-            uData.getUnmatchedZeros().add(x);
+        for(Complex x : t.getPoles()) {
+            if(Math.abs(x.getImaginary()) < Math.pow(10,-6)) x = new Complex(x.getReal(),0);
+            if (x.getImaginary() >= 0)  //Only the positive conjugated are stored because I only need one of the two
+                uData.getUnmatchedPoles().add(x);
+        }
+        for(Complex x : t.getZeros()){
+            if(Math.abs(x.getImaginary()) < Math.pow(10,-6)) x = new Complex(x.getReal(),0);
+            if (x.getImaginary() >= 0)  //Only the positive conjugated are stored because I only need one of the two
+                uData.getUnmatchedZeros().add(x);
+        }
+        Singleton_S2.getInstance().getPoleZeroListsPanel().updateLists();
     }
 }
