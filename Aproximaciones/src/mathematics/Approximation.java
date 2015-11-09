@@ -84,7 +84,7 @@ public class Approximation {
     }
     private double getDenormalizationRange(SuperTemplate temp, boolean inverseDenormalization) {
         //By using the Bisection Method, it gets the frequency at which the approximation equals Aa.
-        double Aa = temp.getAa()*0.9999;    //Para evitar errores en los valles de Cauer y Cheby II.
+        double Aa = temp.getAa()*0.99999;    //Para evitar errores en los valles de Cauer y Cheby II.
         if(inverseDenormalization == true) Aa = temp.getAp()*0.99999;
         double a = 1;   // 1 rad/s    Wp Normalizado.
         double b = temp.getWan();

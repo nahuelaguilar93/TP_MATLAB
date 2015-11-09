@@ -40,21 +40,36 @@ public class GenericUtils {
         return str + "r: " + String.format("%.1f", real) + " i: " + String.format("%.2f", imag) + " Q: " + String.format("%.2f", Q);
     }
 
-    double dynamicRangeLoss(List<Stage> stages, double minW, double maxW) {
+    public static double dynamicRangeLoss(List<Stage> stages, double minW, double maxW) {
         return dynamicRangeLoss(stages, minW, maxW, 10000);
     }
-    double dynamicRangeLoss(List<Stage> stages, double minW, double maxW, int points) {
+    public static double dynamicRangeLoss(List<Stage> stages, double minW, double maxW, int points) {
         if(stages.size() == 0) return 0;
         double freq[] = linspace(minW, maxW, points);
-        double dynRange[] = new double[points];
+        double dynRangeLoss[] = new double[points];
         List<TransferFunction> acumTF =  new ArrayList<>();
         acumTF.add(stages.get(0).getTF());
         for(int i = 1; i < stages.size(); i++){
-//            TransferFunction nextTF = acumTF.get(i-1).
-//            acumTF.add()
+            TransferFunction nextTF = new TransferFunction(acumTF.get(i-1));
+            nextTF.multiply(stages.get(i).getTF());
+            acumTF.add(nextTF);
         }
-        for(int i = 0; i < points; i++)
-            dynRange[i] = 0;
-        return 4.;
+        double stageGain[] = new double[stages.size()];
+        for(int i = 0; i < points; i++) {
+            for (int j = 0; j < stages.size(); j++)
+                stageGain[j] = acumTF.get(j).evaluateApproximationAtOmega(freq[i]).abs();
+            double max = stageGain[0];
+            double min = stageGain[0];
+            for(double x : stageGain){
+                if(max < x) max = x;
+                if(min > x) min = x;
+            }
+            dynRangeLoss[i] =  max/min;
+        }
+        double maxLoss = dynRangeLoss[0];
+        for(double x : dynRangeLoss){
+            if(maxLoss < x) maxLoss = x;
+        }
+        return maxLoss;
     }
 }
