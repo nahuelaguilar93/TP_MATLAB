@@ -274,7 +274,7 @@ public class TransferFunction {
     }
     
     public TransferFunction denormalize(HighpassTemplate highpassTemplate, double denorm) {
-        double wd = highpassTemplate.getWa() / denorm;
+        double wd = highpassTemplate.getWp() / denorm;
 
         double[] currentDen = denominador.getCoefficients();
         double[] currentNum = numerador.getCoefficients();
@@ -306,7 +306,7 @@ public class TransferFunction {
     }
 
     public TransferFunction denormalize(BandrejectTemplate bandrejectTemplate, double denorm) {
-        double Bd = bandrejectTemplate.getB() * denorm;
+        double Bd = (bandrejectTemplate.getB() / denorm);
         double wo = bandrejectTemplate.getWo();
         double[] currentDen = denominador.getCoefficients();
         double[] currentNum = numerador.getCoefficients();

@@ -27,7 +27,7 @@ public class BandrejectTemplate extends SuperTemplate {
         this.wpm = wpm;
         this.wam = wam;
         this.wo = sqrt(wam*wap);
-        this.B = (wap-wam)/wo;
+        this.B = (wpp-wpm)/wo;
         normalize();
     }
 
