@@ -28,10 +28,12 @@ public class PoleZeroListsPanel extends JPanel {
     private JButton automaticSelectionButton = new JButton("Automatic Selection");
     private JButton deleteStage = new JButton("Delete Stage");
 
+    int joker; //This is used to know if I have to use all zeros twice or not
+
     public PoleZeroListsPanel() {
         //Only one string can be selected at the same time
         unmatchedPolesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        unmatchedZeroList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        unmatchedZeroList.setSelectionModel(new MySelectionModel(unmatchedZeroList, 2));
         stagesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //List Layout Orientation
         unmatchedPolesList.setLayoutOrientation(JList.VERTICAL);
@@ -96,10 +98,15 @@ public class PoleZeroListsPanel extends JPanel {
         //Update Lists with the userData information
         for ( Complex x : currentUnmatchedPoles) {
             polesListModel.addElement(genericUtils.getPZString(x, true));
+            if ( x.getImaginary() == 0 ) { joker += 1; }
+            else { joker += 2; }
         }
         for (Complex x : currentUnmatchedZeros) {
             zerosListModel.addElement(genericUtils.getPZString(x, false));
+            if ( x.getImaginary() == 0 ) { joker -= 1; }
+            else { joker -= 2; }
         }
+        if ( joker > 0  ) { zerosListModel.addElement("<None>"); }
         for (Stage x : currentStageList) {
             String poleString = genericUtils.getPZString(x.getPole(), true);
             String zeroString = genericUtils.getPZString(x.getZero(), false);
@@ -108,17 +115,27 @@ public class PoleZeroListsPanel extends JPanel {
     }
 
     private void matchPolesZeros() {
+        List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
+        List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
+        List<Stage> stageList = s.getUserData().getStageList();
+
+        int selectedPoleIndex = unmatchedPolesList.getSelectedIndex();
+        int selectedZeroIndex = unmatchedZeroList.getSelectedIndex();
+
+        int firstIndex = unmatchedZeroList.getMinSelectionIndex();
+        int secondIndex = unmatchedZeroList.getMaxSelectionIndex();
         if ( unmatchedPolesList.isSelectionEmpty() || unmatchedZeroList.isSelectionEmpty()) {
-            //TODO: ver bien esto... igual lo de que el cero tenga que estar seleccionado no es si o si
+            return;     //And error frame is annoying... maybe is better just to do nothing. The user will realize
+            //JInternalFrame frame = new JInternalFrame();
+            //JOptionPane.showMessageDialog(frame, "There must be selected a pole and at least one zero", "No pole or zero found", JOptionPane.ERROR_MESSAGE);
+        }
+        else if ( selectedZeroIndex == unmatchedZeros.size() ) {
+            stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex)));
+            unmatchedPoles.remove(selectedPoleIndex);
+
+            updateLists();
         }
         else {
-            List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
-            List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
-            List<Stage> stageList = s.getUserData().getStageList();
-
-            int selectedPoleIndex = unmatchedPolesList.getSelectedIndex();
-            int selectedZeroIndex = unmatchedZeroList.getSelectedIndex();
-
             stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(selectedZeroIndex)));
             unmatchedPoles.remove(selectedPoleIndex);
             unmatchedZeros.remove(selectedZeroIndex);
@@ -126,4 +143,40 @@ public class PoleZeroListsPanel extends JPanel {
             updateLists();
         }
     }
+
+    private static class MySelectionModel extends DefaultListSelectionModel {
+        private JList list;
+        private int maxCount;
+
+        private MySelectionModel(JList list,int maxCount) {
+            this.list = list;
+
+            this.maxCount = maxCount;
+        }
+
+        @Override
+        public void setSelectionInterval(int index0, int index1) {
+            if (index1 - index0 >= maxCount)
+            {
+                index1 = index0 + maxCount - 1;
+            }
+            super.setSelectionInterval(index0, index1);
+        }
+
+        @Override
+        public void addSelectionInterval(int index0, int index1) {
+            int selectionLength = list.getSelectedIndices().length;
+            if (selectionLength >= maxCount)
+                return;
+
+            if (index1 - index0 >= maxCount - selectionLength)
+            {
+                index1 = index0 + maxCount - 1 - selectionLength;
+            }
+            if (index1 < index0)
+                return;
+            super.addSelectionInterval(index0, index1);
+        }
+    }
 }
+

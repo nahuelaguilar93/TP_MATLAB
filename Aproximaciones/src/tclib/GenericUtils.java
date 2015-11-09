@@ -27,6 +27,7 @@ public class GenericUtils {
     }
 
     public static String getPZString(Complex x, boolean isPole){
+        if ( x == Complex.INF) return "No Zero";
         String str = "Zero ";
         if(isPole) str = "Pole ";
         double real = x.getReal();

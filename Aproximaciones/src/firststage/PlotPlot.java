@@ -67,7 +67,7 @@ class PlotPlot extends JPanel{
         ValueAxis xAxis = plotA.getDomainAxis();
         xAxis.setRange(wmin * 0.1, wmax * 10);
         ValueAxis yAxis = plotA.getRangeAxis();
-        yAxis.setRange(0, Aa+10);   //TODO: 0 debe ser cambiado por ganancia
+        yAxis.setRange(-userData.getCurrentTemplate().getG(), 2*(Aa - userData.getCurrentTemplate().getG()));
 
         //Set 'y' default Axis
         plotA.setDomainAxis(xAxis);
@@ -273,7 +273,7 @@ class PlotPlot extends JPanel{
         LogarithmicAxis xAxis = new LogarithmicAxis("Frequency");
         xAxis.setRange(wmin * 0.1, wmax * 10);
         ValueAxis yAxis = plotA.getRangeAxis();
-        yAxis.setRange(0, 2*Aa);   //TODO: 0 debe ser cambiado por ganancia
+        yAxis.setRange(-userData.getCurrentTemplate().getG(), 2*(Aa-currentTemplate.getG()));
 
         //Set 'y' default Axis
         plotA.setDomainAxis(xAxis);
@@ -296,6 +296,9 @@ class PlotPlot extends JPanel{
         XYSeriesCollection dataset = new XYSeriesCollection();
         double Aa = currentTemplate.getAa();
         double Ap = currentTemplate.getAp();
+        double G = currentTemplate.getG();
+        Ap -= G;
+        Aa -= G;
         XYSeries series1 = new XYSeries("First");
         XYSeries series2 = new XYSeries("Second");
         XYSeries series3 = new XYSeries("Third");
@@ -305,7 +308,7 @@ class PlotPlot extends JPanel{
             series1.add(wp*0.1, Ap);
             series1.add(wp, Ap);
             series1.add(wp, 2*Aa);
-            series2.add(wa, 0);
+            series2.add(wa, -G);
             series2.add(wa, Aa);
             series2.add(wa*10, Aa);
 
@@ -316,7 +319,7 @@ class PlotPlot extends JPanel{
             double wp = ((HighpassTemplate) currentTemplate).getWp();
             series1.add(wa*0.1, Aa);
             series1.add(wa, Aa);
-            series1.add(wa, 0);
+            series1.add(wa, -G);
             series2.add(wp, 2*Aa);
             series2.add(wp, Ap);
             series2.add(wp*10, Ap);
@@ -330,12 +333,12 @@ class PlotPlot extends JPanel{
             double wam = ((BandpassTemplate) currentTemplate).getWam();
             series1.add(wam*0.1, Aa);
             series1.add(wam, Aa);
-            series1.add(wam, 0);
+            series1.add(wam, -G);
             series2.add(wpm, 2*Aa);
             series2.add(wpm, Ap);
             series2.add(wpp, Ap);
             series2.add(wpp, 2*Aa);
-            series3.add(wap, 0);
+            series3.add(wap, -G);
             series3.add(wap, Aa);
             series3.add(wap*10, Aa);
 
@@ -352,10 +355,10 @@ class PlotPlot extends JPanel{
             series1.add(wpm*0.1, Ap);
             series1.add(wpm, Ap);
             series1.add(wpm, 2*Aa);
-            series2.add(wam, 0);
+            series2.add(wam, -G);
             series2.add(wam, Aa);
             series2.add(wap, Aa);
-            series2.add(wap, 0);
+            series2.add(wap, -G);
             series3.add(wpp, 2*Aa);
             series3.add(wpp, Ap);
             series3.add(wpp*10, Ap);
@@ -384,7 +387,6 @@ class PlotPlot extends JPanel{
     }
 
     private XYSeriesCollection addAttenuationSeriesToDataset(double[] freq, double[] modulo, String seriesName, XYSeriesCollection dataset) {
-        //TODO: ver que pasa cuando seriesName ya está.
         XYSeries series = new XYSeries(seriesName);
         for (int i = 0; i < freq.length; i++) {
             series.add(freq[i], -modulo[i]);
