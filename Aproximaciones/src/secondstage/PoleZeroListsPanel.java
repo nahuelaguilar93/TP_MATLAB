@@ -101,11 +101,14 @@ public class PoleZeroListsPanel extends JPanel {
             if ( x.getImaginary() == 0 ) { joker += 1; }
             else { joker += 2; }
         }
+        int originZeroCount = 0;
         for (Complex x : currentUnmatchedZeros) {
             zerosListModel.addElement(genericUtils.getPZString(x, false));
-            if ( x.getImaginary() == 0 ) { joker -= 1; }
+            if ( x.getImaginary() == 0 ) { originZeroCount++; }
             else { joker -= 2; }
         }
+        if ( originZeroCount % 2 == 0 ) { joker -= originZeroCount; }
+        else { joker -= (originZeroCount + 1); }
         if ( joker > 0  ) { zerosListModel.addElement("<None>"); }
         for (Stage x : currentStageList) {
             stagesListModel.addElement( x.getDetails() );
@@ -127,24 +130,31 @@ public class PoleZeroListsPanel extends JPanel {
                 if (firstIndex == unmatchedZeros.size()) {
                     stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex)));
                     unmatchedPoles.remove(selectedPoleIndex);
-
-                    updateLists();
                 } else {
                     stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex)));
                     unmatchedPoles.remove(selectedPoleIndex);
                     unmatchedZeros.remove(firstIndex);
-
-                    updateLists();
                 }
             }
             else {  //There are two Selections
-                stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex)));
-                unmatchedPoles.remove(selectedPoleIndex);
-                unmatchedZeros.remove(secondIndex); //First remove the bigger index so that pointed zero by firstIndex is not changed
-                unmatchedZeros.remove(firstIndex);
-
-                updateLists();
+                if (firstIndex == 0) {
+                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(secondIndex)));
+                    unmatchedPoles.remove(selectedPoleIndex);
+                    unmatchedZeros.remove(secondIndex);
+                }
+                else if (secondIndex == 0) {
+                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex)));
+                    unmatchedPoles.remove(selectedPoleIndex);
+                    unmatchedZeros.remove(firstIndex);
+                }
+                else {
+                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex), unmatchedZeros.get(secondIndex)));
+                    unmatchedPoles.remove(selectedPoleIndex);
+                    unmatchedZeros.remove(secondIndex);             //First remove the bigger index so that pointed zero by firstIndex is not changed
+                    unmatchedZeros.remove(firstIndex);
+                }
             }
+            updateLists();
         }
     }
 
