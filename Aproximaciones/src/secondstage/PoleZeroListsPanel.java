@@ -108,9 +108,7 @@ public class PoleZeroListsPanel extends JPanel {
         }
         if ( joker > 0  ) { zerosListModel.addElement("<None>"); }
         for (Stage x : currentStageList) {
-            String poleString = genericUtils.getPZString(x.getPole(), true);
-            String zeroString = genericUtils.getPZString(x.getZero(), false);
-            stagesListModel.addElement( poleString + " + " + zeroString);
+            stagesListModel.addElement( x.getDetails() );
         }
     }
 
@@ -120,28 +118,54 @@ public class PoleZeroListsPanel extends JPanel {
         List<Stage> stageList = s.getUserData().getStageList();
 
         int selectedPoleIndex = unmatchedPolesList.getSelectedIndex();
-        int selectedZeroIndex = unmatchedZeroList.getSelectedIndex();
 
         int firstIndex = unmatchedZeroList.getMinSelectionIndex();
         int secondIndex = unmatchedZeroList.getMaxSelectionIndex();
-        if ( unmatchedPolesList.isSelectionEmpty() || unmatchedZeroList.isSelectionEmpty()) {
-            return;     //And error frame is annoying... maybe is better just to do nothing. The user will realize
+
+        if (checkIndexes(firstIndex, secondIndex)) {
+            if ( firstIndex == secondIndex ) {  //Only One Selected
+                if (firstIndex == unmatchedZeros.size()) {
+                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex)));
+                    unmatchedPoles.remove(selectedPoleIndex);
+
+                    updateLists();
+                } else {
+                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex)));
+                    unmatchedPoles.remove(selectedPoleIndex);
+                    unmatchedZeros.remove(firstIndex);
+
+                    updateLists();
+                }
+            }
+            else {  //There are two Selections
+                stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex)));
+                unmatchedPoles.remove(selectedPoleIndex);
+                unmatchedZeros.remove(secondIndex); //First remove the bigger index so that pointed zero by firstIndex is not changed
+                unmatchedZeros.remove(firstIndex);
+
+                updateLists();
+            }
+        }
+    }
+
+    private boolean checkIndexes( int firstIndex, int secondIndex) {
+        List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
+        List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
+        if ( unmatchedPolesList.isSelectionEmpty() || unmatchedZeroList.isSelectionEmpty()) {   //If there is no Selection
+            return false;     //And error frame is annoying... maybe is better just to do nothing. The user will realize
             //JInternalFrame frame = new JInternalFrame();
             //JOptionPane.showMessageDialog(frame, "There must be selected a pole and at least one zero", "No pole or zero found", JOptionPane.ERROR_MESSAGE);
         }
-        else if ( selectedZeroIndex == unmatchedZeros.size() ) {
-            stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex)));
-            unmatchedPoles.remove(selectedPoleIndex);
-
-            updateLists();
+        if ( firstIndex != secondIndex) {   //If there are two different selections
+            if (((unmatchedZeros.get(firstIndex).getImaginary() != 0) && (firstIndex != 0)) || (unmatchedZeros.get(secondIndex).getImaginary() != 0) && (secondIndex != 0)) {
+                //If one of them is a conjugate complex then you can't select both
+                return false;
+            }
         }
-        else {
-            stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(selectedZeroIndex)));
-            unmatchedPoles.remove(selectedPoleIndex);
-            unmatchedZeros.remove(selectedZeroIndex);
-
-            updateLists();
+        else {  //If there is only one selection
+            return (joker > 0); //Only possible if I have joker left
         }
+        return true;
     }
 
     private static class MySelectionModel extends DefaultListSelectionModel {
