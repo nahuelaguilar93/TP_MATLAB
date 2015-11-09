@@ -70,7 +70,13 @@ public class Approximation {
         double range = getDenormalizationRange(temp, inverseDenormalization);
         double denorm = Math.pow(range,denormPerc);
         TF = NTF.denormalize(temp, denorm);
+        TF.multiply(temp.getG());
         Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained) + " / " + (int)(denormPerc*100);
+    }
+
+    public boolean equals(Approximation that) {
+        if (this.TF.equals(that.TF)) return true;
+        else return false;
     }
 
     private double NTFminusAp(double x, double Aa){
@@ -79,7 +85,7 @@ public class Approximation {
     private double getDenormalizationRange(SuperTemplate temp, boolean inverseDenormalization) {
         //By using the Bisection Method, it gets the frequency at which the approximation equals Aa.
         double Aa = temp.getAa()*0.9999;    //Para evitar errores en los valles de Cauer y Cheby II.
-        if(inverseDenormalization == true) Aa = temp.getAp()*0.9999;
+        if(inverseDenormalization == true) Aa = temp.getAp()*0.99999;
         double a = 1;   // 1 rad/s    Wp Normalizado.
         double b = temp.getWan();
         int sa = (int) Math.signum(NTFminusAp(a, Aa));

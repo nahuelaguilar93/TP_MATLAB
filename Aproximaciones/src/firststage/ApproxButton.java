@@ -15,6 +15,7 @@ class ApproxButton extends JPanel {
     JButton approxButton = new JButton("Add Aproximation");
 
     public ApproxButton() {
+        this.add(approxButton);
         approxButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -37,12 +38,15 @@ class ApproxButton extends JPanel {
                 }
                 double sliderPercentage = s.getSliderDesnorm().getSliderValue();
                 Approximation newApprox = new Approximation(approxComboBox.getIndex(), uData.getCurrentTemplate(), sliderPercentage, order, Q);
+                for(Approximation x : uData.getApproximationList())
+                    if(x.equals(newApprox)) {
+                        s.getPlotPlot().updatePlot();
+                        return;
+                    }
                 uData.getApproximationList().add(newApprox);
                 filterList.updateList();
-
                 s.getPlotPlot().updatePlot();
             }
         });
-        this.add(approxButton);
     }
 }
