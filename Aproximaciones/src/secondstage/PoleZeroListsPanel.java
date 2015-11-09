@@ -96,6 +96,7 @@ public class PoleZeroListsPanel extends JPanel {
         List<Complex> currentUnmatchedZeros = s.getUserData().getUnmatchedZeros();
         List<Stage> currentStageList = s.getUserData().getStageList();
         //Update Lists with the userData information
+        joker = 0;
         for ( Complex x : currentUnmatchedPoles) {
             polesListModel.addElement(genericUtils.getPZString(x, true));
             if ( x.getImaginary() == 0 ) { joker += 1; }
@@ -104,12 +105,19 @@ public class PoleZeroListsPanel extends JPanel {
         int originZeroCount = 0;
         for (Complex x : currentUnmatchedZeros) {
             zerosListModel.addElement(genericUtils.getPZString(x, false));
-            if ( x.getImaginary() == 0 ) { originZeroCount++; }
+            if ( x.getImaginary() == 0 ) {
+                joker -= 1;
+                originZeroCount++;
+            }
             else { joker -= 2; }
         }
-        if ( originZeroCount % 2 == 0 ) { joker -= originZeroCount; }
-        else { joker -= (originZeroCount + 1); }
-        if ( joker > 0  ) { zerosListModel.addElement("<None>"); }
+
+        if ( originZeroCount % 2 == 0) {
+            if ( joker > 0  ) { zerosListModel.addElement("<None>"); }
+        }
+        else {
+            if ( joker > 1  ) { zerosListModel.addElement("<None>"); }
+        }
         for (Stage x : currentStageList) {
             stagesListModel.addElement( x.getDetails() );
         }
@@ -167,13 +175,16 @@ public class PoleZeroListsPanel extends JPanel {
             //JOptionPane.showMessageDialog(frame, "There must be selected a pole and at least one zero", "No pole or zero found", JOptionPane.ERROR_MESSAGE);
         }
         if ( firstIndex != secondIndex) {   //If there are two different selections
-            if (((unmatchedZeros.get(firstIndex).getImaginary() != 0) && (firstIndex != 0)) || (unmatchedZeros.get(secondIndex).getImaginary() != 0) && (secondIndex != 0)) {
+            if (((unmatchedZeros.get(firstIndex).getImaginary() != 0) && (firstIndex !=  unmatchedZeros.size())) || (unmatchedZeros.get(secondIndex).getImaginary() != 0) && (secondIndex !=  unmatchedZeros.size())) {
                 //If one of them is a conjugate complex then you can't select both
                 return false;
             }
         }
         else {  //If there is only one selection
-            return (joker > 0); //Only possible if I have joker left
+            if ( firstIndex < unmatchedZeros.size() ) {
+                if (unmatchedZeros.get(firstIndex).getImaginary() != 0) { return true; }
+            }
+            else { return (joker > 0); } //Only possible if I have joker left
         }
         return true;
     }
