@@ -86,6 +86,7 @@ public class PoleZeroListsPanel extends JPanel {
         layout.linkSize(SwingConstants.HORIZONTAL, unmatchedPolesListScroller, unmatchedZeroListScroller);
     }
 
+    //TODO: NO PUEDO JUNTAR UN POLO SIMPLE CON UNO DOBLE LRCDLL
     public void updateLists() {
         //First delete everything from the listPanels
         polesListModel.removeAllElements();
@@ -167,6 +168,9 @@ public class PoleZeroListsPanel extends JPanel {
     }
 
     private boolean checkIndexes( int firstIndex, int secondIndex) {
+        System.out.println("fist Index: " + firstIndex);
+        System.out.println("Second Index: " + secondIndex);
+        System.out.println("Joker: " + joker);
         List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
         List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
         if ( unmatchedPolesList.isSelectionEmpty() || unmatchedZeroList.isSelectionEmpty()) {   //If there is no Selection
@@ -174,17 +178,19 @@ public class PoleZeroListsPanel extends JPanel {
             //JInternalFrame frame = new JInternalFrame();
             //JOptionPane.showMessageDialog(frame, "There must be selected a pole and at least one zero", "No pole or zero found", JOptionPane.ERROR_MESSAGE);
         }
-        if ( firstIndex != secondIndex) {   //If there are two different selections
+        else if ( firstIndex != secondIndex) {   //If there are two different selections
             if (((unmatchedZeros.get(firstIndex).getImaginary() != 0) && (firstIndex !=  unmatchedZeros.size())) || (unmatchedZeros.get(secondIndex).getImaginary() != 0) && (secondIndex !=  unmatchedZeros.size())) {
                 //If one of them is a conjugate complex then you can't select both
                 return false;
             }
         }
-        else {  //If there is only one selection
+        else if (firstIndex == secondIndex) {  //If there is only one selection
+            System.out.println("Entré a first = second");
             if ( firstIndex < unmatchedZeros.size() ) {
                 if (unmatchedZeros.get(firstIndex).getImaginary() != 0) { return true; }
             }
-            else { return (joker > 0); } //Only possible if I have joker left
+            System.out.println("Voy a devolver el joker");
+            return (joker > 0); //Only possible if I have joker left
         }
         return true;
     }
