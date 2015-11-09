@@ -49,6 +49,10 @@ public class GenericUtils {
         double dynRange[] = new double[points];
         List<TransferFunction> acumTF =  new ArrayList<>();
         acumTF.add(stages.get(0).getTF());
+        for(int i = 1; i < stages.size(); i++){
+//            TransferFunction nextTF = acumTF.get(i-1).
+//            acumTF.add()
+        }
         for(int i = 0; i < points; i++)
             dynRange[i] = 0;
         return 4.;

@@ -12,6 +12,7 @@ class ConfigBandPassPanel extends JPanel {
     protected JTextField textFilterWap = new JTextField();
 
     public ConfigBandPassPanel() {
+        setTextBoxes(1200,1000,4000,4800);
         textFilterWpm.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
         textFilterWam.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));
         textFilterWpp.setPreferredSize(new Dimension(TEXT_WIDTH, TEXT_HEIGHT));

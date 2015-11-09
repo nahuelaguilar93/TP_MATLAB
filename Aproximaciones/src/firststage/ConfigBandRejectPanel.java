@@ -3,7 +3,10 @@ package firststage;
 import javax.swing.*;
 
 class ConfigBandRejectPanel extends ConfigBandPassPanel {
-    public ConfigBandRejectPanel() { super(); }
+    public ConfigBandRejectPanel() {
+        super();
+        setTextBoxes(1000,1200,4800,4000);
+    }
 
     @Override
     public boolean isParsable(){

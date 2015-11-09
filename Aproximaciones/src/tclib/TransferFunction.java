@@ -26,6 +26,10 @@ public class TransferFunction {
         this.numerador = numerador;
         this.denominador = denominador;
     }
+    public TransferFunction(TransferFunction that) {
+        this.numerador = that.numerador;
+        this.denominador = that.denominador;
+    }
 
     /**
      * @param numPoly: Indice del elemento indica la potencia de ese termino del polinomio.

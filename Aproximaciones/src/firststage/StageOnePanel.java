@@ -22,16 +22,5 @@ public class StageOnePanel extends JPanel {
         //Plot Panel
         drawingPanel = new DrawingPanel();
         this.add(drawingPanel);
-
-        for(int i=0; i<20; i++){
-            JInternalFrame frame = new JInternalFrame();
-            Dimension desktopSize = this.getSize();
-            Dimension jInternalFrameSize = frame.getSize();
-            frame.setLocation((int)((desktopSize.width - jInternalFrameSize.width) * Math.random()),
-                    (int)((desktopSize.height - jInternalFrameSize.height) * Math.random()));
-            JOptionPane.showMessageDialog(frame, "AGUSTÍN PUTO DE MIERDAAAA!!", "FORRO", JOptionPane.ERROR_MESSAGE);
-
-        }
-
     }
 }
