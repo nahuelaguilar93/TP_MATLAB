@@ -32,7 +32,7 @@ public class PoleZeroListsPanel extends JPanel {
 
     public PoleZeroListsPanel() {
         //Only one string can be selected at the same time
-        unmatchedPolesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        unmatchedPolesList.setSelectionModel(new MySelectionModel(unmatchedZeroList, 2));
         unmatchedZeroList.setSelectionModel(new MySelectionModel(unmatchedZeroList, 2));
         stagesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         //List Layout Orientation
@@ -123,67 +123,57 @@ public class PoleZeroListsPanel extends JPanel {
         }
     }
 
-    private void matchPolesZeros() {
-        List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
-        List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
-        List<Stage> stageList = s.getUserData().getStageList();
-
-        int selectedPoleIndex = unmatchedPolesList.getSelectedIndex();
-
-        int firstIndex = unmatchedZeroList.getMinSelectionIndex();
-        int secondIndex = unmatchedZeroList.getMaxSelectionIndex();
-
-        if (checkIndexes(firstIndex, secondIndex)) {
-
-            if ( firstIndex == secondIndex ) {  //Only One Selected
-                if (firstIndex == unmatchedZeros.size()) {  //If its None
-                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex)));
-                    unmatchedPoles.remove(selectedPoleIndex);
-                } else {
-                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex)));
-                    unmatchedPoles.remove(selectedPoleIndex);
-                    unmatchedZeros.remove(firstIndex);
-                }
-            }
-            else {  //There are two Selections
-                if (firstIndex == unmatchedZeros.size()) {
-                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(secondIndex)));
-                    unmatchedPoles.remove(selectedPoleIndex);
-                    unmatchedZeros.remove(secondIndex);
-                }
-                else if (secondIndex == unmatchedZeros.size()) {
-                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex)));
-                    unmatchedPoles.remove(selectedPoleIndex);
-                    unmatchedZeros.remove(firstIndex);
-                }
-                else {
-                    stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex), unmatchedZeros.get(secondIndex)));
-                    unmatchedPoles.remove(selectedPoleIndex);
-                    unmatchedZeros.remove(secondIndex);             //First remove the bigger index so that pointed zero by firstIndex is not changed
-                    unmatchedZeros.remove(firstIndex);
-                }
-            }
-            updateLists();
-        }
-    }
-
-    private boolean checkIndexes( int firstIndex, int secondIndex) {
+    private boolean checkIndexes( int firstZeroIndex, int secondZeroIndex, int firstPoleIndex, int secondPoleIndex) {
         //Fot debug
-        System.out.println("fist Index: " + firstIndex);
-        System.out.println("Second Index: " + secondIndex);
+        System.out.println("fist Index: " + firstZeroIndex);
+        System.out.println("Second Index: " + secondZeroIndex);
         System.out.println("Joker: " + joker);
         List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
         List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
 
         //TODO: Hay que hacer que se pueda seleccionar dos polos si son simples! lrpm Q
+        //TODO: Inentendible este codigo! XD mala mia gente jaja
 
         if ( unmatchedPolesList.isSelectionEmpty() || unmatchedZeroList.isSelectionEmpty()) {   //If there is no Selection
             return false;     //And error frame is annoying... maybe is better just to do nothing. The user will realize
             //JInternalFrame frame = new JInternalFrame();
             //JOptionPane.showMessageDialog(frame, "There must be selected a pole and at least one zero", "No pole or zero found", JOptionPane.ERROR_MESSAGE);
         }
-        else if ( firstIndex != secondIndex) {   //If there are two different selections
-            if (((unmatchedZeros.get(firstIndex).getImaginary() != 0) && (firstIndex !=  unmatchedZeros.size())) || (unmatchedZeros.get(secondIndex).getImaginary() != 0) && (secondIndex !=  unmatchedZeros.size())) {
+        else if ( firstPoleIndex != secondPoleIndex ) { //Selected two poles
+            return checkTwoPoles(firstZeroIndex, secondZeroIndex, firstPoleIndex, secondPoleIndex);
+        }
+        else {
+            return checkOnePole(firstZeroIndex, secondZeroIndex, firstPoleIndex);
+        }
+
+    }
+    private boolean checkTwoPoles(int firstZeroIndex, int secondZeroIndex, int firstPoleIndex, int secondPoleIndex) {
+        List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
+        List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
+
+        if ( unmatchedPoles.get(firstPoleIndex).getImaginary() != 0 || unmatchedPoles.get(secondPoleIndex).getImaginary() != 0  ) {
+            return false;
+        }
+        else if ( firstZeroIndex != secondZeroIndex) {   //If there are two different zeros
+            if (((unmatchedZeros.get(firstZeroIndex).getImaginary() != 0) && (firstZeroIndex != unmatchedZeros.size())) || (unmatchedZeros.get(secondZeroIndex).getImaginary() != 0) && (secondZeroIndex != unmatchedZeros.size())) {
+                //If one of them is a conjugate complex then you can't select both
+                return false;
+            }
+            return true;
+        }
+        else {  //If there is only one zero
+            if ( firstZeroIndex < unmatchedZeros.size() ) {     //If its not none
+                return (joker > 0);
+            }
+            else { return (joker > 1); }
+        }
+    }
+    private boolean checkOnePole(int firstZeroIndex, int secondZeroIndex, int selectedPoleIndex) {
+        List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
+        List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
+
+        if ( firstZeroIndex != secondZeroIndex) {   //If there are two different zeros
+            if (((unmatchedZeros.get(firstZeroIndex).getImaginary() != 0) && (firstZeroIndex !=  unmatchedZeros.size())) || (unmatchedZeros.get(secondZeroIndex).getImaginary() != 0) && (secondZeroIndex !=  unmatchedZeros.size())) {
                 //If one of them is a conjugate complex then you can't select both
                 return false;
             }
@@ -192,16 +182,16 @@ public class PoleZeroListsPanel extends JPanel {
             }
             return true;
         }
-        else if (firstIndex == secondIndex) {  //If there is only one selection
-            if ( firstIndex < unmatchedZeros.size() ) {     //If its not none
+        else {  //If there is only one zero
+            if ( firstZeroIndex < unmatchedZeros.size() ) {     //If its not none
                 if  ( (unmatchedPoles.get(unmatchedPolesList.getSelectedIndex()).getImaginary() == 0) ) { //If its a single pole
-                    if (unmatchedZeros.get(firstIndex).getImaginary() != 0) {   //And I chose a conjugate complex
+                    if (unmatchedZeros.get(firstZeroIndex).getImaginary() != 0) {   //And I chose a conjugate complex
                         return false;                                           //Then I cant choose it
                     }
                     else { return true; }                                                //If is a single pole but a single zero then OK.
                 }
                 else {  //If it wasn't a single pole
-                    if ( unmatchedZeros.get(firstIndex).getImaginary() == 0 ) { return (joker > 0); } //And I choose a simple zero (none never reach this if)
+                    if ( unmatchedZeros.get(firstZeroIndex).getImaginary() == 0 ) { return (joker > 0); } //And I choose a simple zero (none never reach this if)
                     else { return true; }   //Then its a conjugate pole with a conjugate zero!
                 }
             }
@@ -212,7 +202,106 @@ public class PoleZeroListsPanel extends JPanel {
                 else { return (joker > 1); }  //Othewise only possible if I have joker left
             }
         }
-        return false;
+    }
+
+    private void matchPolesZeros() {
+        List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
+        List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
+        List<Stage> stageList = s.getUserData().getStageList();
+
+        int firstZeroIndex = unmatchedZeroList.getMinSelectionIndex();
+        int secondZeroIndex = unmatchedZeroList.getMaxSelectionIndex();
+        int firstPoleIndex = unmatchedPolesList.getMinSelectionIndex();
+        int secondPoleIndex = unmatchedPolesList.getMaxSelectionIndex();
+
+        if (checkIndexes(firstZeroIndex, secondZeroIndex, firstPoleIndex, secondPoleIndex)) {
+            if ( firstPoleIndex == secondPoleIndex) {
+                matchWithSingleSelection(firstZeroIndex, secondZeroIndex, firstPoleIndex);
+            }
+            else {
+                matchWithDoubleSelection(firstZeroIndex, secondZeroIndex, firstPoleIndex, secondPoleIndex);
+            }
+            updateLists();
+        }
+    }
+    private void matchWithSingleSelection(int firstZeroIndex, int secondZeroIndex, int selectedPoleIndex) {
+        List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
+        List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
+        List<Stage> stageList = s.getUserData().getStageList();
+
+        if ( firstZeroIndex == secondZeroIndex ) {  //Only One Selected
+            if (firstZeroIndex == unmatchedZeros.size()) {  //If its None
+                stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex)));
+                unmatchedPoles.remove(selectedPoleIndex);
+            } else {
+                stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstZeroIndex)));
+                unmatchedPoles.remove(selectedPoleIndex);
+                unmatchedZeros.remove(firstZeroIndex);
+            }
+        }
+        else {  //There are two Selections
+            if (firstZeroIndex == unmatchedZeros.size()) {
+                stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(secondZeroIndex)));
+                unmatchedPoles.remove(selectedPoleIndex);
+                unmatchedZeros.remove(secondZeroIndex);
+            }
+            else if (secondZeroIndex == unmatchedZeros.size()) {
+                stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstZeroIndex)));
+                unmatchedPoles.remove(selectedPoleIndex);
+                unmatchedZeros.remove(firstZeroIndex);
+            }
+            else {
+                stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstZeroIndex), unmatchedZeros.get(secondZeroIndex)));
+                unmatchedPoles.remove(selectedPoleIndex);
+                unmatchedZeros.remove(secondZeroIndex);             //First remove the bigger index so that pointed zero by firstZeroIndex is not changed
+                unmatchedZeros.remove(firstZeroIndex);
+            }
+        }
+    }
+    private void matchWithDoubleSelection(int firstZeroIndex, int secondZeroIndex, int firstPoleIndex, int secondPoleIndex) {
+        List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
+        List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
+        List<Stage> stageList = s.getUserData().getStageList();
+
+        if ( firstZeroIndex == secondZeroIndex ) {  //Only One Selected
+            if (firstZeroIndex == unmatchedZeros.size()) {  //If its None
+                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex)));
+                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
+                unmatchedPoles.remove(firstPoleIndex);
+            } else {
+                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(firstZeroIndex)));
+                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
+                unmatchedPoles.remove(firstPoleIndex);
+                unmatchedZeros.remove(firstZeroIndex);
+            }
+        }
+        else {  //There are two Selections
+            if (firstZeroIndex == unmatchedZeros.size()) {
+                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(secondZeroIndex)));
+                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
+                unmatchedPoles.remove(firstPoleIndex);
+                unmatchedZeros.remove(secondZeroIndex);
+            }
+            else if (secondZeroIndex == unmatchedZeros.size()) {
+                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(firstZeroIndex)));
+                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
+                unmatchedPoles.remove(firstPoleIndex);
+                unmatchedZeros.remove(firstZeroIndex);
+            }
+            else {
+                stageList.add(new Stage(unmatchedPoles.get(secondPoleIndex), unmatchedZeros.get(firstZeroIndex), unmatchedZeros.get(secondZeroIndex)));
+                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
+                unmatchedPoles.remove(firstPoleIndex);
+                unmatchedZeros.remove(secondZeroIndex);             //First remove the bigger index so that pointed zero by firstZeroIndex is not changed
+                unmatchedZeros.remove(firstZeroIndex);
+            }
+        }
+
     }
 
     private static class MySelectionModel extends DefaultListSelectionModel {
