@@ -95,6 +95,7 @@ public class TransferFunction {
         } else return false;
     }
 
+
     public Complex evaluateApproximationAtOmega(double omega) {
         Complex evaluationPoint = new Complex(0, omega);
         Complex numValue = new Complex(0);
@@ -126,6 +127,11 @@ public class TransferFunction {
         double p[] = {gain};
         PolynomialFunction aux = new PolynomialFunction(p);
         numerador = numerador.multiply(aux);
+    }
+
+    public void multiply(TransferFunction that) {
+        this.numerador = this.numerador.multiply(that.numerador);
+        this.denominador = this.denominador.multiply(that.denominador);
     }
 
     public Complex[] getZeros() {

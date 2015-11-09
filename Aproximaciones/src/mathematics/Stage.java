@@ -11,6 +11,7 @@ public class Stage {
     private Complex[] zeros;
     private double gain;
     private TransferFunction TF;
+    private String details;
     public Stage(Complex p) { this(p, Complex.INF, Complex.INF, 0); }
     public Stage(Complex p, Complex z1) { this(p, z1, Complex.INF, 0); }
     public Stage(Complex p, Complex z1, Complex z2) { this(p, z1, z2, 0); }
@@ -35,7 +36,8 @@ public class Stage {
         TF = new TransferFunction(poles, zeros);
     }
 
-    public String getDetails() { return "Nahuel puto"; }
+    public TransferFunction getTF() { return TF; }
+    public String getDetails() { return "AGUS PUTOOOO"; }
     public Complex[] getZeros() { return zeros; }
     public Complex[] getPoles() { return poles; }
 }

@@ -48,7 +48,7 @@ public class GenericUtils {
         double freq[] = linspace(minW, maxW, points);
         double dynRange[] = new double[points];
         List<TransferFunction> acumTF =  new ArrayList<>();
-//        acumTF.add(stages.get(0))
+        acumTF.add(stages.get(0).getTF());
         for(int i = 0; i < points; i++)
             dynRange[i] = 0;
         return 4.;
