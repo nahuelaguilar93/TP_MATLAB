@@ -86,7 +86,6 @@ public class PoleZeroListsPanel extends JPanel {
         layout.linkSize(SwingConstants.HORIZONTAL, unmatchedPolesListScroller, unmatchedZeroListScroller);
     }
 
-    //TODO: NO PUEDO JUNTAR UN POLO SIMPLE CON UNO DOBLE LRCDLL
     public void updateLists() {
         //First delete everything from the listPanels
         polesListModel.removeAllElements();
@@ -135,8 +134,9 @@ public class PoleZeroListsPanel extends JPanel {
         int secondIndex = unmatchedZeroList.getMaxSelectionIndex();
 
         if (checkIndexes(firstIndex, secondIndex)) {
+
             if ( firstIndex == secondIndex ) {  //Only One Selected
-                if (firstIndex == unmatchedZeros.size()) {
+                if (firstIndex == unmatchedZeros.size()) {  //If its None
                     stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex)));
                     unmatchedPoles.remove(selectedPoleIndex);
                 } else {
@@ -146,12 +146,12 @@ public class PoleZeroListsPanel extends JPanel {
                 }
             }
             else {  //There are two Selections
-                if (firstIndex == 0) {
+                if (firstIndex == unmatchedZeros.size()) {
                     stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(secondIndex)));
                     unmatchedPoles.remove(selectedPoleIndex);
                     unmatchedZeros.remove(secondIndex);
                 }
-                else if (secondIndex == 0) {
+                else if (secondIndex == unmatchedZeros.size()) {
                     stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstIndex)));
                     unmatchedPoles.remove(selectedPoleIndex);
                     unmatchedZeros.remove(firstIndex);
@@ -168,11 +168,15 @@ public class PoleZeroListsPanel extends JPanel {
     }
 
     private boolean checkIndexes( int firstIndex, int secondIndex) {
+        //Fot debug
         System.out.println("fist Index: " + firstIndex);
         System.out.println("Second Index: " + secondIndex);
         System.out.println("Joker: " + joker);
         List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
         List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
+
+        //TODO: Hay que hacer que se pueda seleccionar dos polos si son simples! lrpm Q
+
         if ( unmatchedPolesList.isSelectionEmpty() || unmatchedZeroList.isSelectionEmpty()) {   //If there is no Selection
             return false;     //And error frame is annoying... maybe is better just to do nothing. The user will realize
             //JInternalFrame frame = new JInternalFrame();
@@ -183,16 +187,32 @@ public class PoleZeroListsPanel extends JPanel {
                 //If one of them is a conjugate complex then you can't select both
                 return false;
             }
+            if ( (unmatchedPoles.get(unmatchedPolesList.getSelectedIndex()).getImaginary() == 0) ) {    //If the pole is simple then you cant selecto two zeros
+                return false;
+            }
+            return true;
         }
         else if (firstIndex == secondIndex) {  //If there is only one selection
-            System.out.println("Entré a first = second");
-            if ( firstIndex < unmatchedZeros.size() ) {
-                if (unmatchedZeros.get(firstIndex).getImaginary() != 0) { return true; }
+            if ( firstIndex < unmatchedZeros.size() ) {     //If its not none
+                if  ( (unmatchedPoles.get(unmatchedPolesList.getSelectedIndex()).getImaginary() == 0) ) { //If its a single pole
+                    if (unmatchedZeros.get(firstIndex).getImaginary() != 0) {   //And I chose a conjugate complex
+                        return false;                                           //Then I cant choose it
+                    }
+                    else { return true; }                                                //If is a single pole but a single zero then OK.
+                }
+                else {  //If it wasn't a single pole
+                    if ( unmatchedZeros.get(firstIndex).getImaginary() == 0 ) { return (joker > 0); } //And I choose a simple zero (none never reach this if)
+                    else { return true; }   //Then its a conjugate pole with a conjugate zero!
+                }
             }
-            System.out.println("Voy a devolver el joker");
-            return (joker > 0); //Only possible if I have joker left
+            else {      //I choose none
+                if (unmatchedPoles.get(unmatchedPolesList.getSelectedIndex()).getImaginary() == 0) {        //And I have a single pole
+                    return true;
+                }
+                else { return (joker > 1); }  //Othewise only possible if I have joker left
+            }
         }
-        return true;
+        return false;
     }
 
     private static class MySelectionModel extends DefaultListSelectionModel {
