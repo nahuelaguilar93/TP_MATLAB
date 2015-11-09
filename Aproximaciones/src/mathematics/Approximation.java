@@ -70,7 +70,7 @@ public class Approximation {
         double range = getDenormalizationRange(temp, inverseDenormalization);
         double denorm = Math.pow(range,denormPerc);
         TF = NTF.denormalize(temp, denorm);
-        TF.multiply(temp.getG());
+        TF.multiply(Math.pow(10, temp.getG()/20));
         Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained) + " / " + (int)(denormPerc*100);
     }
 

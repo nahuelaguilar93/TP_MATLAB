@@ -1,6 +1,10 @@
 package tclib;
 
+import mathematics.Stage;
 import org.apache.commons.math3.complex.Complex;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GenericUtils {
 
@@ -34,5 +38,19 @@ public class GenericUtils {
         double imag = x.getImaginary();
         double Q = getQ(x);
         return str + "r: " + String.format("%.1f", real) + " i: " + String.format("%.2f", imag) + " Q: " + String.format("%.2f", Q);
+    }
+
+    double dynamicRangeLoss(List<Stage> stages, double minW, double maxW) {
+        return dynamicRangeLoss(stages, minW, maxW, 10000);
+    }
+    double dynamicRangeLoss(List<Stage> stages, double minW, double maxW, int points) {
+        if(stages.size() == 0) return 0;
+        double freq[] = linspace(minW, maxW, points);
+        double dynRange[] = new double[points];
+        List<TransferFunction> acumTF =  new ArrayList<>();
+//        acumTF.add(stages.get(0))
+        for(int i = 0; i < points; i++)
+            dynRange[i] = 0;
+        return 4.;
     }
 }
