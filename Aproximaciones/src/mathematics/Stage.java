@@ -13,15 +13,31 @@ public class Stage {
     private double gain;
     private TransferFunction TF;
     private String details;
-    public Stage(Complex p) { this(p, Complex.INF, Complex.INF, 0); }
-    public Stage(Complex p, Complex z1) { this(p, z1, Complex.INF, 0); }
-    public Stage(Complex p, Complex z1, Complex z2) { this(p, z1, z2, 0); }
-    public Stage(Complex p, Complex z1, Complex z2, double g) {
-        if(p.getImaginary() == 0) {
-            poles = new Complex[]{p};
+    public Stage(Complex p1) { this(p1, Complex.INF, Complex.INF, Complex.INF, 0); }
+    public Stage(Complex p1, Complex z1) { this(p1, Complex.INF, Complex.INF, Complex.INF, 0); }
+    public Stage(Complex p1, Complex z1, Complex p2) { this(p1, z1, p2, Complex.INF, 0); }
+    public Stage(Complex p1, Complex z1, Complex p2, Complex z2) { this(p1, z1, p2, z2, 0); }
+    public Stage(Complex p1, Complex z1, Complex p2, Complex z2, double g) {
+        if(p2.isInfinite()) {
+            if (p1.isInfinite())
+                poles = new Complex[]{};
+            else {
+                if (p1.getImaginary() == 0)
+                    poles = new Complex[]{p1};
+                else poles = new Complex[]{p1, p1.conjugate()};
+                details = GenericUtils.getPZString(p1, true);
+            }
         }
-        else poles = new Complex[]{p, p.conjugate()};
-        details = GenericUtils.getPZString(p, true);
+        else if (p1.isInfinite()) {
+            if (p2.getImaginary() == 0)
+                poles = new Complex[]{p2};
+            else poles = new Complex[]{p2, p2.conjugate()};
+            details = GenericUtils.getPZString(p2, true);
+        }
+        else {
+            poles = new Complex[]{p1, p2};
+            details = GenericUtils.getPZString(p1, true) + " + " + GenericUtils.getPZString(p2, true);
+        }
 
         if(z2.isInfinite()) {
             if (z1.isInfinite())
