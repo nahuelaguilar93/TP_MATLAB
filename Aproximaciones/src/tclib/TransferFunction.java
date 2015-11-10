@@ -185,14 +185,20 @@ public class TransferFunction {
     }
 
     public double[] getStepResponse(double[] time) {
-        double[] impulse = getImpulseResponse(time);
-        double[] step = new double[time.length];
-        double cumSum = 0;
-        for (int i = 0; i < impulse.length; i++) {
-            step[i] = cumSum;
-            cumSum += impulse[i];
-        }
-        return step;
+        double[] s = {0,1};
+        PolynomialFunction num = numerador;
+        PolynomialFunction den = denominador.multiply(new PolynomialFunction(s));
+
+//        double[] impulse = getImpulseResponse(time);
+//        double[] step = new double[time.length];
+//        double cumSum = 0;
+//        for (int i = 0; i < impulse.length; i++) {
+//            step[i] = cumSum;
+//            cumSum += impulse[i];
+//        }
+//        return step;
+
+        return new TransferFunction(num, den).getImpulseResponse(time);
     }
 
     public double getImpulseResponseAtTime(double time) {
@@ -301,7 +307,7 @@ public class TransferFunction {
         double[] currentNum = numerador.getCoefficients();
         int denominatorDegree = currentDen.length - currentNum.length; // Defino por que potencia de S tengo que multiplicar y dividir
         PolynomialFunction denpol = finalPolinomeBandPass(currentDen, 0, Bd, wo); // creo el nuevo cociente
-        PolynomialFunction numpol = finalPolinomeBandPass(currentNum, denominatorDegree,  Bd, wo);
+        PolynomialFunction numpol = finalPolinomeBandPass(currentNum, denominatorDegree, Bd, wo);
         return new TransferFunction(numpol, denpol);
     }
 
