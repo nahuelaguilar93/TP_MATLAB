@@ -10,7 +10,7 @@ import static javax.swing.SwingUtilities.invokeLater;
 public class Main extends JFrame {
 
     public Main() {
-        MathUtils.getAllPossibleArrangements(5);
+        MathUtils.getAllPermutations(5);
         PrincipalPanel principalPanel = new PrincipalPanel();
 
         this.add(principalPanel);

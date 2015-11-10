@@ -47,6 +47,7 @@ public class GenericUtils {
         if(stages.size() == 0) return 0;
         double freq[] = linspace(minW, maxW, points);
         double dynRangeLoss[] = new double[points];
+
         List<TransferFunction> acumTF =  new ArrayList<>();
         acumTF.add(stages.get(0).getTF());
         for(int i = 1; i < stages.size(); i++){
@@ -54,6 +55,7 @@ public class GenericUtils {
             nextTF.multiply(stages.get(i).getTF());
             acumTF.add(nextTF);
         }
+
         double stageGain[] = new double[stages.size()];
         for(int i = 0; i < points; i++) {
             for (int j = 0; j < stages.size(); j++)
@@ -72,4 +74,6 @@ public class GenericUtils {
         }
         return maxLoss;
     }
+
+
 }
