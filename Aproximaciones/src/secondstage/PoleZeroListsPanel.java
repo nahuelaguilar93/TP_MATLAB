@@ -59,6 +59,7 @@ public class PoleZeroListsPanel extends JPanel {
                 s2.getstagePlotModePanel().updateStagePlot();
                 s2.getPlotPoleZeroPanel().updatePoleZeroPlot();
                 s2.getPlotPoleZeroPanel().updatePoleZeroColour();
+                s2.getPlotPoleZeroPanel().updatePoleZeroColour();
             }
         });
         automaticSelectionButton.addActionListener(new ActionListener() {
@@ -67,6 +68,7 @@ public class PoleZeroListsPanel extends JPanel {
                 automaticSelection();
                 s2.getstagePlotModePanel().updateStagePlot();
                 s2.getPlotPoleZeroPanel().updatePoleZeroPlot();
+                s2.getPlotPoleZeroPanel().updatePoleZeroColour();
                 s2.getPlotPoleZeroPanel().updatePoleZeroColour();
             }
         });

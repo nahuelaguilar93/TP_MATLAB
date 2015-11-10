@@ -13,6 +13,7 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
+import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
@@ -63,6 +64,17 @@ class PlotPlot extends JPanel{
         double Aa = currentTemplate.getAa();
         double Ap = currentTemplate.getAp();
 
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plotA.getRenderer();
+        renderer.setSeriesVisibleInLegend(0, false);
+        renderer.setSeriesPaint(0, Color.RED);
+        renderer.setSeriesPaint(1, Color.RED);
+        renderer.setSeriesVisibleInLegend(1, false);
+        //currentTemplate = s.getUserData().getCurrentTemplate();
+        if ( currentTemplate instanceof BandrejectTemplate || currentTemplate instanceof BandpassTemplate) {
+            renderer.setSeriesVisibleInLegend(2, false);
+            renderer.setSeriesPaint(2, Color.RED);
+        }
+
         //Set Logarithmic axis
         ValueAxis xAxis = plotA.getDomainAxis();
         xAxis.setRange(wmin * 0.1, wmax * 10);
@@ -72,6 +84,7 @@ class PlotPlot extends JPanel{
         //Set 'y' default Axis
         plotA.setDomainAxis(xAxis);
         plotA.setRangeAxis(yAxis);
+
         cardLayout.show(this, "Atenuation");
         s1.getCheckBoxChoosePlot().setAtenuation();
     }
@@ -274,6 +287,17 @@ class PlotPlot extends JPanel{
         xAxis.setRange(wmin * 0.1, wmax * 10);
         ValueAxis yAxis = plotA.getRangeAxis();
         yAxis.setRange(-userData.getCurrentTemplate().getG(), 2*(Aa-currentTemplate.getG()));
+
+        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plotA.getRenderer();
+        renderer.setSeriesVisibleInLegend(0, false);
+        renderer.setSeriesPaint(0, Color.RED);
+        //renderer.setSeriesPaint(1, Color.RED);
+        renderer.setSeriesVisibleInLegend(1, false);
+        //currentTemplate = s.getUserData().getCurrentTemplate();
+        if ( currentTemplate instanceof BandrejectTemplate || currentTemplate instanceof BandpassTemplate) {
+            renderer.setSeriesVisibleInLegend(2, false);
+            renderer.setSeriesPaint(2, Color.RED);
+        }
 
         //Set 'y' default Axis
         plotA.setDomainAxis(xAxis);

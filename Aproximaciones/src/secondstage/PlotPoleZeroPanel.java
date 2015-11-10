@@ -5,6 +5,7 @@ import org.apache.commons.math3.complex.Complex;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
@@ -80,6 +81,11 @@ public class PlotPoleZeroPanel extends JPanel {
             }
         }
 
+//        ValueAxis xAxis = plotPZ.getDomainAxis();
+//        xAxis.setRange( -maxDoubleWidth() ,1);
+//        ValueAxis yAxis = plotPZ.getRangeAxis();
+//        yAxis.setRange(maxDoubleHigh(), -maxDoubleHigh());
+//        plotPZ.setDomainAxis(xAxis);
         plotPZ.setRenderer(renderer);
     }
 
@@ -113,5 +119,36 @@ public class PlotPoleZeroPanel extends JPanel {
         return dataset;
     }
 
-
+    double maxDoubleHigh() {
+        double max = 0;
+        List<Complex> currentPolesList = s.getUserData().getUnmatchedPoles();
+        for ( int i = 0; i < currentPolesList.size(); i++) {
+            if ( currentPolesList.get(i).getImaginary() > max ) {
+                max = currentPolesList.get(i).getImaginary();
+            }
+        }
+        List<Complex> currentZeroList = s.getUserData().getUnmatchedPoles();
+        for ( int i = 0; i < currentZeroList.size(); i++) {
+            if ( currentZeroList.get(i).getImaginary() > max ) {
+                max = currentZeroList.get(i).getImaginary();
+            }
+        }
+        return max;
+    }
+    double maxDoubleWidth() {
+        double max = 0;
+        List<Complex> currentPolesList = s.getUserData().getUnmatchedPoles();
+        for ( int i = 0; i < currentPolesList.size(); i++) {
+            if ( currentPolesList.get(i).getReal() > max ) {
+                max = currentPolesList.get(i).getReal();
+            }
+        }
+        List<Complex> currentZeroList = s.getUserData().getUnmatchedPoles();
+        for ( int i = 0; i < currentZeroList.size(); i++) {
+            if ( currentZeroList.get(i).getReal() > max ) {
+                max = currentZeroList.get(i).getReal();
+            }
+        }
+        return max;
+    }
 }

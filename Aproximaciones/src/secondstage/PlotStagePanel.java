@@ -126,7 +126,7 @@ public class PlotStagePanel extends JPanel {
 
         XYSeries series = new XYSeries("Stage" + index);
         for (int i = 0; i < freq.length; i++) {
-            series.add(freq[i], -module[i]);
+            series.add(freq[i], module[i]);
         }
         dataset.addSeries(series);
         return dataset;
