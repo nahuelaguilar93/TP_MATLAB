@@ -53,6 +53,7 @@ public class Approximation {
     public Approximation(int index, SuperTemplate temp, double denormPerc, int setOrder, double maxQ) {
         List<String> approxList = getStringsToComboBox(temp);
         boolean  inverseDenormalization = false;
+        int denormPrint = (int) (denormPerc * 100);
         if(approxList.get(index).equals("Butterworth")) {
             Butter(temp, setOrder, maxQ);
             ApproxName = "Butterworth";
@@ -71,13 +72,10 @@ public class Approximation {
         double denorm = Math.pow(range,denormPerc);
         TF = NTF.denormalize(temp, denorm);
         TF.multiply(Math.pow(10, temp.getG()/20));
-        Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained) + " / " + (int)(denormPerc*100);
+        Details = ApproxName + " / Orden " + Order + " / Max Q: " + String.format("%.2f", maxQobtained) + " / " + denormPrint;
     }
 
-    public boolean equals(Approximation that) {
-        if (this.TF.equals(that.TF)) return true;
-        else return false;
-    }
+    public boolean equals(Approximation that) { return this.TF.equals(that.TF); }
 
     private double NTFminusAp(double x, double Aa){
         return -20*Math.log10(NTF.evaluateApproximationAtOmega(x).abs()) - Aa;
