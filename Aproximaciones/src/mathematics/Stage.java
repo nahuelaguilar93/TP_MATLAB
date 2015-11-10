@@ -14,7 +14,7 @@ public class Stage {
     private TransferFunction TF;
     private String details;
     public Stage(Complex p1) { this(p1, Complex.INF, Complex.INF, Complex.INF, 0); }
-    public Stage(Complex p1, Complex z1) { this(p1, Complex.INF, Complex.INF, Complex.INF, 0); }
+    public Stage(Complex p1, Complex z1) { this(p1, z1, Complex.INF, Complex.INF, 0); }
     public Stage(Complex p1, Complex z1, Complex p2) { this(p1, z1, p2, Complex.INF, 0); }
     public Stage(Complex p1, Complex z1, Complex p2, Complex z2) { this(p1, z1, p2, z2, 0); }
     public Stage(Complex p1, Complex z1, Complex p2, Complex z2, double g) {
