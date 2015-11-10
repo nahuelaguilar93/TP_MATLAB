@@ -30,7 +30,7 @@ public class PoleZeroListsPanel extends JPanel {
     private JButton automaticSelectionButton = new JButton("Automatic Selection");
     private JButton deleteStage = new JButton("Delete Stage");
 
-    int joker; //This is used to know if I have to use all zeros twice or not
+    int joker;      //This is used to know if I have to use all zeros twice or not
 
     public PoleZeroListsPanel() {
         //Only one string can be selected at the same time

@@ -18,7 +18,13 @@ class Singleton_S2 {
     private PoleZeroPanel poleZeroPanel = null;
     private PlotPoleZeroPanel plotPoleZeroPanel = null;
     private PoleZeroListsPanel poleZeroListsPanel = null;
+    private PlotStagePanel plotStagePanel = null;
 
+    public PlotStagePanel getPlotStagePanel() {
+        if (plotStagePanel == null)
+            plotStagePanel = new PlotStagePanel();
+        return plotStagePanel;
+    }
     public StagePanel getStagePanel() {
         if (stagePanel == null)
             stagePanel = new StagePanel();
