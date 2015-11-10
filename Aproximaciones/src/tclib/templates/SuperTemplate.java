@@ -26,7 +26,7 @@ public abstract class SuperTemplate implements TemplatesInterface {
         else return ((DelayTemplate) this).getWa();
     }
 
-    double getWmin() {
+    public double getWmin() {
         if (this instanceof LowpassTemplate)
             return  ((LowpassTemplate) this).getWp();
         else if (this instanceof HighpassTemplate)

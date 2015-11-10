@@ -12,12 +12,16 @@ import java.util.List;
 public class StageDisposition {
     private List<Stage> stageList;
     public List<Stage> getStageList() { return stageList; };
+    private double wMax;
+    private double wMin;
     SuperTemplate temp;
     TransferFunction finalTransferFunction;
 
     StageDisposition(List<Stage> stages) {
         stageList = stages;
-        temp = Singleton.getInstance().getUserData().getCurrentTemplate();
+        SuperTemplate temp = Singleton.getInstance().getUserData().getCurrentTemplate();
+        wMax = temp.getWmax();
+        wMin = temp.getWmin();
         finalTransferFunction = Singleton.getInstance().getUserData().getTransferFunction();
     }
 
