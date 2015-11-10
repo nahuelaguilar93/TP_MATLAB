@@ -26,6 +26,7 @@ public class StageTwoPanel extends JPanel {
     }
 
     public void set(){
+        //System.out.println("Empiezo a pasar a la etapa 2");
         UserData uData = Singleton.getInstance().getUserData();
         TransferFunction t = uData.getApproximationList().get(uData.getSelection()).getTF();
         if (t.equals(uData.getTransferFunction())) return;
@@ -33,16 +34,22 @@ public class StageTwoPanel extends JPanel {
         uData.getUnmatchedPoles().clear();
         uData.getUnmatchedZeros().clear();
         uData.getStageList().clear();
+        //System.out.println("Vamos a obtener los polos...");
         for(Complex x : t.getPoles()) {
             if(Math.abs(x.getImaginary()) < Math.pow(10,-6)) x = new Complex(x.getReal(),0);
             if (x.getImaginary() >= 0)  //Only the positive conjugated are stored because I only need one of the two
                 uData.getUnmatchedPoles().add(x);
         }
+        //System.out.println("Vamos a obtener los ceros...");
+        //TODO KEVIN: muere en getZeros cuando hacemos un butter orden 9 o mayor para el RechazaBanda
+        //TODO KEVIN: cuando hacemos un rechaza banda butter calcula mal los ceros (no están sobre el eje imaginario)
         for(Complex x : t.getZeros()){
-            if(Math.abs(x.getImaginary()) < Math.pow(10,-6)) x = new Complex(x.getReal(),0);
+            //System.out.println("x = " + x);
+            if(Math.abs(x.getImaginary()) < Math.pow(10,-6)) x = new Complex(0,0);
             if (x.getImaginary() >= 0)  //Only the positive conjugated are stored because I only need one of the two
                 uData.getUnmatchedZeros().add(x);
         }
+        //System.out.println("Ya obtuve todo :)");
         Singleton_S2.getInstance().getPoleZeroListsPanel().updateLists();
     }
 }

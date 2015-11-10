@@ -5,9 +5,11 @@ import mathematics.Stage;
 import org.apache.commons.math3.complex.Complex;
 import tclib.GenericUtils;
 import javax.swing.*;
+import javax.swing.border.MatteBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.Arc2D;
 import java.util.List;
 
 /**
@@ -50,9 +52,11 @@ public class PoleZeroListsPanel extends JPanel {
 
         selectGroupButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                matchPolesZeros();
-            }
+            public void actionPerformed(ActionEvent e) { matchPolesZeros(); }
+        });
+        automaticSelectionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) { automaticSelection(); }
         });
 
         //Setup layout
@@ -123,6 +127,94 @@ public class PoleZeroListsPanel extends JPanel {
         }
     }
 
+    private void automaticSelection() {
+        List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
+        List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
+        int tempPoloIndex1;
+        int tempPoloIndex2;
+        int tempZeroIndex1;
+        int tempZeroIndex2;
+        while ( unmatchedPoles.size() > 0) {
+            tempPoloIndex1 = findMaxQIndex(unmatchedPoles);
+            //System.out.println("tempPoloIndex1: " + tempPoloIndex1);
+
+            //This is used to asign the second index in case there are two real poles
+            if ( (unmatchedPoles.get(tempPoloIndex1).getImaginary() == 0) && (unmatchedPoles.size() > 1) ) {
+                if (tempPoloIndex1 == 0) { tempPoloIndex2 = 1; }
+                else { tempPoloIndex2 = 0; }
+            }
+            else { tempPoloIndex2 = tempPoloIndex1; }
+
+            //System.out.println("tempPoloIndex2: " + tempPoloIndex2);
+
+            //Now I get the closest Zero Index number 1
+            tempZeroIndex1 = findClosestZero(unmatchedZeros, unmatchedPoles.get(tempPoloIndex1), unmatchedPoles.get(tempPoloIndex2));
+            //System.out.println("tempZeroIndex1: " + tempZeroIndex1);
+            tempZeroIndex2 = tempZeroIndex1;
+
+            if (!unmatchedZeros.isEmpty()) {
+                if (unmatchedZeros.get(tempZeroIndex1).getImaginary() == 0) { //If and only if the zero has no imaginary part.
+                    boolean onlyOnePole = (unmatchedPoles.get(tempPoloIndex1) == unmatchedPoles.get(tempPoloIndex2)) && (unmatchedPoles.get(tempPoloIndex1).getImaginary() == 0);
+                    if (!onlyOnePole && unmatchedZeros.size() > 1) { //Only one Pole
+                        for (int i = 0; i < unmatchedZeros.size(); i++) {
+                            if (unmatchedZeros.get(i).getImaginary() == 0 && i != tempZeroIndex1) {
+                                tempZeroIndex2 = i;
+                            }
+                        }
+                    }
+                }
+            }
+            //System.out.println("tempZeroIndex2: " + tempZeroIndex2);
+
+            if ( tempPoloIndex1 == tempPoloIndex2 ) {
+                //System.out.println("Only one polo");
+                matchWithSingleSelection(tempZeroIndex1, tempZeroIndex2, tempPoloIndex1);
+            } else {
+                //System.out.println("Two poles");
+                matchWithDoubleSelection(tempZeroIndex1, tempZeroIndex2, tempPoloIndex1, tempPoloIndex2);
+            }
+            updateLists();
+        }
+    }
+
+    private int findMaxQIndex(List<Complex> unmatchedPoles) {
+        int tempPoloIndex1 = 0;
+        Complex higherPoleQ = unmatchedPoles.get(0);
+        for ( int i = 0; i < unmatchedPoles.size(); i++) {
+            if ( GenericUtils.getQ(unmatchedPoles.get(i)) > GenericUtils.getQ(higherPoleQ) ) {
+                higherPoleQ = unmatchedPoles.get(i);
+                tempPoloIndex1 = i;
+            }
+        }
+        return tempPoloIndex1;
+    }
+    private int findClosestZero (List<Complex> unmatchedZeros, Complex Polo1, Complex Polo2) {
+        int tempZeroIndex1 = 0;
+
+        if (unmatchedZeros.isEmpty()) {
+            return 0;
+        }
+
+        double distance = findComplexDistance(unmatchedZeros.get(0), Polo2);
+        if ( Polo1 == Polo2 && Polo1.getImaginary() == 0 ) {    //Only one Pole
+            for ( int i = 0; i < unmatchedZeros.size(); i++) {
+                if ( unmatchedZeros.get(i).getImaginary() == 0 ) { tempZeroIndex1 = i; }
+            }
+        }
+        else {      //Two poles
+            for ( int i = 0; i < unmatchedZeros.size(); i++) {
+                if ( findComplexDistance(unmatchedZeros.get(i), Polo1) < distance ) {
+                    distance = findComplexDistance(unmatchedZeros.get(i), Polo1);
+                    tempZeroIndex1 = i;
+                }
+            }
+        }
+        return tempZeroIndex1;
+    }
+    private double findComplexDistance ( Complex c1, Complex c2 ) {
+        return Math.sqrt( Math.pow(c1.getReal()-c2.getReal(), 2) + Math.pow(c1.getImaginary()-c2.getImaginary(), 2) );
+    }
+
     private boolean checkIndexes( int firstZeroIndex, int secondZeroIndex, int firstPoleIndex, int secondPoleIndex) {
         List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
         List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
@@ -133,7 +225,6 @@ public class PoleZeroListsPanel extends JPanel {
             //JOptionPane.showMessageDialog(frame, "There must be selected a pole and at least one zero", "No pole or zero found", JOptionPane.ERROR_MESSAGE);
         }
         else if ( firstPoleIndex != secondPoleIndex ) { //Selected two poles
-            System.out.println("Two poles Selected");
             return checkTwoPoles(firstZeroIndex, secondZeroIndex, firstPoleIndex, secondPoleIndex);
         }
         else {
@@ -262,43 +353,47 @@ public class PoleZeroListsPanel extends JPanel {
         List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
         List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
         List<Stage> stageList = s.getUserData().getStageList();
+        int maxPoleIndex = Math.max(firstPoleIndex, secondPoleIndex);
+        int minPoleIndex = Math.min(firstPoleIndex, secondPoleIndex);
+        int maxZeroIndex = Math.max(firstZeroIndex, secondZeroIndex);
+        int minZeroIndex = Math.min(firstZeroIndex, secondZeroIndex);
 
         if ( firstZeroIndex == secondZeroIndex ) {  //Only One Selected
             if (firstZeroIndex == unmatchedZeros.size()) {  //If its None
                 stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex)));
                 //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
-                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
-                unmatchedPoles.remove(firstPoleIndex);
+                unmatchedPoles.remove(maxPoleIndex);     //I have to remove first the bigger one
+                unmatchedPoles.remove(minPoleIndex);
             } else {
                 stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(firstZeroIndex)));
                 //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
-                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
-                unmatchedPoles.remove(firstPoleIndex);
-                unmatchedZeros.remove(firstZeroIndex);
+                unmatchedPoles.remove(maxPoleIndex);     //I have to remove first the bigger one
+                unmatchedPoles.remove(minPoleIndex);
+                unmatchedZeros.remove(maxZeroIndex);
             }
         }
         else {  //There are two Selections
             if (firstZeroIndex == unmatchedZeros.size()) {
                 stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(secondZeroIndex)));
                 //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
-                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
-                unmatchedPoles.remove(firstPoleIndex);
-                unmatchedZeros.remove(secondZeroIndex);
+                unmatchedPoles.remove(maxPoleIndex);     //I have to remove first the bigger one
+                unmatchedPoles.remove(minPoleIndex);
+                unmatchedZeros.remove(maxZeroIndex);
             }
             else if (secondZeroIndex == unmatchedZeros.size()) {
                 stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(firstZeroIndex)));
                 //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
-                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
-                unmatchedPoles.remove(firstPoleIndex);
-                unmatchedZeros.remove(firstZeroIndex);
+                unmatchedPoles.remove(maxPoleIndex);     //I have to remove first the bigger one
+                unmatchedPoles.remove(minPoleIndex);
+                unmatchedZeros.remove(maxZeroIndex);
             }
             else {
                 stageList.add(new Stage(unmatchedPoles.get(secondPoleIndex), unmatchedZeros.get(firstZeroIndex), unmatchedZeros.get(secondZeroIndex)));
                 //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
-                unmatchedPoles.remove(secondPoleIndex);     //I have to remove firts the bigger one
-                unmatchedPoles.remove(firstPoleIndex);
-                unmatchedZeros.remove(secondZeroIndex);             //First remove the bigger index so that pointed zero by firstZeroIndex is not changed
-                unmatchedZeros.remove(firstZeroIndex);
+                unmatchedPoles.remove(maxPoleIndex);     //I have to remove firts the bigger one
+                unmatchedPoles.remove(minPoleIndex);
+                unmatchedZeros.remove(maxZeroIndex);     //First remove the bigger index so that pointed zero by firstZeroIndex is not changed
+                unmatchedZeros.remove(minZeroIndex);
             }
         }
 
