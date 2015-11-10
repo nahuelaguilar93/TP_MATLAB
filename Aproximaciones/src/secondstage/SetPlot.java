@@ -8,16 +8,18 @@ import javax.swing.*;
 public class SetPlot extends JPanel{
     private StagePlotModePanel stagePlotModePanel;
     private FilterMode filterMode;
+    private StageProperties stageProperties;
 
     SetPlot() {
         Singleton_S2 s = Singleton_S2.getInstance();
-
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
         stagePlotModePanel = s.getstagePlotModePanel();
         filterMode = s.getFilterMode();
+        stageProperties = s.getStageProperties();
 
         this.add(stagePlotModePanel);
         this.add(filterMode);
+        this.add(stageProperties);
     }
 }

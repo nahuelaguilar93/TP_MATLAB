@@ -4,17 +4,12 @@ import Data.Singleton;
 import mathematics.Stage;
 import org.apache.commons.math3.complex.Complex;
 import tclib.GenericUtils;
-import tclib.TransferFunction;
 
 import javax.swing.*;
-import javax.swing.border.MatteBorder;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Arc2D;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,7 +28,8 @@ public class PoleZeroListsPanel extends JPanel {
     //Buttons
     private JButton selectGroupButton = new JButton("Create Stage");
     private JButton automaticSelectionButton = new JButton("Automatic Selection");
-    private JButton deleteStage = new JButton("Delete Stage");
+    private JButton deleteStageButton = new JButton("Delete Stage");
+    private JButton deleteAllStagesButton = new JButton("Delete All Stages");
 
     int joker;      //This is used to know if I have to use all zeros twice or not
 
@@ -62,6 +58,7 @@ public class PoleZeroListsPanel extends JPanel {
                 matchPolesZeros();
                 s2.getstagePlotModePanel().updateStagePlot();
                 s2.getPlotPoleZeroPanel().updatePoleZeroPlot();
+                s2.getPlotPoleZeroPanel().updatePoleZeroColour();
             }
         });
         automaticSelectionButton.addActionListener(new ActionListener() {
@@ -70,6 +67,19 @@ public class PoleZeroListsPanel extends JPanel {
                 automaticSelection();
                 s2.getstagePlotModePanel().updateStagePlot();
                 s2.getPlotPoleZeroPanel().updatePoleZeroPlot();
+                s2.getPlotPoleZeroPanel().updatePoleZeroColour();
+            }
+        });
+        deleteStageButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteStage(stagesList.getSelectedIndex());
+            }
+        });
+        deleteAllStagesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                deleteAllStages();
             }
         });
 
@@ -96,7 +106,9 @@ public class PoleZeroListsPanel extends JPanel {
                                 .addComponent(selectGroupButton)
                                 .addComponent(automaticSelectionButton))
                         .addComponent(stagesListScroller)
-                        .addComponent(deleteStage)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(deleteStageButton)
+                                .addComponent(deleteAllStagesButton))
         );
         layout.setVerticalGroup(
                 layout.createSequentialGroup()
@@ -107,7 +119,9 @@ public class PoleZeroListsPanel extends JPanel {
                                 .addComponent(selectGroupButton)
                                 .addComponent(automaticSelectionButton))
                         .addComponent(stagesListScroller)
-                        .addComponent(deleteStage)
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(deleteStageButton)
+                                .addComponent(deleteAllStagesButton))
         );
         layout.linkSize(SwingConstants.HORIZONTAL, unmatchedPolesListScroller, unmatchedZeroListScroller);
     }
@@ -196,6 +210,28 @@ public class PoleZeroListsPanel extends JPanel {
                 matchWithDoubleSelection(tempZeroIndex1, tempZeroIndex2, tempPoloIndex1, tempPoloIndex2);
             }
             updateLists();
+        }
+    }
+
+    private void deleteStage(int index) {
+        List<Stage> currentStageList = s.getUserData().getStageList();
+        List<Complex> currentPoleList = s.getUserData().getUnmatchedPoles();
+        List<Complex> currentZeroList = s.getUserData().getUnmatchedZeros();
+
+        for ( Complex x : currentStageList.get(index).getPoles()) {
+            if (x.getImaginary() >= 0) { currentPoleList.add(x); }
+        }
+        for ( Complex x : currentStageList.get(index).getZeros()) {
+            if (x.getImaginary() >= 0) { currentZeroList.add(x); }
+        }
+        currentStageList.remove(index);
+        updateLists();
+    }
+
+    private void deleteAllStages() {
+        List<Stage> currentStageList = s.getUserData().getStageList();
+        for (int i = 0; i < currentStageList.size(); i++) {
+            deleteStage(0);
         }
     }
 

@@ -13,21 +13,19 @@ import java.awt.event.ActionListener;
  */
 public class StagePanel extends JPanel {
     StageVisualizerPanel stageVisualizerPanel;
-    StageProperties stageProperties;
+    SetPlot setPlot;
 
 
     public StagePanel() {
         Singleton_S2 s = Singleton_S2.getInstance();
-        this.setBorder(BorderFactory.createTitledBorder("Stages Visualizer"));
+        //this.setBorder(BorderFactory.createTitledBorder("Stages Visualizer"));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         stageVisualizerPanel = s.getStageVisualizerPanel();
-        stageProperties = s.getStageProperties();
-
+        setPlot = s.getSetPlot();
 
         this.add(stageVisualizerPanel);
-        this.add(stageProperties);
-
+        this.add(setPlot);
 
         // Lo de Nahuel
         JButton b = new JButton("Booom!");

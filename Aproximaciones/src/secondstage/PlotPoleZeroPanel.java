@@ -57,13 +57,14 @@ public class PlotPoleZeroPanel extends JPanel {
         );
 
         updatePoleZeroPlot();
+        updatePoleZeroColour();
     }
 
     public void updatePoleZeroPlot() {
         plotPZ.setDataset(0, createPoleZeroDataset());
-
+    }
+    public void updatePoleZeroColour() {
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer)plotPZ.getRenderer();
-
         renderer.setSeriesPaint(0, Color.BLACK);
         renderer.setSeriesPaint(1, Color.BLACK);
 

@@ -25,7 +25,7 @@ public class PlotStagePanel extends JPanel {
     JPanel plotPanel;
 
     PlotStagePanel() {
-        this.setBorder(BorderFactory.createTitledBorder("Stages Plot Attenuation"));
+        this.setBorder(BorderFactory.createTitledBorder("Stages Visualizer"));
         plotPanel = createPanel();
 
         //Setup layout

@@ -55,7 +55,7 @@ public class StageProperties extends JPanel{
                                 .addComponent(qValue)
                                 .addComponent(wpLabel)
                                 .addComponent(wpValue))
-                        .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup()
                                 .addComponent(dinamicRangeLabel)
                                 .addComponent(dinamicRangeValue)
                                 .addComponent(wzLabel)
