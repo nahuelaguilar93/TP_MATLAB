@@ -320,7 +320,7 @@ public class PoleZeroListsPanel extends JPanel {
         List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
         List<Stage> stageList = s.getUserData().getStageList();
 
-        if ( firstZeroIndex == secondZeroIndex ) {  //Only One Selected
+        if ( firstZeroIndex == secondZeroIndex ) {  //Only One Zero Selected
             if (firstZeroIndex == unmatchedZeros.size()) {  //If its None
                 stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex)));
                 unmatchedPoles.remove(selectedPoleIndex);
@@ -330,7 +330,7 @@ public class PoleZeroListsPanel extends JPanel {
                 unmatchedZeros.remove(firstZeroIndex);
             }
         }
-        else {  //There are two Selections
+        else {  //There are two Zero Selections
             if (firstZeroIndex == unmatchedZeros.size()) {
                 stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(secondZeroIndex)));
                 unmatchedPoles.remove(selectedPoleIndex);
@@ -342,7 +342,7 @@ public class PoleZeroListsPanel extends JPanel {
                 unmatchedZeros.remove(firstZeroIndex);
             }
             else {
-                stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstZeroIndex), unmatchedZeros.get(secondZeroIndex)));
+                stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstZeroIndex), Complex.INF, unmatchedZeros.get(secondZeroIndex)));
                 unmatchedPoles.remove(selectedPoleIndex);
                 unmatchedZeros.remove(secondZeroIndex);             //First remove the bigger index so that pointed zero by firstZeroIndex is not changed
                 unmatchedZeros.remove(firstZeroIndex);
@@ -360,13 +360,11 @@ public class PoleZeroListsPanel extends JPanel {
 
         if ( firstZeroIndex == secondZeroIndex ) {  //Only One Selected
             if (firstZeroIndex == unmatchedZeros.size()) {  //If its None
-                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex)));
-                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), Complex.INF, unmatchedPoles.get(secondPoleIndex)));
                 unmatchedPoles.remove(maxPoleIndex);     //I have to remove first the bigger one
                 unmatchedPoles.remove(minPoleIndex);
             } else {
-                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(firstZeroIndex)));
-                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(firstZeroIndex), unmatchedPoles.get(secondPoleIndex)));
                 unmatchedPoles.remove(maxPoleIndex);     //I have to remove first the bigger one
                 unmatchedPoles.remove(minPoleIndex);
                 unmatchedZeros.remove(maxZeroIndex);
@@ -374,22 +372,19 @@ public class PoleZeroListsPanel extends JPanel {
         }
         else {  //There are two Selections
             if (firstZeroIndex == unmatchedZeros.size()) {
-                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(secondZeroIndex)));
-                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(secondZeroIndex), unmatchedPoles.get(secondPoleIndex)));
                 unmatchedPoles.remove(maxPoleIndex);     //I have to remove first the bigger one
                 unmatchedPoles.remove(minPoleIndex);
                 unmatchedZeros.remove(maxZeroIndex);
             }
             else if (secondZeroIndex == unmatchedZeros.size()) {
-                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(firstZeroIndex)));
-                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                stageList.add(new Stage(unmatchedPoles.get(firstPoleIndex), unmatchedZeros.get(firstZeroIndex), unmatchedPoles.get(secondPoleIndex)));
                 unmatchedPoles.remove(maxPoleIndex);     //I have to remove first the bigger one
                 unmatchedPoles.remove(minPoleIndex);
                 unmatchedZeros.remove(maxZeroIndex);
             }
             else {
-                stageList.add(new Stage(unmatchedPoles.get(secondPoleIndex), unmatchedZeros.get(firstZeroIndex), unmatchedZeros.get(secondZeroIndex)));
-                //TODO: Hay que poder pasarle otro parámetro... nahuel me va a matar ^^
+                stageList.add(new Stage(unmatchedPoles.get(secondPoleIndex), unmatchedZeros.get(firstZeroIndex), unmatchedPoles.get(secondPoleIndex), unmatchedZeros.get(secondZeroIndex)));
                 unmatchedPoles.remove(maxPoleIndex);     //I have to remove firts the bigger one
                 unmatchedPoles.remove(minPoleIndex);
                 unmatchedZeros.remove(maxZeroIndex);     //First remove the bigger index so that pointed zero by firstZeroIndex is not changed
