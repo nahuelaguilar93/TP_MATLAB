@@ -411,8 +411,6 @@ class PlotPlot extends JPanel{
         dataset.addSeries(polesSeries);
         dataset.addSeries(zerosSeries);
 
-
-
         return dataset;
     }
     private XYSeriesCollection addStepOrImpulseSeriesToDataset(double[] temp, double[] step, String seriesName, XYSeriesCollection dataset) {

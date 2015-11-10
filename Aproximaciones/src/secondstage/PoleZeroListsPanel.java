@@ -4,12 +4,17 @@ import Data.Singleton;
 import mathematics.Stage;
 import org.apache.commons.math3.complex.Complex;
 import tclib.GenericUtils;
+import tclib.TransferFunction;
+
 import javax.swing.*;
 import javax.swing.border.MatteBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Arc2D;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,6 +38,7 @@ public class PoleZeroListsPanel extends JPanel {
     int joker;      //This is used to know if I have to use all zeros twice or not
 
     public PoleZeroListsPanel() {
+        Singleton_S2 s2 = Singleton_S2.getInstance();
         //Only one string can be selected at the same time
         unmatchedPolesList.setSelectionModel(new MySelectionModel(unmatchedZeroList, 2));
         unmatchedZeroList.setSelectionModel(new MySelectionModel(unmatchedZeroList, 2));
@@ -52,11 +58,26 @@ public class PoleZeroListsPanel extends JPanel {
 
         selectGroupButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { matchPolesZeros(); }
+            public void actionPerformed(ActionEvent e) {
+                matchPolesZeros();
+                s2.getstagePlotModePanel().updateStagePlot();
+                s2.getPlotPoleZeroPanel().updatePoleZeroPlot();
+            }
         });
         automaticSelectionButton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) { automaticSelection(); }
+            public void actionPerformed(ActionEvent e) {
+                automaticSelection();
+                s2.getstagePlotModePanel().updateStagePlot();
+                s2.getPlotPoleZeroPanel().updatePoleZeroPlot();
+            }
+        });
+
+        stagesList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                s2.getstagePlotModePanel().updateStagePlot();
+            }
         });
 
         //Setup layout
@@ -392,6 +413,15 @@ public class PoleZeroListsPanel extends JPanel {
             }
         }
 
+    }
+
+    public int getStagesListIndex() {
+        if ( stagesList.isSelectionEmpty() ) {
+            return -1;
+        }
+        else {
+            return stagesList.getSelectedIndex();
+        }
     }
 
     private static class MySelectionModel extends DefaultListSelectionModel {

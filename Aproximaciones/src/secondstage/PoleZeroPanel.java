@@ -16,7 +16,7 @@ public class PoleZeroPanel extends JPanel {
         plotPoleZeroPanel = s.getPlotPoleZeroPanel();
         poleZeroListsPanel = s.getPoleZeroListsPanel();
 
-        this.setMaximumSize(new Dimension(300, 2080));
+        this.setMaximumSize(new Dimension(500, 2080));
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         this.setBorder(BorderFactory.createTitledBorder("PoleZeroStages"));
 

@@ -60,6 +60,11 @@ public class PrincipalPanel extends JPanel {
                     }
                     Singleton.getInstance().getStageTwoPanel().set();
                 }
+                if ( currentPanel == 1 && !s.getUserData().getUnmatchedPoles().isEmpty()) {
+                    JInternalFrame frame = new JInternalFrame();
+                    JOptionPane.showMessageDialog(frame, "Please match all the poles. You can use the button Automatic Selection", "Unmatched Poles", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
                 cardLayout.next(bigPanel);
                 currentPanel++;
                 previousStageButton.setEnabled(true);
