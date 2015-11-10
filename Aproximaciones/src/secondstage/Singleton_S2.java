@@ -1,5 +1,6 @@
 package secondstage;
 
+import mathematics.Stage;
 import org.apache.commons.math3.complex.Complex;
 
 import java.util.ArrayList;
@@ -20,7 +21,19 @@ class Singleton_S2 {
     private PoleZeroListsPanel poleZeroListsPanel = null;
     private PlotStagePanel plotStagePanel = null;
     private StagePlotModePanel stagePlotModePanel = null;
+    private StageVisualizerPanel stageVisualizerPanel = null;
+    private StageProperties stageProperties = null;
 
+    public StageVisualizerPanel getStageVisualizerPanel() {
+        if (stageVisualizerPanel == null)
+            stageVisualizerPanel = new StageVisualizerPanel();
+        return stageVisualizerPanel;
+    }
+    public StageProperties getStageProperties() {
+        if (stageProperties == null)
+            stageProperties = new StageProperties();
+        return stageProperties;
+    }
     public StagePlotModePanel getstagePlotModePanel() {
         if (stagePlotModePanel == null)
             stagePlotModePanel = new StagePlotModePanel();

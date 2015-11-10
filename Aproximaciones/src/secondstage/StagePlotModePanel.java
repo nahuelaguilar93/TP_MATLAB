@@ -24,6 +24,8 @@ public class StagePlotModePanel extends JPanel{
     StagePlotModePanel() {
         multipleModeRadioButton.setSelected(true);
 
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+
         multipleModeRadioButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

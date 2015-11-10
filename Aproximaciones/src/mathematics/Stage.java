@@ -63,6 +63,8 @@ public class Stage {
         TF = new TransferFunction(poles, zeros);
     }
 
+    //TODO: cuando puedas nahuel haceme un getDR para mostrar despues.
+
     public TransferFunction getTF() { return TF; }
     public String getDetails() { return details; }
     public Complex[] getZeros() { return zeros; }
