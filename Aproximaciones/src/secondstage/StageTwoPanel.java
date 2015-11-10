@@ -52,5 +52,6 @@ public class StageTwoPanel extends JPanel {
         //System.out.println("Ya obtuve todo :)");
         Singleton_S2.getInstance().getPoleZeroListsPanel().updateLists();
         Singleton_S2.getInstance().getPlotPoleZeroPanel().updatePoleZeroPlot();
+        Singleton_S2.getInstance().getPlotStagePanel().updatePlot();
     }
 }

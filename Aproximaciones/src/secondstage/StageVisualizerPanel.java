@@ -7,17 +7,17 @@ import javax.swing.*;
  */
 public class StageVisualizerPanel extends JPanel {
     private PlotStagePanel plotStagePanel;
-    private StagePlotModePanel stagePlotModePanel;
+    private SetPlot setPlot;
+
 
     StageVisualizerPanel() {
         Singleton_S2 s = Singleton_S2.getInstance();
-
-        plotStagePanel = s.getPlotStagePanel();
-        stagePlotModePanel = s.getstagePlotModePanel();
-
         this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
 
+        plotStagePanel = s.getPlotStagePanel();
+        setPlot = s.getSetPlot();
+
         this.add(plotStagePanel);
-        this.add(stagePlotModePanel);
+        this.add(setPlot);
     }
 }

@@ -24,7 +24,7 @@ public class StageProperties extends JPanel{
     JLabel wzLabel = new JLabel("Zero Frequency (wz): ");
     JLabel wzValue = new JLabel("");
 
-    StageProperties(){
+    StageProperties() {
         //TODO: agergar todo lo que uno quiera aca de info
         this.setBorder(BorderFactory.createTitledBorder("Stage Properties"));
 
@@ -34,6 +34,7 @@ public class StageProperties extends JPanel{
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
+        //TODO Nahuel: Arreglame esta mierda -.-
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()

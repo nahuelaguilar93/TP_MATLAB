@@ -5,6 +5,7 @@ import org.apache.commons.math3.complex.Complex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 class Singleton_S2 {
     private static final Singleton_S2 INSTANCE = new Singleton_S2();
@@ -23,7 +24,19 @@ class Singleton_S2 {
     private StagePlotModePanel stagePlotModePanel = null;
     private StageVisualizerPanel stageVisualizerPanel = null;
     private StageProperties stageProperties = null;
+    private FilterMode filterMode = null;
+    private SetPlot setPlot = null;
 
+    public SetPlot getSetPlot() {
+        if (setPlot == null)
+            setPlot = new SetPlot();
+        return setPlot;
+    }
+    public FilterMode getFilterMode () {
+        if (filterMode == null)
+            filterMode = new FilterMode();
+        return filterMode;
+    }
     public StageVisualizerPanel getStageVisualizerPanel() {
         if (stageVisualizerPanel == null)
             stageVisualizerPanel = new StageVisualizerPanel();

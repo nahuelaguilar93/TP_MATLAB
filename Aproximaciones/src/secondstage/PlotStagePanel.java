@@ -27,7 +27,21 @@ public class PlotStagePanel extends JPanel {
     PlotStagePanel() {
         this.setBorder(BorderFactory.createTitledBorder("Stages Plot Attenuation"));
         plotPanel = createPanel();
-        this.add(plotPanel, "Atenuation");
+
+        //Setup layout
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(plotPanel)
+        );
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addComponent(plotPanel)
+        );
     }
 
     private JPanel createPanel() {
@@ -61,7 +75,9 @@ public class PlotStagePanel extends JPanel {
         return new ChartPanel(chart);
     }
 
+    public void updatePlot() { plot.setDataset(0, null); }
     public void updatePlot(List<TransferFunction> myTFList, int Index) {
+        plot.setDataset(0, null);
         if (!myTFList.isEmpty()) {
             Singleton s = Singleton.getInstance();
             SuperTemplate currentTemplate = s.getUserData().getCurrentTemplate();
@@ -83,12 +99,12 @@ public class PlotStagePanel extends JPanel {
             //Set Logarithmic axis
             LogarithmicAxis xAxis = new LogarithmicAxis("Frequency");
             xAxis.setRange(wmin * 0.1, wmax * 10);
-            ValueAxis yAxis = plot.getRangeAxis();
-            yAxis.setRange(-currentTemplate.getG(), 2*(Aa-currentTemplate.getG()));
+            //ValueAxis yAxis = plot.getRangeAxis();
+            //yAxis.setRange(-currentTemplate.getG(), 2*(Aa-currentTemplate.getG()));
 
             //Set 'y' default Axis
             plot.setDomainAxis(xAxis);
-            plot.setRangeAxis(yAxis);
+            //plot.setRangeAxis(yAxis);
         }
     }
 

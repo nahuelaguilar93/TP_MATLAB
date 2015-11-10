@@ -4,9 +4,6 @@ import org.apache.commons.math3.complex.Complex;
 import tclib.GenericUtils;
 import tclib.TransferFunction;
 
-/**
- * Created by Nahuel on 7/11/2015.
- */
 public class Stage {
     private Complex[] poles;
     private Complex[] zeros;

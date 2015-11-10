@@ -29,19 +29,32 @@ public class PlotPoleZeroPanel extends JPanel {
     XYPlot plotPZ;
 
     public PlotPoleZeroPanel() {
-        //this.setMaximumSize(new Dimension(400, 400));
-        //this.setMinimumSize(new Dimension(400, 400));
-        //this.setPreferredSize(new Dimension(400, 400));
+        this.setMaximumSize(new Dimension(400, 400));
+        this.setMinimumSize(new Dimension(400, 400));
+        this.setPreferredSize(new Dimension(400, 400));
 
         XYSeriesCollection poleZeroDataset = createPoleZeroDataset();
         JFreeChart chart = ChartFactory.createScatterPlot("Poles/Zeros", "Real", "Imaginary", poleZeroDataset);
 
         //TODO: Falta agregar la configuración de los ejes y esas cosas
         plotPZ = chart.getXYPlot();
+        JPanel chartPanel = new ChartPanel(chart);
 
-        this.add(new ChartPanel(chart));
-
+        //Setup layout
         this.setBorder(BorderFactory.createTitledBorder("PoleZeroPlot"));
+        GroupLayout layout = new GroupLayout(this);
+        this.setLayout(layout);
+        layout.setAutoCreateGaps(true);
+        layout.setAutoCreateContainerGaps(true);
+
+        layout.setHorizontalGroup(
+                layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                        .addComponent(chartPanel)
+        );
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addComponent(chartPanel)
+        );
 
         updatePoleZeroPlot();
     }

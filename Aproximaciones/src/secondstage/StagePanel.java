@@ -15,6 +15,7 @@ public class StagePanel extends JPanel {
     StageVisualizerPanel stageVisualizerPanel;
     StageProperties stageProperties;
 
+
     public StagePanel() {
         Singleton_S2 s = Singleton_S2.getInstance();
         this.setBorder(BorderFactory.createTitledBorder("Stages Visualizer"));
@@ -23,8 +24,10 @@ public class StagePanel extends JPanel {
         stageVisualizerPanel = s.getStageVisualizerPanel();
         stageProperties = s.getStageProperties();
 
+
         this.add(stageVisualizerPanel);
         this.add(stageProperties);
+
 
         // Lo de Nahuel
         JButton b = new JButton("Booom!");
