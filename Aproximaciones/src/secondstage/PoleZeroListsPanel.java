@@ -124,15 +124,8 @@ public class PoleZeroListsPanel extends JPanel {
     }
 
     private boolean checkIndexes( int firstZeroIndex, int secondZeroIndex, int firstPoleIndex, int secondPoleIndex) {
-        //Fot debug
-        System.out.println("fist Index: " + firstZeroIndex);
-        System.out.println("Second Index: " + secondZeroIndex);
-        System.out.println("Joker: " + joker);
         List<Complex> unmatchedPoles = s.getUserData().getUnmatchedPoles();
         List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
-
-        //TODO: Hay que hacer que se pueda seleccionar dos polos si son simples! lrpm Q
-        //TODO: Inentendible este codigo! XD mala mia gente jaja
 
         if ( unmatchedPolesList.isSelectionEmpty() || unmatchedZeroList.isSelectionEmpty()) {   //If there is no Selection
             return false;     //And error frame is annoying... maybe is better just to do nothing. The user will realize
@@ -140,6 +133,7 @@ public class PoleZeroListsPanel extends JPanel {
             //JOptionPane.showMessageDialog(frame, "There must be selected a pole and at least one zero", "No pole or zero found", JOptionPane.ERROR_MESSAGE);
         }
         else if ( firstPoleIndex != secondPoleIndex ) { //Selected two poles
+            System.out.println("Two poles Selected");
             return checkTwoPoles(firstZeroIndex, secondZeroIndex, firstPoleIndex, secondPoleIndex);
         }
         else {
@@ -152,6 +146,7 @@ public class PoleZeroListsPanel extends JPanel {
         List<Complex> unmatchedZeros = s.getUserData().getUnmatchedZeros();
 
         if ( unmatchedPoles.get(firstPoleIndex).getImaginary() != 0 || unmatchedPoles.get(secondPoleIndex).getImaginary() != 0  ) {
+            //They are not in the real axis
             return false;
         }
         else if ( firstZeroIndex != secondZeroIndex) {   //If there are two different zeros
@@ -163,7 +158,12 @@ public class PoleZeroListsPanel extends JPanel {
         }
         else {  //If there is only one zero
             if ( firstZeroIndex < unmatchedZeros.size() ) {     //If its not none
-                return (joker > 0);
+                if ( unmatchedZeros.get(firstZeroIndex).getImaginary() != 0 ) {
+                    return true;
+                }
+                else {
+                    return (joker > 0);
+                }
             }
             else { return (joker > 1); }
         }
