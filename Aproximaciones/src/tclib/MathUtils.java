@@ -50,7 +50,6 @@ public class MathUtils {
     }
 
     private static final double gr=(Math.sqrt(5)-1)/2;
-
     public static double gss(TransferFunction TF, double a, double b, double tol) {
         tol=1e-2;
         double c = b - gr * (b - a);

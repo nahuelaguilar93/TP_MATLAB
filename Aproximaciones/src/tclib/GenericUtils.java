@@ -49,7 +49,7 @@ public class GenericUtils {
         double dynRangeLoss[] = new double[points];
 
         List<TransferFunction> acumTF =  new ArrayList<>();
-        acumTF.add(stages.get(0).getTF());
+        acumTF.add(new TransferFunction(stages.get(0).getTF()));
         for(int i = 1; i < stages.size(); i++){
             TransferFunction nextTF = new TransferFunction(acumTF.get(i-1));
             nextTF.multiply(stages.get(i).getTF());
@@ -74,6 +74,4 @@ public class GenericUtils {
         }
         return maxLoss;
     }
-
-
 }
