@@ -32,7 +32,6 @@ public class StagePanel extends JPanel {
         plotStagePanel = s.getPlotStagePanel();
 
         this.add(plotStagePanel);
-
     }
 
 }
