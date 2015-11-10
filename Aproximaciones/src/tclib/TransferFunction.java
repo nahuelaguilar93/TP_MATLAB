@@ -141,13 +141,13 @@ public class TransferFunction {
     public Complex[] getZeros() {
         LaguerreSolver laguerreSolver = new LaguerreSolver();
         if(numerador.getCoefficients().length > 1)
-            return laguerreSolver.solveAllComplex(numerador.getCoefficients(), 0);
+            return laguerreSolver.solveAllComplex(numerador.getCoefficients(), 0, 100000);
         else return new Complex[0];
     }
 
     public Complex[] getPoles() {
         LaguerreSolver laguerreSolver = new LaguerreSolver();
-        return laguerreSolver.solveAllComplex(denominador.getCoefficients(), 0);
+        return laguerreSolver.solveAllComplex(denominador.getCoefficients(), 0, 100000);
     }
 
     public double[] getModule(double[] omegaRange) {
