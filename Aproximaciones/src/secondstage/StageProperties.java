@@ -34,7 +34,6 @@ public class StageProperties extends JPanel{
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
 
-        //TODO Nahuel: Arreglame esta mierda -.-
         layout.setHorizontalGroup(
                 layout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()

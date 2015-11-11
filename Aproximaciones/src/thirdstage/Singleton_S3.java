@@ -15,6 +15,20 @@ public class Singleton_S3 {
     private ComponentsPanel componentspanel= null;
     private SensitivitiesPanel sensitivitiespanel= null;
     private StagePanel stagepanel= null;
+    private PlotPanel plotpanel= null;
+    private StageInfoPanel stageinfopanel= null;
+    
+    public StageInfoPanel getStageInfoPanel() {
+        if (stageinfopanel == null)
+        	stageinfopanel = new StageInfoPanel();
+        return stageinfopanel;
+    }
+    
+    public PlotPanel getPlotPanel() {
+        if (plotpanel == null)
+        	plotpanel = new PlotPanel();
+        return plotpanel;
+    }
     
     public StagePanel getStagePanel() {
         if (stagepanel == null)
