@@ -89,7 +89,7 @@ public class PoleZeroListsPanel extends JPanel {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 s2.getstagePlotModePanel().updateStagePlot();
-                s2.getStageProperties().updateLabels();
+//                s2.getStageProperties().updateLabels();
             }
         });
 

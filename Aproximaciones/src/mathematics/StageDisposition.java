@@ -9,75 +9,114 @@ import tclib.templates.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Nahuel on 10/11/2015.
- */
 public class StageDisposition {
     private List<Stage> stageList;
     public List<Stage> getStageList() { return stageList; };
-    private double wMax;
-    private double wMin;
-    SuperTemplate temp;
-    TransferFunction finalTF;
 
-    StageDisposition(List<Stage> stages) {
+    public StageDisposition(List<Stage> stages) {
         stageList = stages;
-        SuperTemplate temp = Singleton.getInstance().getUserData().getCurrentTemplate();
-        finalTF = Singleton.getInstance().getUserData().getTransferFunction();
-        wMax = temp.getWmax();
-        wMin = temp.getWmin();
-        gainCorrection();
     }
+    public StageDisposition() {
+        this(new ArrayList<>());
+    }
+
     public void gainCorrection() {
         if(stageList.size() == 0) return;
         double wEval;
+        SuperTemplate temp = Singleton.getInstance().getUserData().getCurrentTemplate();
+
         if (temp instanceof LowpassTemplate) wEval = ((LowpassTemplate) temp).getWp();
         else if (temp instanceof HighpassTemplate) wEval = ((HighpassTemplate) temp).getWp();
         else if (temp instanceof DelayTemplate) wEval = ((DelayTemplate) temp).getWp();
         else if (temp instanceof BandpassTemplate) wEval = ((BandpassTemplate) temp).getWo();
         else wEval = ((BandrejectTemplate) temp).getWpp();
 
-        TransferFunction acumTF = stageList.get(0).getTF();
+        TransferFunction finalTF = new TransferFunction(Singleton.getInstance().getUserData().getTransferFunction());
+        TransferFunction acumTF = new TransferFunction(stageList.get(0).getTF());
         for(int i = 1; i < stageList.size(); i++)
             acumTF.multiply(stageList.get(i).getTF());
+
         double correction = finalTF.evaluateApproximationAtOmega(wEval).abs()
                 / acumTF.evaluateApproximationAtOmega(wEval).abs();
+ //       System.out.println("WEval: " + wEval + "  finalTF: " + finalTF.evaluateApproximationAtOmega(wEval).abs()
+ //       + "  acumTF: " + acumTF.evaluateApproximationAtOmega(wEval).abs());
         stageList.get(0).getTF().multiply(correction);
     }
 
     public void minimizeDRL(){
         if(stageList.size() == 0) return;
-        int permutations[][] = MathUtils.getAllPermutations(stageList.size());
+
         double lowestDRL = Double.POSITIVE_INFINITY;
+        List<TransferFunction> bestTFList =  new ArrayList<>();
         List<TransferFunction> sortedTFList = new ArrayList<>();
+        List<TransferFunction> acumTFList =  new ArrayList<>();
 
-        double M = finalTF.evaluateApproximationAtOmega(getMaxGainFreq(finalTF,wMin/100,wMax*100)).abs();
-
+        int permutations[][] = MathUtils.getAllPermutations(stageList.size());
         for(int[] x : permutations) {
             for(int i : x) sortedTFList.add(new TransferFunction(stageList.get(i).getTF()));
+//            for(int i = 0; i<stageList.size(); i++) sortedTFList.add(new TransferFunction(stageList.get(i).getTF()));////////////////Debuging
 
+            acumTFList.add(new TransferFunction(sortedTFList.get(0)));
+            for(int i = 1; i < sortedTFList.size(); i++){
+                TransferFunction nextTF = new TransferFunction(acumTFList.get(i-1));
+                nextTF.multiply(sortedTFList.get(i));
+                acumTFList.add(nextTF);
+            }
+            SuperTemplate temp = Singleton.getInstance().getUserData().getCurrentTemplate();
+            double wMax = temp.getWmax();
+            double wMin = temp.getWmin();
+//        System.out.println("wMin: " + wMin + "  wMax: " + wMax);
+            double auxW = getMaxGainFreq(sortedTFList.get(0), wMin / 100, wMax * 100);
+//        System.out.println("maxGainFreq: " + auxW);
+            double prevAcumStageMax = sortedTFList.get(0).evaluateApproximationAtOmega(auxW).abs();
+            for (int k = 1; k < sortedTFList.size(); k++) {
+                auxW = getMaxGainFreq(acumTFList.get(k), wMin / 100, wMax * 100);
+//                System.out.println("maxGainFreq: " + auxW);
+                double nextAcumStageMax = acumTFList.get(k).evaluateApproximationAtOmega(auxW).abs();
+                double correction = prevAcumStageMax/nextAcumStageMax;
+                sortedTFList.get(k).multiply(correction);
+                sortedTFList.get(0).multiply(1./correction);
+//                System.out.println("prevAcumStageMax: " + prevAcumStageMax);
+//                System.out.println("nextAcumStageMax: " + nextAcumStageMax);
+                prevAcumStageMax = nextAcumStageMax;
+            }
+
+            double newDRL = GenericUtils.dynamicRangeLoss(sortedTFList, wMin / 100, wMax * 100, 12345);
+//            System.out.println("newDRL: " + newDRL);
+            if(newDRL < lowestDRL){
+                lowestDRL = newDRL;
+                bestTFList = new ArrayList<>(sortedTFList);
+            }
             sortedTFList.clear();
+            acumTFList.clear();
         }
+
+        this.stageList.clear();
+        for(TransferFunction x : bestTFList)
+            this.stageList.add(new Stage(x));
     }
 
     private double getMaxGainFreq(TransferFunction TF, double wMin, double wMax){
         int pointsQuantity = (int)(Math.log10(wMax/wMin)*100);  //Evalúo 100 puntos por década.
-        double freq[] = GenericUtils.logspace(wMin,wMin,pointsQuantity);
+        double freq[] = GenericUtils.logspace(wMin,wMax,pointsQuantity);
         double module[] = TF.getModule(freq);
 
-        double max = module[0];
-        int maxFreqIndex = 0;
+        double min = module[0];
+        int minFreqIndex = 0;
         for (int i = 1; i < module.length; i++) {
-            if (module[i] > max) {
-                max = module[i];
-                maxFreqIndex = i;
+            if (module[i] < min) {
+                min = module[i];
+                minFreqIndex = i;
             }
         }
+//        System.out.println("getMaxGainFreq. wMin: " + wMin + " wMax: " + wMax + " Points: " + pointsQuantity);
+//        System.out.println("getMaxGainFreq. module.length: " + module.length + " module[0]: " + module[0]
+//        + " module[fin]: " + module[module.length-1] + " module[mid]: " + module[module.length/2] + " min: " + min + " index: " + minFreqIndex);
 
-        if (maxFreqIndex == 0)
+        if (minFreqIndex == 0)
             return wMin*1e-6;
-        else if (maxFreqIndex == freq.length)
+        else if (minFreqIndex == freq.length-1)
             return wMax*1e6;
-        else return MathUtils.gss(TF, freq[maxFreqIndex - 1], freq[maxFreqIndex + 1], 1e-2);
+        else return MathUtils.gss(TF, freq[minFreqIndex - 1], freq[minFreqIndex + 1], 1e-2);
     }
 }

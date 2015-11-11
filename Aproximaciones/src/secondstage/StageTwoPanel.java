@@ -2,7 +2,6 @@ package secondstage;
 
 import Data.Singleton;
 import Data.UserData;
-import org.apache.commons.math3.analysis.function.Sin;
 import org.apache.commons.math3.complex.Complex;
 import tclib.TransferFunction;
 
@@ -28,7 +27,7 @@ public class StageTwoPanel extends JPanel {
     public void set(){
         //System.out.println("Empiezo a pasar a la etapa 2");
         UserData uData = Singleton.getInstance().getUserData();
-        TransferFunction t = uData.getApproximationList().get(uData.getSelection()).getTF();
+        TransferFunction t = new TransferFunction(uData.getApproximationList().get(uData.getSelection()).getTF());
         if (t.equals(uData.getTransferFunction())) return;
         uData.setTransferFunction(t);
         uData.getUnmatchedPoles().clear();

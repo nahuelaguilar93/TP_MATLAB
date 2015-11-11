@@ -1,9 +1,5 @@
 package Data;
 
-import de.jtem.ellipticFunctions.Elliptic;
-import de.jtem.ellipticFunctions.Jacobi;
-import org.apache.commons.math3.complex.Complex;
-import org.apache.commons.math3.complex.ComplexFormat;
 import tclib.MathUtils;
 
 import javax.swing.*;
@@ -31,9 +27,12 @@ public class Main extends JFrame {
     public static void main(String[] args) {
 
         // Ejemplo de funciones pedidas.
-        System.out.println(Jacobi.cn(4, 3));
-        de.jtem.mfc.field.Complex c = new de.jtem.mfc.field.Complex(0.2,0);
-        System.out.println(Jacobi.K_from_k(c));
+ //       System.out.println(Jacobi.cn(4, 3));
+ //       de.jtem.mfc.field.Complex c = new de.jtem.mfc.field.Complex(0.2,0);
+ //       System.out.println(Jacobi.K_from_k(c));
+
+        for(int x:new int[]{})
+            System.out.println(x);
 
 
         // <editor-fold defaultstate="collapsed" desc="Look and Feel">

@@ -1,6 +1,5 @@
 package tclib;
 
-import mathematics.Stage;
 import org.apache.commons.math3.complex.Complex;
 
 import java.util.ArrayList;
@@ -40,19 +39,19 @@ public class GenericUtils {
         return str + "r: " + String.format("%.1f", real) + " i: " + String.format("%.2f", imag) + " Q: " + String.format("%.2f", Q);
     }
 
-    public static double dynamicRangeLoss(List<Stage> stages, double minW, double maxW) {
+    public static double dynamicRangeLoss(List<TransferFunction> stages, double minW, double maxW) {
         return dynamicRangeLoss(stages, minW, maxW, 10000);
     }
-    public static double dynamicRangeLoss(List<Stage> stages, double minW, double maxW, int points) {
+    public static double dynamicRangeLoss(List<TransferFunction> stages, double minW, double maxW, int points) {
         if(stages.size() == 0) return 0;
         double freq[] = linspace(minW, maxW, points);
         double dynRangeLoss[] = new double[points];
 
         List<TransferFunction> acumTF =  new ArrayList<>();
-        acumTF.add(new TransferFunction(stages.get(0).getTF()));
+        acumTF.add(new TransferFunction(stages.get(0)));
         for(int i = 1; i < stages.size(); i++){
             TransferFunction nextTF = new TransferFunction(acumTF.get(i-1));
-            nextTF.multiply(stages.get(i).getTF());
+            nextTF.multiply(stages.get(i));
             acumTF.add(nextTF);
         }
 

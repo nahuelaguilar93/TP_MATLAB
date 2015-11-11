@@ -27,8 +27,8 @@ public class TransferFunction {
         this.denominador = denominador;
     }
     public TransferFunction(TransferFunction that) {
-        this.numerador = that.numerador;
-        this.denominador = that.denominador;
+        this.numerador = new PolynomialFunction(that.numerador.getCoefficients());
+        this.denominador = new PolynomialFunction(that.denominador.getCoefficients());
     }
 
     /**
@@ -139,15 +139,17 @@ public class TransferFunction {
     }
 
     public Complex[] getZeros() {
-        LaguerreSolver laguerreSolver = new LaguerreSolver();
-        if(numerador.getCoefficients().length > 1)
+        if(numerador.getCoefficients().length > 1) {
+            LaguerreSolver laguerreSolver = new LaguerreSolver();
             return laguerreSolver.solveAllComplex(numerador.getCoefficients(), 0, 100000);
-        else return new Complex[0];
+        } else return new Complex[0];
     }
 
     public Complex[] getPoles() {
-        LaguerreSolver laguerreSolver = new LaguerreSolver();
-        return laguerreSolver.solveAllComplex(denominador.getCoefficients(), 0, 100000);
+        if(denominador.getCoefficients().length > 1) {
+            LaguerreSolver laguerreSolver = new LaguerreSolver();
+            return laguerreSolver.solveAllComplex(denominador.getCoefficients(), 0, 100000);
+        } else return new Complex[0];
     }
 
     public double[] getModule(double[] omegaRange) {
