@@ -11,7 +11,35 @@ public class Singleton_S3 {
     private FilterCircuitPanel filterCircuitPanel = null;
     private StagePropertiesPanel stagePropertiesPanel = null;
     private StagesSelectionPanel stagesSelectionPanel = null;
-
+    private StageConfigPanel stageconfigpanel = null;
+    private ComponentsPanel componentspanel= null;
+    private SensitivitiesPanel sensitivitiespanel= null;
+    private StagePanel stagepanel= null;
+    
+    public StagePanel getStagePanel() {
+        if (stagepanel == null)
+        	stagepanel = new StagePanel();
+        return stagepanel;
+    }
+    
+    public SensitivitiesPanel getSensitivitiesPanel() {
+        if (sensitivitiespanel == null)
+        	sensitivitiespanel = new SensitivitiesPanel();
+        return sensitivitiespanel;
+    }
+    
+    public ComponentsPanel getComponentsPanel() {
+        if (componentspanel == null)
+        	componentspanel = new ComponentsPanel();
+        return componentspanel;
+    }
+    
+    public StageConfigPanel getStageConfigPanel() {
+        if (stageconfigpanel == null)
+        	stageconfigpanel = new StageConfigPanel();
+        return stageconfigpanel;
+    }
+    
     public FilterCircuitPanel getFilterCircuitPanel() {
         if (filterCircuitPanel == null)
             filterCircuitPanel = new FilterCircuitPanel();
@@ -27,4 +55,12 @@ public class Singleton_S3 {
             stagesSelectionPanel = new StagesSelectionPanel();
         return stagesSelectionPanel;
     }
+    
+
+
+
+
+
+
+
 }
