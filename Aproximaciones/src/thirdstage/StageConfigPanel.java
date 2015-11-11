@@ -2,37 +2,30 @@ package thirdstage;
 
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 import javax.swing.*;
 
 public class StageConfigPanel extends JPanel {
 	
 	private JComboBox approxList = new JComboBox();
-	private JTextField textfield = new JTextField("nose que va aca");
+	private JTextField textfield = new JTextField("1000");
 	
 	
 	StageConfigPanel(){
-	    //TODO: para este mirate AproxComboBox y ConfigLowPassPanel metiendola en una sola clase
-	    //TODO: Me chupa un huevo el layout que uses en este... de ultima ni lo especifiques y que lo haga solo.
 		setBorder(BorderFactory.createTitledBorder("Stage Configuration"));
+
 		
 		this.add(approxList);
-	    //updateList();
-		
-		this.add(new JLabel(">>>"));
-		
-		//textfield.setLayout(new BoxLayout(textfield, BoxLayout.X_AXIS));
+		this.add(new JLabel("R1 [ohm]"));
 		this.add(textfield);
-		
 	}
 
 	public int getIndex() { return approxList.getSelectedIndex(); }
 
-	/*public void updateList() {
-	    //Here I update the ComboBox. ex. I don't want the Aproximation list to have Bessel if I have a HighPass template
-	    UserData uData = Singleton.getInstance().getUserData();
-	    List<String> approxString = Approximation.getStringsToComboBox(uData.getCurrentTemplate());
-	    approxList.removeAllItems();
-	    for (String x : approxString)
-	    approxList.addItem(x);
-	}*/
+    public void updateList() {
+        ArrayList<String> filterString = new ArrayList<String>(Arrays.asList("HPSallen", "LPSallen"));   //Approximation.getStringsToComboBox(uData.getCurrentTemplate());
+        approxList.removeAllItems();
+        for (String x : filterString)
+            approxList.addItem(x);
+    }
 }

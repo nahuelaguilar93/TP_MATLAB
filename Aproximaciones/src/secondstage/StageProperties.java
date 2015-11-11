@@ -24,7 +24,7 @@ public class StageProperties extends JPanel{
     JLabel wzLabel = new JLabel("Zero Frequency (wz): ");
     JLabel wzValue = new JLabel("");
 
-    StageProperties() {
+    public StageProperties() {
         //TODO: agergar todo lo que uno quiera aca de info
         this.setBorder(BorderFactory.createTitledBorder("Stage Properties"));
 
@@ -63,9 +63,8 @@ public class StageProperties extends JPanel{
 
     }
 
-    public void updateLabels() {
+    public void updateLabels(int index) {
         List<Stage> currentStageList = s.getUserData().getStageList();
-        int index = s2.getPoleZeroListsPanel().getStagesListIndex();
 
         if ( index != -1 ) {
             updateQ(currentStageList.get(index).getPoles());

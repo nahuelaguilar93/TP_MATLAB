@@ -100,7 +100,7 @@ public class PlotStagePanel extends JPanel {
             LogarithmicAxis xAxis = new LogarithmicAxis("Frequency");
             xAxis.setRange(wmin * 0.1, wmax * 10);
             //ValueAxis yAxis = plot.getRangeAxis();
-            //yAxis.setRange(-currentTemplate.getG(), 2*(Aa-currentTemplate.getG()));
+            //yAxis.setRange(-currentTemplate.getG(), 2*Aa-currentTemplate.getG());
 
             //Set 'y' default Axis
             plot.setDomainAxis(xAxis);

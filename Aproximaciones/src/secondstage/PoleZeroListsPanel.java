@@ -89,7 +89,7 @@ public class PoleZeroListsPanel extends JPanel {
             @Override
             public void valueChanged(ListSelectionEvent e) {
                 s2.getstagePlotModePanel().updateStagePlot();
-//                s2.getStageProperties().updateLabels();
+                s2.getStageProperties().updateLabels(s2.getPoleZeroListsPanel().getStagesListIndex());
             }
         });
 
@@ -216,6 +216,7 @@ public class PoleZeroListsPanel extends JPanel {
     }
 
     private void deleteStage(int index) {
+        Singleton_S2 s2 = Singleton_S2.getInstance();
         List<Stage> currentStageList = s.getUserData().getStageList();
         List<Complex> currentPoleList = s.getUserData().getUnmatchedPoles();
         List<Complex> currentZeroList = s.getUserData().getUnmatchedZeros();
@@ -228,12 +229,14 @@ public class PoleZeroListsPanel extends JPanel {
         }
         currentStageList.remove(index);
         updateLists();
+        s2.getPlotPoleZeroPanel().updatePoleZeroPlot();
+        s2.getPlotPoleZeroPanel().updatePoleZeroColour();
     }
 
     private void deleteAllStages() {
         List<Stage> currentStageList = s.getUserData().getStageList();
-        for (int i = 0; i < currentStageList.size(); i++) {
-            deleteStage(0);
+        for (int i = currentStageList.size()-1; i >= 0 ; i--) {
+            deleteStage(i);
         }
     }
 

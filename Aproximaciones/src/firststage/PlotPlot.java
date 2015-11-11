@@ -79,7 +79,7 @@ class PlotPlot extends JPanel{
         ValueAxis xAxis = plotA.getDomainAxis();
         xAxis.setRange(wmin * 0.1, wmax * 10);
         ValueAxis yAxis = plotA.getRangeAxis();
-        yAxis.setRange(-userData.getCurrentTemplate().getG(), 2*(Aa - userData.getCurrentTemplate().getG()));
+        yAxis.setRange(-userData.getCurrentTemplate().getG(), 2*Aa - userData.getCurrentTemplate().getG());
 
         //Set 'y' default Axis
         plotA.setDomainAxis(xAxis);
@@ -321,32 +321,32 @@ class PlotPlot extends JPanel{
         double Aa = currentTemplate.getAa();
         double Ap = currentTemplate.getAp();
         double G = currentTemplate.getG();
-        Ap -= G;
-        Aa -= G;
+        //Ap -= G;
+        //Aa -= G;
         XYSeries series1 = new XYSeries("First");
         XYSeries series2 = new XYSeries("Second");
         XYSeries series3 = new XYSeries("Third");
         if (currentTemplate instanceof LowpassTemplate) {
             double wa = ((LowpassTemplate) currentTemplate).getWa();
             double wp = ((LowpassTemplate) currentTemplate).getWp();
-            series1.add(wp*0.1, Ap);
-            series1.add(wp, Ap);
-            series1.add(wp, 2*Aa);
+            series1.add(wp*0.1, Ap-G);
+            series1.add(wp, Ap-G);
+            series1.add(wp, 2*Aa-G);
             series2.add(wa, -G);
-            series2.add(wa, Aa);
-            series2.add(wa*10, Aa);
+            series2.add(wa, Aa-G);
+            series2.add(wa*10, Aa-G);
 
             wmin = wp;
             wmax = wa;
         } else if (currentTemplate instanceof HighpassTemplate) {
             double wa = ((HighpassTemplate) currentTemplate).getWa();
             double wp = ((HighpassTemplate) currentTemplate).getWp();
-            series1.add(wa*0.1, Aa);
-            series1.add(wa, Aa);
+            series1.add(wa*0.1, Aa-G);
+            series1.add(wa, Aa-G);
             series1.add(wa, -G);
-            series2.add(wp, 2*Aa);
-            series2.add(wp, Ap);
-            series2.add(wp*10, Ap);
+            series2.add(wp, 2*Aa-G);
+            series2.add(wp, Ap-G);
+            series2.add(wp*10, Ap-G);
 
             wmin = wa;
             wmax = wp;
@@ -355,16 +355,16 @@ class PlotPlot extends JPanel{
             double wpm = ((BandpassTemplate) currentTemplate).getWpm();
             double wap = ((BandpassTemplate) currentTemplate).getWap();
             double wam = ((BandpassTemplate) currentTemplate).getWam();
-            series1.add(wam*0.1, Aa);
-            series1.add(wam, Aa);
+            series1.add(wam*0.1, Aa-G);
+            series1.add(wam, Aa-G);
             series1.add(wam, -G);
-            series2.add(wpm, 2*Aa);
-            series2.add(wpm, Ap);
-            series2.add(wpp, Ap);
-            series2.add(wpp, 2*Aa);
+            series2.add(wpm, 2*Aa-G);
+            series2.add(wpm, Ap-G);
+            series2.add(wpp, Ap-G);
+            series2.add(wpp, 2*Aa-G);
             series3.add(wap, -G);
-            series3.add(wap, Aa);
-            series3.add(wap*10, Aa);
+            series3.add(wap, Aa-G);
+            series3.add(wap*10, Aa-G);
 
             wmin = wam;
             wmax = wap;
@@ -376,16 +376,16 @@ class PlotPlot extends JPanel{
             double wap = ((BandrejectTemplate) currentTemplate).getWap();
             double wam = ((BandrejectTemplate) currentTemplate).getWam();
 
-            series1.add(wpm*0.1, Ap);
-            series1.add(wpm, Ap);
-            series1.add(wpm, 2*Aa);
+            series1.add(wpm*0.1, Ap-G);
+            series1.add(wpm, Ap-G);
+            series1.add(wpm, 2*Aa-G);
             series2.add(wam, -G);
-            series2.add(wam, Aa);
-            series2.add(wap, Aa);
+            series2.add(wam, Aa-G);
+            series2.add(wap, Aa-G);
             series2.add(wap, -G);
-            series3.add(wpp, 2*Aa);
-            series3.add(wpp, Ap);
-            series3.add(wpp*10, Ap);
+            series3.add(wpp, 2*Aa-G);
+            series3.add(wpp, Ap-G);
+            series3.add(wpp*10, Ap-G);
 
             wmin = wpm;
             wmax = wpp;

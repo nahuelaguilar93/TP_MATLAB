@@ -1,27 +1,41 @@
 package thirdstage;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 
 public class FilterCircuitPanel extends JPanel{
+    private BufferedImage image;
+    private Singleton_S3 s = Singleton_S3.getInstance();
+    private JLabel imageLabel = s.getScaledImageLabel();
+    //private JButton testButton = new JButton("Update Image");
 
 	FilterCircuitPanel(){
 		setBorder(BorderFactory.createTitledBorder("Filter Circuit"));
-		setBounds(0, 0, 724, 512);
-		//setLayout(new GridLayout(2,1));
-		
-		JPanel panelparaelplot = new JPanel();
-		panelparaelplot.setBackground(Color.black);
-		
-		JPanel botones =new JPanel();
-		//botones.setLayout(new GridLayout(1,2));
-		botones.add(new JButton("Stage 1"));
-		botones.add(new JButton("Stage 2"));
-		
-		
-		add(panelparaelplot);
-		add(botones);
 
-	}
+        /*testButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                updateImage("BPSallen");
+            }
+        });
+*/
+        this.add(imageLabel);
+        //this.add(testButton);
+    }
 
+    public void updateImage(String path) {
+        try {
+            Image image = ImageIO.read(new File("./images/" + path + ".jpg"));
+            imageLabel.setIcon(new ImageIcon(image));
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

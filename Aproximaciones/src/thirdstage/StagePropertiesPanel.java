@@ -6,8 +6,8 @@ import java.awt.*;
 
 public class StagePropertiesPanel extends JPanel{
 	
-	StageConfigPanel stageconfigpanel=new StageConfigPanel();
-	ComponentsPanel componentspanel=new ComponentsPanel();
+	StageConfigPanel stageconfigpanel = new StageConfigPanel();
+	ComponentsPanel componentspanel = new ComponentsPanel();
 	SensitivitiesPanel sensitivitiespanel = new SensitivitiesPanel();
 	
 	StagePropertiesPanel(){

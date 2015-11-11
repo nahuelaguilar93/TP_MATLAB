@@ -61,9 +61,7 @@ public class PlotPoleZeroPanel extends JPanel {
         updatePoleZeroColour();
     }
 
-    public void updatePoleZeroPlot() {
-        plotPZ.setDataset(0, createPoleZeroDataset());
-    }
+    public void updatePoleZeroPlot() { plotPZ.setDataset(0, createPoleZeroDataset()); }
     public void updatePoleZeroColour() {
         XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer)plotPZ.getRenderer();
         renderer.setSeriesPaint(0, Color.BLACK);
@@ -81,12 +79,14 @@ public class PlotPoleZeroPanel extends JPanel {
             }
         }
 
-//        ValueAxis xAxis = plotPZ.getDomainAxis();
-//        xAxis.setRange( -maxDoubleWidth() ,1);
-//        ValueAxis yAxis = plotPZ.getRangeAxis();
-//        yAxis.setRange(maxDoubleHigh(), -maxDoubleHigh());
-//        plotPZ.setDomainAxis(xAxis);
-        plotPZ.setRenderer(renderer);
+        if ( maxDoubleHigh() != 0 && maxDoubleWidth() != 0 ) {
+            ValueAxis xAxis = plotPZ.getDomainAxis();
+            xAxis.setRange(maxDoubleWidth()*1.1, -maxDoubleWidth()*0.1);
+            ValueAxis yAxis = plotPZ.getRangeAxis();
+            yAxis.setRange(-maxDoubleHigh()*1.1, maxDoubleHigh()*1.1);
+            plotPZ.setDomainAxis(xAxis);
+            plotPZ.setRenderer(renderer);
+        }
     }
 
     private XYSeriesCollection createPoleZeroDataset() {
@@ -97,11 +97,11 @@ public class PlotPoleZeroPanel extends JPanel {
         dataset = addPointsSeriesToDataset(s.getUserData().getUnmatchedPoles(), dataset, stringName);
         stringName = "Unmatched Zeros";
         dataset = addPointsSeriesToDataset(s.getUserData().getUnmatchedZeros(), dataset, stringName);
-        stringName = "Matched";
+        stringName = "Stage ";
         List<Stage> myStageList = s.getUserData().getStageList();
         for (int i = 0; i < myStageList.size(); i++) {
-            dataset = addPointsSeriesToDataset(Arrays.asList(myStageList.get(i).getPoles()), dataset, stringName + " Poles " + i);
-            dataset = addPointsSeriesToDataset(Arrays.asList(myStageList.get(i).getZeros()), dataset, stringName + " Zeros " + i);
+            dataset = addPointsSeriesToDataset(Arrays.asList(myStageList.get(i).getPoles()), dataset, stringName + i +" Poles");
+            dataset = addPointsSeriesToDataset(Arrays.asList(myStageList.get(i).getZeros()), dataset, stringName + i + " Zeros");
         }
         return dataset;
     }
@@ -133,20 +133,30 @@ public class PlotPoleZeroPanel extends JPanel {
                 max = currentZeroList.get(i).getImaginary();
             }
         }
+        List<Stage> selectedPolesList = s.getUserData().getStageList();
+        for ( Stage x : selectedPolesList) {
+            for ( Complex c : x.getPoles()) {
+                if ( c.getImaginary() > max) {
+                    max = c.getImaginary();
+                }
+            }
+        }
         return max;
     }
     double maxDoubleWidth() {
         double max = 0;
         List<Complex> currentPolesList = s.getUserData().getUnmatchedPoles();
         for ( int i = 0; i < currentPolesList.size(); i++) {
-            if ( currentPolesList.get(i).getReal() > max ) {
+            if ( currentPolesList.get(i).getReal() < max ) {
                 max = currentPolesList.get(i).getReal();
             }
         }
-        List<Complex> currentZeroList = s.getUserData().getUnmatchedPoles();
-        for ( int i = 0; i < currentZeroList.size(); i++) {
-            if ( currentZeroList.get(i).getReal() > max ) {
-                max = currentZeroList.get(i).getReal();
+        List<Stage> selectedPolesList = s.getUserData().getStageList();
+        for ( Stage x : selectedPolesList) {
+            for ( Complex c : x.getPoles()) {
+                if ( c.getReal() < max) {
+                    max = c.getReal();
+                }
             }
         }
         return max;

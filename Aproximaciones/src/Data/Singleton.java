@@ -2,7 +2,7 @@ package Data;
 
 import firststage.StageOnePanel;
 import secondstage.StageTwoPanel;
-import thirdstage.StageThree;
+import thirdstage.StageThreePanel;
 
 public class Singleton {
     private static final Singleton INSTANCE = new Singleton();
@@ -14,7 +14,7 @@ public class Singleton {
     private UserData userData = null;
     private StageOnePanel stageOnePanel = null;
     private StageTwoPanel stageTwoPanel = null;
-    private StageThree stageThree = null;
+    private StageThreePanel stageThreePanel = null;
 
     public UserData getUserData() {
         if (userData == null)
@@ -31,9 +31,9 @@ public class Singleton {
             stageTwoPanel = new StageTwoPanel();
         return stageTwoPanel;
     }
-    public StageThree getStageThree() {
-        if (stageThree == null)
-            stageThree = new StageThree();
-        return stageThree;
+    public StageThreePanel getStageThreePanel() {
+        if (stageThreePanel == null)
+            stageThreePanel = new StageThreePanel();
+        return stageThreePanel;
     }
 }

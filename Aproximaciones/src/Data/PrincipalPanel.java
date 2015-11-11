@@ -2,7 +2,7 @@ package Data;
 
 import firststage.StageOnePanel;
 import secondstage.StageTwoPanel;
-import thirdstage.StageThree;
+import thirdstage.StageThreePanel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,7 +22,7 @@ public class PrincipalPanel extends JPanel {
     JPanel bigPanel;
     StageOnePanel stageOnePanel;
     StageTwoPanel stageTwoPanel;
-    StageThree stageThree;
+    StageThreePanel stageThreePanel;
     CardLayout cardLayout;
     JPanel buttonPanel;
     JButton nextStageButton;
@@ -33,7 +33,7 @@ public class PrincipalPanel extends JPanel {
         JPanel bigPanel = new JPanel();
         StageOnePanel stageOnePanel = s.getStageOnePanel();
         StageTwoPanel stageTwoPanel = s.getStageTwoPanel();
-        StageThree stageThree = s.getStageThree();
+        StageThreePanel stageThreePanel = s.getStageThreePanel();
         CardLayout cardLayout = new CardLayout();
         JPanel buttonPanel = new JPanel();
         JButton nextStageButton = new JButton("Next Stage");
@@ -42,7 +42,7 @@ public class PrincipalPanel extends JPanel {
         bigPanel.setLayout(cardLayout);
         bigPanel.add(stageOnePanel, "One");
         bigPanel.add(stageTwoPanel, "Two");
-        bigPanel.add(stageThree, "Three");
+        bigPanel.add(stageThreePanel, "Three");
 
         previousStageButton.setEnabled(false);
 
@@ -60,11 +60,17 @@ public class PrincipalPanel extends JPanel {
                     }
                     Singleton.getInstance().getStageTwoPanel().set();
                 }
-                if ( currentPanel == 1 && !s.getUserData().getUnmatchedPoles().isEmpty()) {
-                    JInternalFrame frame = new JInternalFrame();
-                    JOptionPane.showMessageDialog(frame, "Please match all the poles. You can use the button Automatic Selection", "Unmatched Poles", JOptionPane.ERROR_MESSAGE);
-                    return;
+                if ( currentPanel == 1) {
+                    if (!s.getUserData().getUnmatchedPoles().isEmpty()) {
+                        JInternalFrame frame = new JInternalFrame();
+                        JOptionPane.showMessageDialog(frame, "Please match all the poles. You can use the button Automatic Selection", "Unmatched Poles", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                    else {
+                        s.getStageThreePanel().set();
+                    }
                 }
+
                 cardLayout.next(bigPanel);
                 currentPanel++;
                 previousStageButton.setEnabled(true);
