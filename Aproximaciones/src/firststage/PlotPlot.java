@@ -13,6 +13,7 @@ import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.ValueAxis;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.StandardXYItemRenderer;
+import org.jfree.chart.renderer.xy.XYItemRenderer;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.xy.XYDataset;
 import org.jfree.data.xy.XYSeries;
@@ -64,12 +65,12 @@ class PlotPlot extends JPanel{
         double Aa = currentTemplate.getAa();
         double Ap = currentTemplate.getAp();
 
-        XYLineAndShapeRenderer renderer = (XYLineAndShapeRenderer) plotA.getRenderer();
+        XYItemRenderer renderer = plotA.getRenderer();
         renderer.setSeriesVisibleInLegend(0, false);
         renderer.setSeriesPaint(0, Color.RED);
         renderer.setSeriesPaint(1, Color.RED);
         renderer.setSeriesVisibleInLegend(1, false);
-        //currentTemplate = s.getUserData().getCurrentTemplate();
+        currentTemplate = s.getUserData().getCurrentTemplate();
         if ( currentTemplate instanceof BandrejectTemplate || currentTemplate instanceof BandpassTemplate) {
             renderer.setSeriesVisibleInLegend(2, false);
             renderer.setSeriesPaint(2, Color.RED);
@@ -141,6 +142,7 @@ class PlotPlot extends JPanel{
         double[] temp = GenericUtils.linspace(0, 100/wmin, 10000); //TODO: ese 100/wmin es mágico, habría que poner un tiempo significativo
         java.util.List<Approximation> approximationList = userData.getApproximationList();
         Approximation currentAprox;
+
         for (int i = 0; i < approximationList.size(); i++) {
             currentAprox = approximationList.get(i);
             TransferFunction TF = currentAprox.getTF();
@@ -233,23 +235,26 @@ class PlotPlot extends JPanel{
         cardLayout.show(this, "PoleZero");
     }
     public void updateNormalizedTemplate() {
-        //TODO: esta aun no anda
+        plotA.setDataset(0, null);
+        plotA.setDataset(1, null);
         XYSeriesCollection dataset = new XYSeriesCollection();
-        double[] freq = GenericUtils.logspace(0.01, userData.getCurrentTemplate().getWan()*10, 10000);
+        double[] freq = GenericUtils.logspace(0.1, userData.getCurrentTemplate().getWan()*10, 10000);
         java.util.List<Approximation> approximationList = userData.getApproximationList();
         Approximation currentAprox;
+
         for (int i = 0; i < approximationList.size(); i++) {
             currentAprox = approximationList.get(i);
             TransferFunction TF = currentAprox.getNTF();
             double[] modulo = TF.getModuleDB(freq);
             dataset = addAttenuationSeriesToDataset(freq, modulo, currentAprox.getDetails(), dataset);
         }
-        plotA.setDataset(1, dataset);
-        plotA.setRenderer(1, new StandardXYItemRenderer());
+        plotA.setDataset(0, dataset);
+        plotA.setRenderer(0, new StandardXYItemRenderer());
 
+        plotA.setDataset(0, dataset);
         //Set Logarithmic axis
         LogarithmicAxis xAxis = new LogarithmicAxis("Frequency");
-        xAxis.setRange(0, userData.getCurrentTemplate().getWan()*10);
+        xAxis.setRange(0.1, userData.getCurrentTemplate().getWan()*10);
         plotA.setDomainAxis(xAxis);
 
         cardLayout.show(this, "Atenuation");
