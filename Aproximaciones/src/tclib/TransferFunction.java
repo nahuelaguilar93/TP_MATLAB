@@ -105,7 +105,6 @@ public class TransferFunction {
         } else return false;
     }
 
-
     public Complex evaluateApproximationAtOmega(double omega) {
         Complex evaluationPoint = new Complex(0, omega);
         Complex numValue = new Complex(0);
@@ -129,7 +128,6 @@ public class TransferFunction {
         for (int i = 0; i < omegaRange.length; i++) {
             result[i] = evaluateApproximationAtOmega(omegaRange[i]);
         }
-
         return result;
     }
 
@@ -177,11 +175,37 @@ public class TransferFunction {
 
     public double[] getPhase(double[] omegaRange) {
         Complex[] approximationResult = evaluateApproximationAtRange(omegaRange);
-        double[] phaseResult = new double[omegaRange.length];
-        for (int i = 0; i < phaseResult.length; i++) {
-            phaseResult[i] = approximationResult[i].getArgument();
+        if(omegaRange.length > 1) {
+            double offset = 0;
+            double[] phaseResult = new double[omegaRange.length];
+            double current = approximationResult[0].getArgument() + offset;
+            double next;
+            int i;
+            for (i = 1; i < phaseResult.length; i++) {
+                phaseResult[i-1] = current;
+                next = approximationResult[i].getArgument() + offset;
+                if( Math.abs(current - next) > Math.PI*0.95) {
+                    if(!areZerosBetween(omegaRange[i-1],omegaRange[i])) {
+                        offset -= 2. * Math.PI;
+                        next -= 2. * Math.PI;
+                    }
+                    else if(next < current) {
+                        offset += 2. * Math.PI;
+                        next += 2. * Math.PI;
+                    }
+                }
+                current = next;
+            }
+            phaseResult[i-1] = current;
+            return phaseResult;
         }
-        return phaseResult;
+        else return new double[] {approximationResult[0].getArgument()};
+    }
+
+    private boolean areZerosBetween(double w1, double w2){
+        for(Complex x : getZeros())
+            if((x.abs() > w1 && x.abs() < w2) || (x.abs() < w1 && x.abs() > w2)) return true;
+        return false;
     }
 
     public double[] getImpulseResponse(double[] time) {
