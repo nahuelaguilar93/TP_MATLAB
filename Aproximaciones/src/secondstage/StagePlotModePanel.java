@@ -22,7 +22,6 @@ public class StagePlotModePanel extends JPanel{
     private JRadioButton cumModeRadioButton = new JRadioButton("Plot Acumulative Stages");
     private JRadioButton showAllAcumulativeRadioButton = new JRadioButton("Plot Final Acumulative Stages");
 
-
     StagePlotModePanel() {
         multipleModeRadioButton.setSelected(true);
 

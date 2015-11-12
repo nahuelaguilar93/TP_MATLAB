@@ -49,7 +49,16 @@ public class ComponentsPanel extends JPanel{
                     case "LPSallen":
                         getLPSallen(Q, wo, G);
                         break;
-                    case "Ackerberg Mossberg":
+                    case "LPAckerberg Mossberg":
+                        getAckerbergMossberg(Q, wo, G);
+                        break;
+                    case "HPAckerberg Mossberg":
+                        getAckerbergMossberg(Q, wo, G);
+                        break;
+                    case "BSAckerberg Mossberg":
+                        getAckerbergMossberg(Q, wo, G);
+                        break;
+                    case "BPAckerberg Mossberg":
                         getAckerbergMossberg(Q, wo, G);
                         break;
                     case "BPRauch":
@@ -58,13 +67,40 @@ public class ComponentsPanel extends JPanel{
                     case "BPSallen":
                         getBPSallen(Q, wo, G);
                         break;
-                    case "Fleischer Tow":
+                    case "LPFleischer Tow":
                         getFleischerTow(Q, wo, G);
                         break;
-                    case "Kerwin Huelsman Newcomb":
+                    case "HPFleischer Tow":
+                        getFleischerTow(Q, wo, G);
+                        break;
+                    case "BSFleischer Tow":
+                        getFleischerTow(Q, wo, G);
+                        break;
+                    case "BPFleischer Tow":
+                        getFleischerTow(Q, wo, G);
+                        break;
+                    case "LPKerwin Huelsman Newcomb":
                         getKHN(Q, wo, G);
                         break;
-                    case "Tow Thomas":
+                    case "HPKerwin Huelsman Newcomb":
+                        getKHN(Q, wo, G);
+                        break;
+                    case "BSKerwin Huelsman Newcomb":
+                        getKHN(Q, wo, G);
+                        break;
+                    case "BPKerwin Huelsman Newcomb":
+                        getKHN(Q, wo, G);
+                        break;
+                    case "LPTow Thomas":
+                        getTT(Q, wo, G);
+                        break;
+                    case "HPTow Thomas":
+                        getTT(Q, wo, G);
+                        break;
+                    case "BSTow Thomas":
+                        getTT(Q, wo, G);
+                        break;
+                    case "BPTow Thomas":
                         getTT(Q, wo, G);
                         break;
                     case "LPRauch":
@@ -73,42 +109,14 @@ public class ComponentsPanel extends JPanel{
                     case "HPRauch":
                         getHPRauch(Q, wo, G);
                         break;
-                    case "HPRC":
-                        getHPRC(Q, wo, G);
-                        break;
-                    case "LPRC":
-                        getLPRC(Q, wo, G);
-                        break;
                     default:
-                        //System.out.println("Se te escapó un switch case! Ojo!");
+                        System.out.println("Se te escapó un switch case! Ojo!");
                         break;
                 }
             }
         }
     }
 
-    //Simples
-    public void getHPRC(double Q, double wo, double G) {
-        componentListModel.removeAllElements();
-        double R;
-        double C;
-
-        C = Math.pow(10, G/20);
-        R = 1/(wo*C);
-
-        componentListModel.addElement( "| R = " + R + " [ohms] |" );
-        componentListModel.addElement( "| C = " + C + " [Farad] |" );
-    }
-    public void  getLPRC(double Q, double wo, double G) {
-        componentListModel.removeAllElements();
-        double R = 1000;
-        double C;
-
-        C = 1/(wo*R);
-
-        componentListModel.addElement( "| R = " + R + " [ohms] |" );
-        componentListModel.addElement( "| C = " + C + " [Farad] |" );
-    }
     //Sallen Key
     private void getLPSallen(double Q, double wo, double G) {
         componentListModel.removeAllElements();
@@ -224,7 +232,8 @@ public class ComponentsPanel extends JPanel{
         double Qo = 1.5;
         double alpha = (2.*(1-Qo/Q))/9.;
         double K = alpha/(1+alpha);
-        double H = (midBandGaindb*Qo*(1-K))/Q;
+        double gain= Math.pow(10,midBandGaindb/20.);
+        double H = (gain*Qo*(1-K))/Q;
         double a = H/(2*Math.pow(Qo,2));
         C2 = (2*Qo)/(w0*9*a*R1);
         C3 = C2;
