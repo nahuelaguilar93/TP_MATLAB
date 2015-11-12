@@ -237,10 +237,19 @@ class PlotPlot extends JPanel{
     public void updateNormalizedTemplate() {
         plotA.setDataset(0, null);
         plotA.setDataset(1, null);
+
+        plotA.setDataset(0, createDatasetNormalizedTemplate());
+
         XYSeriesCollection dataset = new XYSeriesCollection();
         double[] freq = GenericUtils.logspace(0.1, userData.getCurrentTemplate().getWan()*10, 10000);
         java.util.List<Approximation> approximationList = userData.getApproximationList();
         Approximation currentAprox;
+
+        XYItemRenderer renderer = plotA.getRenderer();
+        renderer.setSeriesVisibleInLegend(0, false);
+        renderer.setSeriesPaint(0, Color.RED);
+        renderer.setSeriesPaint(1, Color.RED);
+        renderer.setSeriesVisibleInLegend(1, false);
 
         for (int i = 0; i < approximationList.size(); i++) {
             currentAprox = approximationList.get(i);
@@ -248,14 +257,20 @@ class PlotPlot extends JPanel{
             double[] modulo = TF.getModuleDB(freq);
             dataset = addAttenuationSeriesToDataset(freq, modulo, currentAprox.getDetails(), dataset);
         }
-        plotA.setDataset(0, dataset);
-        plotA.setRenderer(0, new StandardXYItemRenderer());
+        plotA.setDataset(1, dataset);
+        plotA.setRenderer(1, new StandardXYItemRenderer());
 
-        plotA.setDataset(0, dataset);
+        plotA.setDataset(1, dataset);
         //Set Logarithmic axis
         LogarithmicAxis xAxis = new LogarithmicAxis("Frequency");
         xAxis.setRange(0.1, userData.getCurrentTemplate().getWan()*10);
+        double Aa = currentTemplate.getAa();
+        ValueAxis yAxis = plotA.getRangeAxis();
+        yAxis.setRange( 0, 2*Aa);
+
+        //Set 'y' default Axis
         plotA.setDomainAxis(xAxis);
+        plotA.setRangeAxis(yAxis);
 
         cardLayout.show(this, "Atenuation");
     }
@@ -396,6 +411,26 @@ class PlotPlot extends JPanel{
 
             dataset.addSeries(series3);
         }
+        dataset.addSeries(series1);
+        dataset.addSeries(series2);
+
+        return dataset;
+    }
+    private XYDataset createDatasetNormalizedTemplate() {
+        currentTemplate = userData.getCurrentTemplate();
+        XYSeriesCollection dataset = new XYSeriesCollection();
+        double Aa = currentTemplate.getAa();
+        double Ap = currentTemplate.getAp();
+        double wan = currentTemplate.getWan();
+        XYSeries series1 = new XYSeries("First");
+        XYSeries series2 = new XYSeries("Second");
+        series1.add(0.1, Ap);
+        series1.add(1, Ap);
+        series1.add(1, 2*Aa);
+        series2.add(wan, 0);
+        series2.add(wan, Aa);
+        series2.add(wan*10, Aa);
+
         dataset.addSeries(series1);
         dataset.addSeries(series2);
 
