@@ -300,15 +300,23 @@ public class Approximation {
     }
 
     private PolynomialFunction GetNOrderBesselTF(int order) {
-        if (order == 1) return new PolynomialFunction(new double[] {1});
-        else if (order == 2) return new PolynomialFunction(new double[] {1, 1});
+        if (order == 0) return new PolynomialFunction(new double[] {1});
+        else if (order == 1) return new PolynomialFunction(new double[] {1, 1});
         else {
             double[] array = {2 * order - 1};
-            double[] array2 = {0, 1};
+            double[] array2 = {0, 0, 1};
+            /*Polinomios verdaderos de Bessel
             PolynomialFunction poly1 = (GetNOrderBesselTF(order - 1).multiply(new PolynomialFunction(array))).multiply(new PolynomialFunction(array2));
             PolynomialFunction poly2 = GetNOrderBesselTF(order - 2);
+            */
+            /*Polinomios inversos de Bessel*/
+            PolynomialFunction poly1 = GetNOrderBesselTF(order - 1).multiply(new PolynomialFunction(array));
+            PolynomialFunction poly2 = GetNOrderBesselTF(order - 2).multiply(new PolynomialFunction(array2));
+
 
             //La forumla es (2n-1)*x*Bn-1+Bn-2
+
+            // o la otra que hay dando vueltas es (2*n-1)Bn-1+s^2*Bn-2
             return poly1.add(poly2);
         }
     }
