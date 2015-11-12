@@ -93,7 +93,7 @@ public class PlotStagePanel extends JPanel {
             else if ( s2.getstagePlotModePanel().getMultipleModeRadioButton().isSelected() ) {
                 s2.getPlotStagePanel().updatePlot(myTFList, -1);
             }
-            else {
+            else if ( s2.getstagePlotModePanel().getCumModeRadioButton().isSelected() ){
                 //myTFList.clear();
                 List<TransferFunction> acumTFList =  new ArrayList<>();
                 acumTFList.add(new TransferFunction(myTFList.get(0)));
@@ -103,6 +103,16 @@ public class PlotStagePanel extends JPanel {
                     acumTFList.add(nextTF);
                 }
                 s2.getPlotStagePanel().updatePlot(acumTFList, -1);
+            }
+            else {
+                List<TransferFunction> acumTFList =  new ArrayList<>();
+                acumTFList.add(new TransferFunction(myTFList.get(0)));
+                for(int i = 1; i < myTFList.size(); i++){
+                    TransferFunction nextTF = new TransferFunction(acumTFList.get(i-1));
+                    nextTF.multiply(myTFList.get(i));
+                    acumTFList.add(nextTF);
+                }
+                s2.getPlotStagePanel().updatePlot(acumTFList, acumTFList.size()-1);
             }
         }
     }

@@ -19,7 +19,8 @@ public class StagePlotModePanel extends JPanel{
     private ButtonGroup groupOfPlotMode = new ButtonGroup();
     private JRadioButton singleModeRadioButton = new JRadioButton("Plot Selected Stage");
     private JRadioButton multipleModeRadioButton = new JRadioButton("Plot All Stages");
-    private JRadioButton cumModeRadioButton = new JRadioButton("Plot cumulative Stages");
+    private JRadioButton cumModeRadioButton = new JRadioButton("Plot Acumulative Stages");
+    private JRadioButton showAllAcumulativeRadioButton = new JRadioButton("Plot Final Acumulative Stages");
 
 
     StagePlotModePanel() {
@@ -51,37 +52,24 @@ public class StagePlotModePanel extends JPanel{
                 }
             }
         });
+        showAllAcumulativeRadioButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                s2.getPlotStagePanel().updatePlot();
+            }
+        });
 
         groupOfPlotMode.add(singleModeRadioButton);
         groupOfPlotMode.add(multipleModeRadioButton);
         groupOfPlotMode.add(cumModeRadioButton);
+        groupOfPlotMode.add(showAllAcumulativeRadioButton);
 
         this.setBorder(BorderFactory.createTitledBorder("Plot Mode"));
         this.add(singleModeRadioButton);
         this.add(multipleModeRadioButton);
         this.add(cumModeRadioButton);
+        this.add(showAllAcumulativeRadioButton);
     }
-
-    /*public void updateStagePlot() {
-        if (multipleModeRadioButton.isSelected()) {
-            if (!s.getUserData().getStageList().isEmpty()) {
-                List<TransferFunction> myTFList = new ArrayList<>();
-                for ( Stage x : s.getUserData().getStageList()) {
-                    myTFList.add(x.getTF());
-                }
-                s2.getPlotStagePanel().updatePlot(myTFList, -1);
-            }
-        }
-        else {
-            if (!s.getUserData().getStageList().isEmpty()) {
-                List<TransferFunction> myTFList = new ArrayList<>();
-                for ( Stage x : s.getUserData().getStageList()) {
-                    myTFList.add(x.getTF());
-                }
-                s2.getPlotStagePanel().updatePlot(myTFList, s2.getPoleZeroListsPanel().getStagesListIndex());
-            }
-        }
-    }*/
 
     public JRadioButton getSingleModeRadioButton() { return singleModeRadioButton; }
     public JRadioButton getMultipleModeRadioButton() { return multipleModeRadioButton; }
