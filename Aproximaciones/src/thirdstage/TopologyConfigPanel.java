@@ -9,7 +9,7 @@ public class TopologyConfigPanel extends JPanel {
 	
 	private JComboBox topologyList = new JComboBox();
 	private JTextField textfield = new JTextField("1000");
-    private ArrayList<String> filterString = new ArrayList<String>(Arrays.asList("HPSallen", "LPSallen", "Ackerberg Mossberg", "BPRauch", "BPSallen", "BRSallen", "Fleischer Tow", "Kerwin Huelsman Newcomb", "Tow Thomas"));
+    private ArrayList<String> filterString = new ArrayList<String>(Arrays.asList("HPSallen", "LPSallen", "Ackerberg Mossberg", "BPRauch", "BPSallen", "BRSallen", "Fleischer Tow", "Kerwin Huelsman Newcomb", "Tow Thomas", "HPRauch", "LPRauch"));
 	
 	
 	TopologyConfigPanel(){
@@ -19,9 +19,9 @@ public class TopologyConfigPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Singleton_S3 s = Singleton_S3.getInstance();
+                s.getComponentsPanel().updateComponentList();
                 s.getFilterCircuitPanel().updateImage((String) topologyList.getSelectedItem());
                 s.getSensitivitiesPanel().updateImage((String) topologyList.getSelectedItem());
-                s.getComponentsPanel().updateComponentList();
             }
         });
 

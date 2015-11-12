@@ -31,8 +31,8 @@ public class StagePanel extends JPanel{
             public void valueChanged(ListSelectionEvent e) {
                 //TODO: poner que cambie la lista de filtros
                 if (!stagesList.isSelectionEmpty()) {
-                    s.getStageProperties().updateLabels(stagesList.getSelectedIndex());
                     s.getComponentsPanel().updateComponentList();
+                    s.getStageProperties().updateLabels(stagesList.getSelectedIndex());
                 }
             }
         });
