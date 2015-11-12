@@ -63,13 +63,13 @@ public class StageDisposition {
             double prevAcumStageMax = sortedTFList.get(0).evaluateApproximationAtOmega(auxW).abs();
             for (int k = 1; k < sortedTFList.size(); k++) {
                 auxW = getMaxGainFreq(acumTFList.get(k), wMin/100, wMax*100);
- //                System.out.println("maxGainFreq: " + auxW);
+//            System.out.println("maxGainFreq: " + auxW);
                 double nextAcumStageMax = acumTFList.get(k).evaluateApproximationAtOmega(auxW).abs();
                 double correction = prevAcumStageMax/nextAcumStageMax;
                 sortedTFList.get(k).multiply(correction);
                 sortedTFList.get(0).multiply(1./correction);
-//                System.out.println("prevAcumStageMax: " + prevAcumStageMax);
-//                System.out.println("nextAcumStageMax: " + nextAcumStageMax);
+//            System.out.println("prevAcumStageMax: " + prevAcumStageMax);
+//            System.out.println("nextAcumStageMax: " + nextAcumStageMax);
                 prevAcumStageMax = nextAcumStageMax;
             }
 
@@ -77,7 +77,7 @@ public class StageDisposition {
             if(bandRange.length == 4)
                 newDRL = Math.max(auxW,GenericUtils.dynamicRangeLoss(sortedTFList, bandRange[2], bandRange[3], 12345));
 
-            System.out.println("newDRL: " + 20.*Math.log10(newDRL) + "  " + newDRL);
+//            System.out.println("newDRL: " + 20.*Math.log10(newDRL) + "  " + newDRL);
             if(newDRL < lowestDRL){
                 lowestDRL = newDRL;
                 bestTFList = new ArrayList<>(sortedTFList);
