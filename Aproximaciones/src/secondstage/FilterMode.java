@@ -1,13 +1,10 @@
 package secondstage;
 
 import Data.Singleton;
-import tclib.TransferFunction;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by NEGU on 10/11/2015.

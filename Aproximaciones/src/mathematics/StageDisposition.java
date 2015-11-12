@@ -37,7 +37,7 @@ public class StageDisposition {
     public void minimizeDRL(){
         if(stageList.size() == 0) return;
 
-        double lowestDRL = Double.POSITIVE_INFINITY;
+        double lowestDRL = 1000;
         double bandRange[] = Singleton.getInstance().getUserData().getCurrentTemplate().getBand();
         List<TransferFunction> bestTFList =  new ArrayList<>();
         List<TransferFunction> sortedTFList = new ArrayList<>();

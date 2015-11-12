@@ -44,10 +44,8 @@ public class Stage {
             if (p1.isInfinite())
                 poles = new Complex[]{};
             else {
-                if (p1.getImaginary() == 0) {
+                if (p1.getImaginary() == 0)
                     poles = new Complex[]{p1};
-                    System.out.println("It was zero, p1 = " + p1.getReal());
-                }
                 else {
                     poles = new Complex[]{p1, p1.conjugate()};
                     twoPoles = true;
@@ -77,11 +75,11 @@ public class Stage {
             } else {
                 if (z1.getImaginary() == 0) {
                     zeros = new Complex[]{z1};
-                    System.out.println("Zero Imaginary was zero too");
                     singleZero = true;
                 }
                 else zeros = new Complex[]{z1, z1.conjugate()};
                 details = details + " + " + GenericUtils.getPZString(z1, false);
+                System.out.println(details);
             }
         }
         else if (z1.isInfinite()) {
@@ -95,6 +93,7 @@ public class Stage {
         else if (z1.abs() == 0 && z2.abs() == 0) {
             zeros = new Complex[]{z1, z2};
             doubleOriginZeros = true;
+            details = details + " + " + GenericUtils.getPZString(z1, false) + " + " + GenericUtils.getPZString(z1.conjugate(), false);
         } else {
             zeros = new Complex[]{z1, z1.conjugate()};
             details = details + " + " + GenericUtils.getPZString(z1, false) + " + " + GenericUtils.getPZString(z1.conjugate(), false);
@@ -118,10 +117,8 @@ public class Stage {
         double[] denom = TF.getDenominatorCopy().getCoefficients();
         if(denom.length == 3)
             wp = Math.sqrt(denom[0]/denom[2]);
-        else if(denom.length == 2) {
+        else if(denom.length == 2)
             wp = denom[0] / denom[1];
-            System.out.println("Denom orden 1, d[0] = " + denom[0] + "  d[1] = " + denom[1]);
-        }
         else return 0;
 
         double[] numer = TF.getNumeratorCopy().getCoefficients();
