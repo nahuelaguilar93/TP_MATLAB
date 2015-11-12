@@ -11,6 +11,7 @@ import java.util.List;
 
 public class StageDisposition {
     private List<Stage> stageList;
+    private double DRL = 0;
     public List<Stage> getStageList() { return stageList; };
 
     public StageDisposition() { this(new ArrayList<>()); }
@@ -76,7 +77,7 @@ public class StageDisposition {
             if(bandRange.length == 4)
                 newDRL = Math.max(auxW,GenericUtils.dynamicRangeLoss(sortedTFList, bandRange[2], bandRange[3], 12345));
 
-            System.out.println("newDRL: " + 20.*Math.log10(newDRL));
+            System.out.println("newDRL: " + 20.*Math.log10(newDRL) + "  " + newDRL);
             if(newDRL < lowestDRL){
                 lowestDRL = newDRL;
                 bestTFList = new ArrayList<>(sortedTFList);
@@ -84,13 +85,13 @@ public class StageDisposition {
             sortedTFList.clear();
             acumTFList.clear();
         }
-
+        this.DRL = lowestDRL;
         this.stageList.clear();
         for(TransferFunction x : bestTFList)
             this.stageList.add(new Stage(x));
     }
 
-
+    public double getDRL() { return this.DRL; }
     private double getMaxGainFreq(TransferFunction TF, double wMin, double wMax){
         int pointsQuantity = (int)(Math.log10(wMax/wMin)*100);  //Evalúo 100 puntos por década.
         double freq[] = GenericUtils.logspace(wMin,wMax,pointsQuantity);

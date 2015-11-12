@@ -1,5 +1,6 @@
 package mathematics;
 
+import de.jtem.ellipticFunctions.Jacobi;
 import org.apache.commons.math3.analysis.polynomials.PolynomialFunction;
 import org.apache.commons.math3.complex.Complex;
 import tclib.MathUtils;
@@ -214,6 +215,66 @@ public class Approximation {
         if (maxQ > 0.5 && this.maxQobtained > maxQ)
             Cheby2(temp, this.Order - 1, maxQ);        //If maxQ is overflowed, retry with a minor order.
     }
+
+    private void Cauer(SuperTemplate temp, int setOrder, double maxQ){
+        int i=0; //para el while, que sería el k del filtro
+        double L=0;
+
+        double Aa = temp.getAa();
+        double Ap = temp.getAp();
+        double Wan = temp.getWan();
+        double OrdenImpuesto = 3;
+
+        de.jtem.mfc.field.Complex zero = new de.jtem.mfc.field.Complex(0,0);
+        de.jtem.mfc.field.Complex pole = new de.jtem.mfc.field.Complex(0,0);
+        de.jtem.mfc.field.Complex j = new de.jtem.mfc.field.Complex(0,1);
+        List<Complex> zeros = new ArrayList<>();
+        List<Complex> poles = new ArrayList<>();
+
+        double k1 = Math.sqrt((Math.pow(10, Ap/10)-1)/(Math.pow(10,Aa/10)-1));
+        double k = 1/Wan;
+
+        de.jtem.mfc.field.Complex a = new de.jtem.mfc.field.Complex(Math.sqrt(1-k1*k1),0);
+        a = Jacobi.K_from_k(a);
+
+        de.jtem.mfc.field.Complex b = new de.jtem.mfc.field.Complex(k,0);
+        b = Jacobi.K_from_k(b);
+
+        de.jtem.mfc.field.Complex c = new de.jtem.mfc.field.Complex(k1,0);
+        c = Jacobi.K_from_k(c);
+
+        de.jtem.mfc.field.Complex d = new de.jtem.mfc.field.Complex(Math.sqrt(1-k*k),0);
+        d = Jacobi.K_from_k(d);
+
+        double aRe = a.getRe();
+        double bRe = b.getRe();
+        double cRe = c.getRe();
+        double dRe = d.getRe();
+        double minOrder = Math.ceil((aRe/cRe)*(bRe/dRe));
+
+        double gain = Math.pow(10,-Ap/20);
+
+        //Dado un orden n
+        i = 0;
+        b.assign(i,0);
+        d.assign(Math.sqrt(1-i*i),0);
+        while((i < 1) && (OrdenImpuesto > ((a.getRe()/c.getRe())*(b.getRe()/d.getRe())))){
+            b.assign(i,0);
+            d.assign(Math.sqrt(1-i*i),0);
+        }
+
+        L=Math.ceil(OrdenImpuesto/2);   //ojo esto!!
+        de.jtem.mfc.field.Complex u = new de.jtem.mfc.field.Complex((2*i-1)/OrdenImpuesto,0);
+
+        for(i=1; i<L; i++) {
+            u.assign((2 * i - 1) / OrdenImpuesto);      //Calculo ceros elipticos
+            zero.assign(Jacobi.cn(u, b));
+            zero.assignTimes(k);                        //Cuentas encesarias para llegar al cero desde los ceros elipticos
+            zero.assignDivide(j, zero);
+            zeros.add(i-1,zero);                        //Agrego al array
+        }
+    }
+
 
     private void Legendre(SuperTemplate temp, int setOrder, double maxQ) {}
 
