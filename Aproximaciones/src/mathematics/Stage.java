@@ -67,6 +67,8 @@ public class Stage {
 
     //TODO: cuando puedas nahuel haceme un getDR para mostrar despues.
 
+    public double getQ() { return GenericUtils.getQ(poles[0]); }
+    public double getGdB() { return 0; }
     public TransferFunction getTF() { return TF; }
     public String getDetails() { return details; }
     public Complex[] getZeros() { return zeros; }

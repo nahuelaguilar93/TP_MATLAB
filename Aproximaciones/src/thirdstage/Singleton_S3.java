@@ -15,7 +15,7 @@ public class Singleton_S3 {
     private FilterCircuitPanel filterCircuitPanel = null;
     private StagePropertiesPanel stagePropertiesPanel = null;
     private StagesSelectionPanel stagesSelectionPanel = null;
-    private StageConfigPanel stageconfigpanel = null;
+    private TopologyConfigPanel stageconfigpanel = null;
     private ComponentsPanel componentspanel= null;
     private SensitivitiesPanel sensitivitiespanel= null;
     private StagePanel stagepanel= null;
@@ -71,9 +71,9 @@ public class Singleton_S3 {
         	componentspanel = new ComponentsPanel();
         return componentspanel;
     }
-    public StageConfigPanel getStageConfigPanel() {
+    public TopologyConfigPanel getTopologyConfigPanel() {
         if (stageconfigpanel == null)
-        	stageconfigpanel = new StageConfigPanel();
+        	stageconfigpanel = new TopologyConfigPanel();
         return stageconfigpanel;
     }
     public FilterCircuitPanel getFilterCircuitPanel() {

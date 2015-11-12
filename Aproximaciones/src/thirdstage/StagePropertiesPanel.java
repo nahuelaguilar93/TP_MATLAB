@@ -1,12 +1,11 @@
 package thirdstage;
 
 import javax.swing.*;
-import java.awt.*;
 //import java.awt.event.*;
 
 public class StagePropertiesPanel extends JPanel{
 	
-	StageConfigPanel stageconfigpanel = new StageConfigPanel();
+	TopologyConfigPanel stageconfigpanel = new TopologyConfigPanel();
 	ComponentsPanel componentspanel = new ComponentsPanel();
 	SensitivitiesPanel sensitivitiespanel = new SensitivitiesPanel();
 	
@@ -17,7 +16,7 @@ public class StagePropertiesPanel extends JPanel{
         
         Singleton_S3 s = Singleton_S3.getInstance();
         
-        stageconfigpanel= s.getStageConfigPanel();
+        stageconfigpanel= s.getTopologyConfigPanel();
         this.add(stageconfigpanel);
         
         componentspanel= s.getComponentsPanel();

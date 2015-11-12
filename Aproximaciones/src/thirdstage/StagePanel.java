@@ -32,6 +32,7 @@ public class StagePanel extends JPanel{
                 //TODO: poner que cambie la lista de filtros
                 if (!stagesList.isSelectionEmpty()) {
                     s.getStageProperties().updateLabels(stagesList.getSelectedIndex());
+                    s.getComponentsPanel().updateComponentList();
                 }
             }
         });
@@ -65,6 +66,15 @@ public class StagePanel extends JPanel{
         java.util.List<Stage> currentStageList = s.getUserData().getStageList();
         for (Stage x : currentStageList) {
             stagesListModel.addElement( x.getDetails() );
+        }
+    }
+
+    public int getSelectedIndex() {
+        if ( stagesList.isSelectionEmpty() ) {
+            return -1;
+        }
+        else {
+            return stagesList.getSelectedIndex();
         }
     }
 }
