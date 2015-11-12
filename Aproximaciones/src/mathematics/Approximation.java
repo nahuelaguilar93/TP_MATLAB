@@ -227,7 +227,12 @@ public class Approximation {
         PolynomialFunction besselDen;
         double[] testArray = {0};
         int i = 0;
-        this.Order = setOrder;
+        if(setOrder>15){
+            this.Order=15;
+        } else {
+            this.Order = setOrder;
+        }
+
         if (this.Order == 0) {            //If the order is not specified,
             final int MAX_ORDER = 15;            //Setting maximum order at 15
             for (i = 1; i <= MAX_ORDER; i++) {
@@ -242,6 +247,7 @@ public class Approximation {
                 if ((20 * (Math.log10(finalTf.evaluateApproximationAtOmega(1).abs())) < Ap)
                         && (20 * (Math.log10(finalTf.evaluateApproximationAtOmega(wan).abs())) > Aa)) break;
             }
+            if(i==MAX_ORDER+1){i=15;}
             this.Order = i;
             this.NTF = finalTf;
         } else {        //If the order is specified,
@@ -294,13 +300,15 @@ public class Approximation {
     }
 
     private PolynomialFunction GetNOrderBesselTF(int order) {
-        if (order <= 0) return new PolynomialFunction(new double[] {0});
-        else if (order == 1) return new PolynomialFunction(new double[] {1, 1});
+        if (order == 1) return new PolynomialFunction(new double[] {1});
+        else if (order == 2) return new PolynomialFunction(new double[] {1, 1});
         else {
             double[] array = {2 * order - 1};
-            double[] array2 = {0, 0, 1};
-            PolynomialFunction poly1 = GetNOrderBesselTF(order - 1).multiply(new PolynomialFunction(array));
-            PolynomialFunction poly2 = GetNOrderBesselTF(order - 2).multiply(new PolynomialFunction(array2));
+            double[] array2 = {0, 1};
+            PolynomialFunction poly1 = (GetNOrderBesselTF(order - 1).multiply(new PolynomialFunction(array))).multiply(new PolynomialFunction(array2));
+            PolynomialFunction poly2 = GetNOrderBesselTF(order - 2);
+
+            //La forumla es (2n-1)*x*Bn-1+Bn-2
             return poly1.add(poly2);
         }
     }
