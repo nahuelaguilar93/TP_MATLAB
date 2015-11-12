@@ -46,7 +46,7 @@ public class Stage {
             else {
                 if (p1.getImaginary() == 0) {
                     poles = new Complex[]{p1};
-                    System.out.println("It was zero");
+                    System.out.println("It was zero, p1 = " + p1.getReal());
                 }
                 else {
                     poles = new Complex[]{p1, p1.conjugate()};
@@ -99,7 +99,7 @@ public class Stage {
             zeros = new Complex[]{z1, z1.conjugate()};
             details = details + " + " + GenericUtils.getPZString(z1, false) + " + " + GenericUtils.getPZString(z1.conjugate(), false);
         }
-        TF = new TransferFunction(poles, zeros);
+        TF = new TransferFunction(zeros, poles);
         setG(g);
 
         if(twoPoles) {
@@ -118,15 +118,19 @@ public class Stage {
         double[] denom = TF.getDenominatorCopy().getCoefficients();
         if(denom.length == 3)
             wp = Math.sqrt(denom[0]/denom[2]);
-        else if(denom.length == 2)
-            wp = denom[0]/denom[1];
+        else if(denom.length == 2) {
+            wp = denom[0] / denom[1];
+            System.out.println("Denom orden 1, d[0] = " + denom[0] + "  d[1] = " + denom[1]);
+        }
         else return 0;
 
         double[] numer = TF.getNumeratorCopy().getCoefficients();
         if(numer.length == 1)
-            return numer[0]/(wp*wp*denom[denom.length-1]);
-        else if(numer.length == 2)
-            return -numer[1]/(wp*denom[denom.length-1]);
+            return numer[0] / (denom[denom.length-1]) / Math.pow(wp,denom.length-1);
+        else if(numer.length == 2) {
+            System.out.println(numer[1] / (wp * denom[denom.length - 1]));
+            return numer[1] / (denom[denom.length-1])/Math.pow(wp,denom.length-2);
+        }
         else if(numer.length == 3)
             return numer[2]/denom[denom.length-1];
         else return 0;

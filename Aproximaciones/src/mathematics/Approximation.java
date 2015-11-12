@@ -228,8 +228,8 @@ public class Approximation {
         de.jtem.mfc.field.Complex zero = new de.jtem.mfc.field.Complex(0,0);
         de.jtem.mfc.field.Complex pole = new de.jtem.mfc.field.Complex(0,0);
         de.jtem.mfc.field.Complex j = new de.jtem.mfc.field.Complex(0,1);
-        List<Complex> zeros = new ArrayList<>();
-        List<Complex> poles = new ArrayList<>();
+        ArrayList zeros = new ArrayList<>();
+        ArrayList poles = new ArrayList<>();
 
         double k1 = Math.sqrt((Math.pow(10, Ap/10)-1)/(Math.pow(10,Aa/10)-1));
         double k = 1/Wan;

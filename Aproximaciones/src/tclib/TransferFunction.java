@@ -33,9 +33,7 @@ public class TransferFunction {
     public PolynomialFunction getNumeratorCopy() {
         return new PolynomialFunction(numerador.getCoefficients());
     }
-    public PolynomialFunction getDenominatorCopy() {
-        return new PolynomialFunction(denominador.getCoefficients());
-    }
+    public PolynomialFunction getDenominatorCopy() { return new PolynomialFunction(denominador.getCoefficients()); }
 
     /**
      * @param numPoly: Indice del elemento indica la potencia de ese termino del polinomio.
@@ -68,7 +66,6 @@ public class TransferFunction {
                 PolynomialFunction aux = new PolynomialFunction(roots);
                 numerador = numerador.multiply(aux);
             }
-
         }
 
         for (Complex pole : poles) {
@@ -85,6 +82,13 @@ public class TransferFunction {
                 denominador = denominador.multiply(aux);
             }
         }
+        for (double x : denominador.getCoefficients())
+            System.out.print(x + " ");
+        System.out.println("EndPole");
+        for (double x : numerador.getCoefficients())
+            System.out.print(x + " ");
+        System.out.println("EndZero");
+
     }
 
     public double getModuleAtOrigin() {
