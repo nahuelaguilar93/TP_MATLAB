@@ -9,10 +9,10 @@ import java.util.List;
 
 public class Stage {
     public static enum filterType {LOWPASS2, HIGHPASS2, BANDPASS, BANDREJ, LOWPASS1, HIGHPASS1 }
-    private static final List<String> lowpass2List = Arrays.asList("LPSallen", "Ackerberg Mossberg", "LPRauch", "Fleischer Tow", "Kerwin Huelsman Newcomb", "Tow Thomas");
-    private static final List<String> highpass2List = Arrays.asList("HPSallen",  "Ackerberg Mossberg", "Fleischer Tow", "Kerwin Huelsman Newcomb", "Tow Thomas", "HPRauch");
-    private static final List<String> bandpassList = Arrays.asList("Ackerberg Mossberg", "BPRauch", "BPSallen", "Fleischer Tow", "Kerwin Huelsman Newcomb", "Tow Thomas");
-    private static final List<String> bandrejectList = Arrays.asList("Ackerberg Mossberg", "BRSallen", "Fleischer Tow", "Kerwin Huelsman Newcomb", "Tow Thomas");
+    private static final List<String> lowpass2List = Arrays.asList("LPAckerberg Mossberg", "LPFleischer Tow", "LPKerwin Huelsman Newcomb", "LPRauch", "LPSallen", "LPTow Thomas");
+    private static final List<String> highpass2List = Arrays.asList("HPFleischer Tow", "HPKerwin Huelsman Newcomb", "HPRauch", "HPSallen");
+    private static final List<String> bandpassList = Arrays.asList("BPAckerberg Mossberg", "BPFleischer Tow", "BPKerwin Huelsman Newcomb", "BPRauch", "BPSallen", "BPTow Thomas");
+    private static final List<String> bandrejectList = Arrays.asList("BSAckerberg Mossberg", "BSFleischer Tow", "BSKerwin Huelsman Newcomb");
     private static final List<String> lowpass1List = Arrays.asList("LPRC");
     private static final List<String> highpass1List = Arrays.asList("HPRC");
 

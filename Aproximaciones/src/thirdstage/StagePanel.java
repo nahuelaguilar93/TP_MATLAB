@@ -16,8 +16,7 @@ import javax.swing.event.ListSelectionListener;
 public class StagePanel extends JPanel{
     private DefaultListModel<String> stagesListModel = new DefaultListModel<>();
     private JList<String> stagesList = new JList<>(stagesListModel);
-    private StageProperties stageProperties;
-    private PlotPoleZeroPanel plotPoleZeroPanel;
+
 	
 	StagePanel(){
 		Singleton_S3 s = Singleton_S3.getInstance();
@@ -38,25 +37,7 @@ public class StagePanel extends JPanel{
             }
         });
 
-        stageProperties = s.getStageProperties();
-        plotPoleZeroPanel = s.getPlotPoleZeroPanel();
-
-        //Setup layout
-        GroupLayout layout = new GroupLayout(this);
-        this.setLayout(layout);
-        layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);
-
-        layout.setHorizontalGroup(
-                layout.createSequentialGroup()
-                    .addGroup(layout.createParallelGroup().addComponent(stagesListScroller).addComponent(stageProperties))
-                    .addComponent(plotPoleZeroPanel)
-        );
-        layout.setVerticalGroup(
-                layout.createParallelGroup()
-                    .addGroup(layout.createSequentialGroup().addComponent(stagesListScroller).addComponent(stageProperties))
-                    .addComponent(plotPoleZeroPanel)
-        );
+        this.add(stagesListScroller);
 	}
 
     public void updateList() {

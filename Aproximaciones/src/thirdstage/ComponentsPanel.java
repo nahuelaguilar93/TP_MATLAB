@@ -36,50 +36,50 @@ public class ComponentsPanel extends JPanel{
         List<Stage> currentStage = s.getUserData().getStageList();
         int index = s3.getStagePanel().getSelectedIndex();
 
-        if ( index != -1 && !s3.getTopologyConfigPanel().getSelectedString().isEmpty()) {
+        if ( index != -1 ) {
             double Q = currentStage.get(index).getQ();
             double wo = currentStage.get(index).getPoles()[0].getImaginary();
             double G = currentStage.get(index).getGdB();
 
-            switch ( s3.getTopologyConfigPanel().getSelectedString() ) {
-                case "HPSallen":
-                    getHPSallen(Q, wo, G);
-                    break;
-                case "LPSallen":
-                    getLPSallen(Q, wo, G);
-                    break;
-                case "Ackerberg Mossberg":
-                    getAckerbergMossberg(Q, wo, G);
-                    break;
-                case "BPRauch":
-                    getBPRauch(Q, wo, G);
-                    break;
-                case "BPSallen":
-                    getBPSallen(Q, wo, G);
-                    break;
-                case "Fleischer Tow":
-                    getFleischerTow(Q, wo, G);
-                    break;
-                case "Kerwin Huelsman Newcomb":
-                    getKHN(Q, wo, G);
-                    break;
-                case "Tow Thomas":
-                    getTT(Q, wo, G);
-                    break;
-                case "LPRauch":
-                    getLPRauch(Q, wo, G);
-                    break;
-                case "HPRauch":
-                    getHPRauch(Q, wo, G);
-                    break;
-                default:
-                    System.out.println("Se te escapó un switch case! Ojo!");
-                    break;
+            if ( s3.getTopologyConfigPanel().getIndex() != -1 ) {
+                switch (s3.getTopologyConfigPanel().getSelectedString()) {
+                    case "HPSallen":
+                        getHPSallen(Q, wo, G);
+                        break;
+                    case "LPSallen":
+                        getLPSallen(Q, wo, G);
+                        break;
+                    case "Ackerberg Mossberg":
+                        getAckerbergMossberg(Q, wo, G);
+                        break;
+                    case "BPRauch":
+                        getBPRauch(Q, wo, G);
+                        break;
+                    case "BPSallen":
+                        getBPSallen(Q, wo, G);
+                        break;
+                    case "Fleischer Tow":
+                        getFleischerTow(Q, wo, G);
+                        break;
+                    case "Kerwin Huelsman Newcomb":
+                        getKHN(Q, wo, G);
+                        break;
+                    case "Tow Thomas":
+                        getTT(Q, wo, G);
+                        break;
+                    case "LPRauch":
+                        getLPRauch(Q, wo, G);
+                        break;
+                    case "HPRauch":
+                        getHPRauch(Q, wo, G);
+                        break;
+                    default:
+                        System.out.println("Se te escapó un switch case! Ojo!");
+                        break;
+                }
             }
         }
     }
-
-
 
     //Sallen Key
     private void getLPSallen(double Q, double wo, double G) {

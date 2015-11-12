@@ -31,6 +31,7 @@ public class FilterCircuitPanel extends JPanel{
 
     public void updateImage(String path) {
         try {
+            System.out.println("Looking for image" + path + ".jpg");
             Image image = ImageIO.read(new File("./images/" + path + ".jpg"));
             imageLabel.setIcon(new ImageIcon(image));
         }

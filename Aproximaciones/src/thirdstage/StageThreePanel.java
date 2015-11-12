@@ -11,7 +11,7 @@ public class StageThreePanel extends JPanel {
     private Singleton_S3 s = Singleton_S3.getInstance();
 
     public StageThreePanel() {
-        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         stagePropertiesPanel = s.getStagePropertiesPanel();
         stagesSelectionPanel = s.getStagesSelectionPanel();

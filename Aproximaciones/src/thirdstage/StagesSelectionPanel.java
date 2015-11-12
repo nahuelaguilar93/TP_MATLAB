@@ -1,41 +1,60 @@
 package thirdstage;
 
+import secondstage.PlotPoleZeroPanel;
+import secondstage.StageProperties;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class StagesSelectionPanel extends JPanel{
 	FilterCircuitPanel filterCircuitPanel;
     StagePanel stagePanel;
+    TopologyConfigPanel stageconfigpanel = new TopologyConfigPanel();
+    ComponentsPanel componentspanel = new ComponentsPanel();
+    StageProperties stageProperties;
+    PlotPoleZeroPanel plotPoleZeroPanel;
+
 
 	StagesSelectionPanel(){
 		Singleton_S3 s = Singleton_S3.getInstance();
-
-        /*this.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();*/
-
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
-
         //setBorder(BorderFactory.createTitledBorder("Stages"));
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
         
         filterCircuitPanel = s.getFilterCircuitPanel();
         stagePanel = s.getStagePanel();
+        componentspanel= s.getComponentsPanel();
+        stageconfigpanel= s.getTopologyConfigPanel();
+        stageProperties = s.getStageProperties();
+        plotPoleZeroPanel = s.getPlotPoleZeroPanel();
 
-        this.add(filterCircuitPanel);
-        this.add(stagePanel);
-
-       /* //Setup layout
+       //Setup layout
         GroupLayout layout = new GroupLayout(this);
         this.setLayout(layout);
         layout.setAutoCreateGaps(true);
-        layout.setAutoCreateContainerGaps(true);*/
+        layout.setAutoCreateContainerGaps(true);
 
-        /*layout.setHorizontalGroup(
-                layout.createParallelGroup().addComponent(filterCircuitPanel).addComponent(stagePanel)
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addComponent(filterCircuitPanel)
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(stagePanel)
+                                .addComponent(stageconfigpanel))
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(componentspanel)
+                                .addComponent(stageProperties))
+                        .addComponent(plotPoleZeroPanel)
         );
         layout.setVerticalGroup(
-                layout.createSequentialGroup().addComponent(filterCircuitPanel).addComponent(stagePanel)
+                layout.createParallelGroup()
+                        .addComponent(filterCircuitPanel)
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(stagePanel)
+                                .addComponent(stageconfigpanel))
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(componentspanel)
+                                .addComponent(stageProperties))
+                        .addComponent(plotPoleZeroPanel)
         );
-        layout.linkSize(SwingConstants.VERTICAL, filterCircuitPanel, stagePanel);*/
+        //layout.linkSize(SwingConstants.VERTICAL, filterCircuitPanel, stagePanel);
 	}
 }
