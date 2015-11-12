@@ -1,5 +1,8 @@
 package thirdstage;
 
+import Data.Singleton;
+import mathematics.Stage;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
@@ -9,11 +12,11 @@ public class TopologyConfigPanel extends JPanel {
 	
 	private JComboBox topologyList = new JComboBox();
 	private JTextField textfield = new JTextField("1000");
-    private ArrayList<String> filterString = new ArrayList<String>(Arrays.asList("HPSallen", "LPSallen", "Ackerberg Mossberg", "BPRauch", "BPSallen", "BRSallen", "Fleischer Tow", "Kerwin Huelsman Newcomb", "Tow Thomas", "HPRauch", "LPRauch"));
-	
-	
+
 	TopologyConfigPanel(){
 		setBorder(BorderFactory.createTitledBorder("Stage Configuration"));
+
+        topologyList.addItem("Select a Stage");
 
         topologyList.addActionListener(new ActionListener() {
             @Override
@@ -34,10 +37,23 @@ public class TopologyConfigPanel extends JPanel {
 	public int getIndex() { return topologyList.getSelectedIndex(); }
 
     public void updateList() {
-        //Approximation.getStringsToComboBox(uData.getCurrentTemplate());
-        topologyList.removeAllItems();
-        for (String x : filterString)
-            topologyList.addItem(x);
+        Singleton s = Singleton.getInstance();
+        Singleton_S3 s3 = Singleton_S3.getInstance();
+
+        int index = s3.getStagePanel().getSelectedIndex();
+        System.out.println("UpdateList con index = " + index);
+        if ( index != -1 ) {
+            System.out.println("Estoy por cambiar la lista");
+            List<Stage> currentStage = s.getUserData().getStageList();
+            List<String> filterString = currentStage.get(index).getList();
+            for(Stage x : currentStage)
+               System.out.println("Stage list sizes: " + x.getList().size());
+
+            topologyList.removeAllItems();
+            topologyList.addItem("JAMON");
+            for (String x : filterString)
+                topologyList.addItem(x);
+        }
     }
 
     public String getSelectedString() { return (String) topologyList.getSelectedItem(); }

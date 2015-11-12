@@ -19,7 +19,7 @@ public class FilterMode extends JPanel{
     FilterMode() {
         Singleton s = Singleton.getInstance();
         Singleton_S2 s2 = Singleton_S2.getInstance();
-        List<TransferFunction> myTFList = new ArrayList<>();
+
         showHoleFilterButton = new JButton("Show Accumulated Stages");
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -28,7 +28,8 @@ public class FilterMode extends JPanel{
         showHoleFilterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                myTFList.add(s.getUserData().getApproximationList().get(s.getUserData().getSelection()).getTF());
+                List<TransferFunction> myTFList = new ArrayList<>();
+                myTFList.add(s.getUserData().getTransferFunction());
                 s2.getPlotStagePanel().updatePlot(myTFList, 0);
             }
         });

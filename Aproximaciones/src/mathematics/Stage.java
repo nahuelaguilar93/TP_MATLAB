@@ -39,14 +39,20 @@ public class Stage {
             else {
                 if (p1.getImaginary() == 0)
                     poles = new Complex[]{p1};
-                else poles = new Complex[]{p1, p1.conjugate()};
+                else {
+                    poles = new Complex[]{p1, p1.conjugate()};
+                    twoPoles = true;
+                }
                 details = GenericUtils.getPZString(p1, true);
             }
         }
         else if (p1.isInfinite()) {
             if (p2.getImaginary() == 0)
                 poles = new Complex[]{p2};
-            else poles = new Complex[]{p2, p2.conjugate()};
+            else {
+                poles = new Complex[]{p2, p2.conjugate()};
+                twoPoles = true;
+            }
             details = GenericUtils.getPZString(p2, true);
         }
         else {

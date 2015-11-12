@@ -36,7 +36,7 @@ public class ComponentsPanel extends JPanel{
         List<Stage> currentStage = s.getUserData().getStageList();
         int index = s3.getStagePanel().getSelectedIndex();
 
-        if ( index != -1 ) {
+        if ( index != -1 && !s3.getTopologyConfigPanel().getSelectedString().isEmpty()) {
             double Q = currentStage.get(index).getQ();
             double wo = currentStage.get(index).getPoles()[0].getImaginary();
             double G = currentStage.get(index).getGdB();
