@@ -26,6 +26,13 @@ public class Stage {
         this.TF = new TransferFunction(TF);
         this.poles = TF.getPoles();
         this.zeros = TF.getZeros();
+        for ( int i = 0; i < poles.length; i++ ) {
+            if ( i != 0 ) details = details + " + ";
+            details = details + GenericUtils.getPZString(poles[i], true);
+        }
+        for ( Complex x : zeros ) {
+            details = details + " + " + GenericUtils.getPZString(x, false);
+        }
     }
     public Stage(Complex p1) { this(p1, Complex.INF, Complex.INF, Complex.INF, 1); }
     public Stage(Complex p1, Complex z1) { this(p1, z1, Complex.INF, Complex.INF, 1); }
@@ -37,8 +44,10 @@ public class Stage {
             if (p1.isInfinite())
                 poles = new Complex[]{};
             else {
-                if (p1.getImaginary() == 0)
+                if (p1.getImaginary() == 0) {
                     poles = new Complex[]{p1};
+                    System.out.println("It was zero");
+                }
                 else {
                     poles = new Complex[]{p1, p1.conjugate()};
                     twoPoles = true;
@@ -66,19 +75,22 @@ public class Stage {
                 zeros = new Complex[]{};
                 noZeros = true;
             } else {
-                if (z1.getImaginary() == 0)
+                if (z1.getImaginary() == 0) {
                     zeros = new Complex[]{z1};
+                    System.out.println("Zero Imaginary was zero too");
+                    singleZero = true;
+                }
                 else zeros = new Complex[]{z1, z1.conjugate()};
                 details = details + " + " + GenericUtils.getPZString(z1, false);
-                singleZero = true;
             }
         }
         else if (z1.isInfinite()) {
-            if (z2.getImaginary() == 0)
+            if (z2.getImaginary() == 0) {
                 zeros = new Complex[]{z2};
+                singleZero = true;
+            }
             else zeros = new Complex[]{z2, z2.conjugate()};
             details = details + " + " + GenericUtils.getPZString(z2, false);
-            singleZero = true;
         }
         else if (z1.abs() == 0 && z2.abs() == 0) {
             zeros = new Complex[]{z1, z2};

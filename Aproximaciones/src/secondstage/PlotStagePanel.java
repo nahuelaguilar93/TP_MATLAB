@@ -1,6 +1,7 @@
 package secondstage;
 
 import Data.Singleton;
+import mathematics.Stage;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.JFreeChart;
@@ -13,6 +14,7 @@ import tclib.GenericUtils;
 import tclib.TransferFunction;
 import tclib.templates.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.*;
 import java.awt.*;
@@ -75,8 +77,36 @@ public class PlotStagePanel extends JPanel {
         return new ChartPanel(chart);
     }
 
-    public void updatePlot() { plot.setDataset(0, null); }
-    public void updatePlot(List<TransferFunction> myTFList, int Index) {
+    public void updatePlot() {
+        Singleton_S2 s2 = Singleton_S2.getInstance();
+        Singleton s = Singleton.getInstance();
+        plot.setDataset(0, null);
+
+        if (!s.getUserData().getStageList().isEmpty()) {
+            List<TransferFunction> myTFList = new ArrayList<>();
+            for (Stage x : s.getUserData().getStageList()) {
+                myTFList.add( new TransferFunction(x.getTF()));
+            }
+            if ( s2.getstagePlotModePanel().getSingleModeRadioButton().isSelected() ) {
+                s2.getPlotStagePanel().updatePlot(myTFList, s2.getPoleZeroListsPanel().getStagesListIndex());
+            }
+            else if ( s2.getstagePlotModePanel().getMultipleModeRadioButton().isSelected() ) {
+                s2.getPlotStagePanel().updatePlot(myTFList, -1);
+            }
+            else {
+                //myTFList.clear();
+                List<TransferFunction> acumTFList =  new ArrayList<>();
+                acumTFList.add(new TransferFunction(myTFList.get(0)));
+                for(int i = 1; i < myTFList.size(); i++){
+                    TransferFunction nextTF = new TransferFunction(acumTFList.get(i-1));
+                    nextTF.multiply(myTFList.get(i));
+                    acumTFList.add(nextTF);
+                }
+                s2.getPlotStagePanel().updatePlot(acumTFList, -1);
+            }
+        }
+    }
+    private void updatePlot(List<TransferFunction> myTFList, int Index) {
         plot.setDataset(0, null);
         if (!myTFList.isEmpty()) {
             Singleton s = Singleton.getInstance();
@@ -88,6 +118,7 @@ public class PlotStagePanel extends JPanel {
             else {
                 dataset = createDataset(myTFList, Index, dataset);
             }
+
             plot.setDataset(0, dataset);
 
             //Used to set default Axis

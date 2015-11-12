@@ -28,9 +28,7 @@ public class FilterMode extends JPanel{
         showHoleFilterButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                List<TransferFunction> myTFList = new ArrayList<>();
-                myTFList.add(s.getUserData().getTransferFunction());
-                s2.getPlotStagePanel().updatePlot(myTFList, 0);
+                s2.getPlotStagePanel().updatePlot();
             }
         });
 

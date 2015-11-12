@@ -56,7 +56,7 @@ public class PoleZeroListsPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 matchPolesZeros();
-                s2.getstagePlotModePanel().updateStagePlot();
+                s2.getPlotStagePanel().updatePlot();
                 s2.getPlotPoleZeroPanel().updatePoleZeroPlot();
                 s2.getPlotPoleZeroPanel().updatePoleZeroColour();
                 s2.getPlotPoleZeroPanel().updatePoleZeroColour();
@@ -66,7 +66,7 @@ public class PoleZeroListsPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 automaticSelection();
-                s2.getstagePlotModePanel().updateStagePlot();
+                s2.getPlotStagePanel().updatePlot();
                 s2.getPlotPoleZeroPanel().updatePoleZeroPlot();
                 s2.getPlotPoleZeroPanel().updatePoleZeroColour();
                 s2.getPlotPoleZeroPanel().updatePoleZeroColour();
@@ -88,7 +88,7 @@ public class PoleZeroListsPanel extends JPanel {
         stagesList.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                s2.getstagePlotModePanel().updateStagePlot();
+                s2.getPlotStagePanel().updatePlot();
                 s2.getStageProperties().updateLabels(s2.getPoleZeroListsPanel().getStagesListIndex());
             }
         });
@@ -133,10 +133,11 @@ public class PoleZeroListsPanel extends JPanel {
         polesListModel.removeAllElements();
         zerosListModel.removeAllElements();
         stagesListModel.removeAllElements();
+
         //Get UserData information
         List<Complex> currentUnmatchedPoles = s.getUserData().getUnmatchedPoles();
         List<Complex> currentUnmatchedZeros = s.getUserData().getUnmatchedZeros();
-        List<Stage> currentStageList = s.getUserData().getStageList();
+
         //Update Lists with the userData information
         joker = 0;
         for ( Complex x : currentUnmatchedPoles) {
@@ -153,14 +154,14 @@ public class PoleZeroListsPanel extends JPanel {
             }
             else { joker -= 2; }
         }
-
         if ( originZeroCount % 2 == 0) {
             if ( joker > 0  ) { zerosListModel.addElement("<None>"); }
         }
         else {
             if ( joker > 1  ) { zerosListModel.addElement("<None>"); }
         }
-        for (Stage x : currentStageList) {
+
+        for (Stage x : s.getUserData().getStageList()) {
             stagesListModel.addElement( x.getDetails() );
         }
     }
@@ -369,7 +370,7 @@ public class PoleZeroListsPanel extends JPanel {
         int secondPoleIndex = unmatchedPolesList.getMaxSelectionIndex();
 
         if (checkIndexes(firstZeroIndex, secondZeroIndex, firstPoleIndex, secondPoleIndex)) {
-            if ( firstPoleIndex == secondPoleIndex) {
+            if ( firstPoleIndex == secondPoleIndex ) {
                 matchWithSingleSelection(firstZeroIndex, secondZeroIndex, firstPoleIndex);
             }
             else {
@@ -388,6 +389,7 @@ public class PoleZeroListsPanel extends JPanel {
                 stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex)));
                 unmatchedPoles.remove(selectedPoleIndex);
             } else {
+                System.out.println("Got here ^^");
                 stageList.add(new Stage(unmatchedPoles.get(selectedPoleIndex), unmatchedZeros.get(firstZeroIndex)));
                 unmatchedPoles.remove(selectedPoleIndex);
                 unmatchedZeros.remove(firstZeroIndex);

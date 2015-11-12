@@ -31,10 +31,7 @@ public class StagePlotModePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!s.getUserData().getStageList().isEmpty()) {
-                    List<TransferFunction> myTFList = new ArrayList<>();
-                    for ( Stage x : s.getUserData().getStageList())
-                          myTFList.add(new TransferFunction(x.getTF()));
-                    s2.getPlotStagePanel().updatePlot(myTFList, -1);
+                    s2.getPlotStagePanel().updatePlot();
                 }
             }
         });
@@ -42,10 +39,7 @@ public class StagePlotModePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!s.getUserData().getStageList().isEmpty()) {
-                    List<TransferFunction> myTFList = new ArrayList<>();
-                    for ( Stage x : s.getUserData().getStageList())
-                        myTFList.add(new TransferFunction(x.getTF()));
-                    s2.getPlotStagePanel().updatePlot(myTFList, s2.getPoleZeroListsPanel().getStagesListIndex());
+                    s2.getPlotStagePanel().updatePlot();
                 }
             }
         });
@@ -53,16 +47,7 @@ public class StagePlotModePanel extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (!s.getUserData().getStageList().isEmpty()) {
-
-
-                    List<TransferFunction> acumTF =  new ArrayList<>();
-                    acumTF.add(new TransferFunction(s.getUserData().getStageList().get(0).getTF()));
-                    for(int i = 1; i < s.getUserData().getStageList().size(); i++){
-                        TransferFunction nextTF = new TransferFunction(acumTF.get(i-1));
-                        nextTF.multiply(s.getUserData().getStageList().get(i).getTF());
-                        acumTF.add(nextTF);
-                    }
-                    s2.getPlotStagePanel().updatePlot(acumTF, s2.getPoleZeroListsPanel().getStagesListIndex());
+                    s2.getPlotStagePanel().updatePlot();
                 }
             }
         });
@@ -77,7 +62,7 @@ public class StagePlotModePanel extends JPanel{
         this.add(cumModeRadioButton);
     }
 
-    public void updateStagePlot() {
+    /*public void updateStagePlot() {
         if (multipleModeRadioButton.isSelected()) {
             if (!s.getUserData().getStageList().isEmpty()) {
                 List<TransferFunction> myTFList = new ArrayList<>();
@@ -96,6 +81,9 @@ public class StagePlotModePanel extends JPanel{
                 s2.getPlotStagePanel().updatePlot(myTFList, s2.getPoleZeroListsPanel().getStagesListIndex());
             }
         }
-    }
+    }*/
 
+    public JRadioButton getSingleModeRadioButton() { return singleModeRadioButton; }
+    public JRadioButton getMultipleModeRadioButton() { return multipleModeRadioButton; }
+    public JRadioButton getCumModeRadioButton() { return cumModeRadioButton; }
 }
