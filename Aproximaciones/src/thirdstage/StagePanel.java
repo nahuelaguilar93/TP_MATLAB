@@ -18,7 +18,7 @@ public class StagePanel extends JPanel{
     private JList<String> stagesList = new JList<>(stagesListModel);
 
 	
-	StagePanel(){
+	StagePanel() {
 		Singleton_S3 s = Singleton_S3.getInstance();
         //Create the list
         stagesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

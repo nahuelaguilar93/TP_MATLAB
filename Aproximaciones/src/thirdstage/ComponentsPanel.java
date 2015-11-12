@@ -73,14 +73,42 @@ public class ComponentsPanel extends JPanel{
                     case "HPRauch":
                         getHPRauch(Q, wo, G);
                         break;
+                    case "HPRC":
+                        getHPRC(Q, wo, G);
+                        break;
+                    case "LPRC":
+                        getLPRC(Q, wo, G);
+                        break;
                     default:
-                        System.out.println("Se te escapó un switch case! Ojo!");
+                        //System.out.println("Se te escapó un switch case! Ojo!");
                         break;
                 }
             }
         }
     }
 
+    //Simples
+    public void getHPRC(double Q, double wo, double G) {
+        componentListModel.removeAllElements();
+        double R;
+        double C;
+
+        C = Math.pow(10, G/20);
+        R = 1/(wo*C);
+
+        componentListModel.addElement( "| R = " + R + " [ohms] |" );
+        componentListModel.addElement( "| C = " + C + " [Farad] |" );
+    }
+    public void  getLPRC(double Q, double wo, double G) {
+        componentListModel.removeAllElements();
+        double R = 1000;
+        double C;
+
+        C = 1/(wo*R);
+
+        componentListModel.addElement( "| R = " + R + " [ohms] |" );
+        componentListModel.addElement( "| C = " + C + " [Farad] |" );
+    }
     //Sallen Key
     private void getLPSallen(double Q, double wo, double G) {
         componentListModel.removeAllElements();

@@ -20,7 +20,6 @@ public class Singleton_S3 {
     private SensitivitiesPanel sensitivitiespanel= null;
     private StagePanel stagepanel= null;
     private PlotPanel plotpanel= null;
-    private StageInfoPanel stageinfopanel= null;
     private PoleZeroListsPanel poleZeroListsPanel = null;
     private PlotPoleZeroPanel plotPoleZeroPanel = null;
     private StageProperties stageProperties = null;
@@ -45,11 +44,6 @@ public class Singleton_S3 {
         if ( stageProperties == null)
             stageProperties = new StageProperties();
         return stageProperties;
-    }
-    public StageInfoPanel getStageInfoPanel() {
-        if (stageinfopanel == null)
-        	stageinfopanel = new StageInfoPanel();
-        return stageinfopanel;
     }
     public PlotPanel getPlotPanel() {
         if (plotpanel == null)

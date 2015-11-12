@@ -11,7 +11,7 @@ import javax.swing.*;
 public class TopologyConfigPanel extends JPanel {
 	
 	private JComboBox topologyList = new JComboBox();
-	private JTextField textfield = new JTextField("1000");
+	//private JTextField textfield = new JTextField("1000");
 
 	TopologyConfigPanel(){
 		setBorder(BorderFactory.createTitledBorder("Stage Configuration"));
@@ -32,8 +32,8 @@ public class TopologyConfigPanel extends JPanel {
 
         updateList();
 		this.add(topologyList);
-		this.add(new JLabel("R1 [ohm]"));
-		this.add(textfield);
+		//this.add(new JLabel("R1 [ohm]"));
+		//this.add(textfield);
 	}
 
 	public int getIndex() {

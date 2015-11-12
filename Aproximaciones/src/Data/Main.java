@@ -20,8 +20,7 @@ public class Main extends JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("TP de Aproximaciones en Java");
         setLocationRelativeTo(null);
-        //setPreferredSize(new Dimension(1024, 768));
-        setMinimumSize(new Dimension(800, 600)); //Minimum Screen Size
+        setMinimumSize(new Dimension(1280, 720)); //Minimum Screen Size
     }
 
     public static void main(String[] args) {
