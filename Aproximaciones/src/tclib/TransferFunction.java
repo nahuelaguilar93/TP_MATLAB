@@ -30,6 +30,12 @@ public class TransferFunction {
         this.numerador = new PolynomialFunction(that.numerador.getCoefficients());
         this.denominador = new PolynomialFunction(that.denominador.getCoefficients());
     }
+    public PolynomialFunction getNumeratorCopy() {
+        return new PolynomialFunction(numerador.getCoefficients());
+    }
+    public PolynomialFunction getDenominatorCopy() {
+        return new PolynomialFunction(denominador.getCoefficients());
+    }
 
     /**
      * @param numPoly: Indice del elemento indica la potencia de ese termino del polinomio.
