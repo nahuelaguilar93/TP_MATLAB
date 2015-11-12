@@ -11,10 +11,10 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Approximation {
-    private static final List<String> lowpassList = Arrays.asList("Butterworth", "Chebyshev I", "Chebyshev II", "Legendre", "Cauer", "Bessel", "Better", "Letter", "Buby");
-    private static final List<String> highpassList = Arrays.asList("Butterworth", "Chebyshev I", "Chebyshev II", "Legendre", "Cauer", "Better", "Letter", "Buby");
-    private static final List<String> bandpassList = Arrays.asList("Butterworth", "Chebyshev I", "Chebyshev II", "Legendre", "Cauer", "Better", "Begendre", "Buby");
-    private static final List<String> bandrejectList = Arrays.asList("Butterworth", "Chebyshev I", "Chebyshev II", "Legendre", "Cauer", "Better", "Letter", "Buby");
+    private static final List<String> lowpassList = Arrays.asList("Butterworth", "Chebyshev I", "Chebyshev II", "Legendre", "Cauer", "Bessel");
+    private static final List<String> highpassList = Arrays.asList("Butterworth", "Chebyshev I", "Chebyshev II", "Legendre", "Cauer");
+    private static final List<String> bandpassList = Arrays.asList("Butterworth", "Chebyshev I", "Chebyshev II", "Legendre", "Cauer");
+    private static final List<String> bandrejectList = Arrays.asList("Butterworth", "Chebyshev I", "Chebyshev II", "Legendre", "Cauer");
     private static final List<String> delayList = Arrays.asList("Bessel", "Gauss");
 
     //Este método lo llama el botón SetTemplate, y el constructor de esta clase.

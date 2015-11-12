@@ -234,9 +234,8 @@ class PlotPlot extends JPanel{
     }
     public void updateNormalizedTemplate() {
         //TODO: esta aun no anda
-        plotA.setDataset(0, null);
         XYSeriesCollection dataset = new XYSeriesCollection();
-        double[] freq = GenericUtils.logspace(0, userData.getCurrentTemplate().getWan()*10, 10000);
+        double[] freq = GenericUtils.logspace(0.01, userData.getCurrentTemplate().getWan()*10, 10000);
         java.util.List<Approximation> approximationList = userData.getApproximationList();
         Approximation currentAprox;
         for (int i = 0; i < approximationList.size(); i++) {
