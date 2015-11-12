@@ -44,7 +44,7 @@ public class GenericUtils {
     }
     public static double dynamicRangeLoss(List<TransferFunction> stages, double minW, double maxW, int points) {
         if(stages.size() == 0) return 0;
-        double freq[] = linspace(minW, maxW, points);
+        double freq[] = logspace(minW, maxW, points);
         double dynRangeLoss[] = new double[points];
 
         List<TransferFunction> acumTF =  new ArrayList<>();

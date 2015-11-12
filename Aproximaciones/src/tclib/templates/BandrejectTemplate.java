@@ -52,4 +52,11 @@ public class BandrejectTemplate extends SuperTemplate {
             else return false;
         } else return false;
     }
+
+    @Override
+    public double getWmax() { return wpp; }
+    @Override
+    public double getWmin() { return wpm; }
+    @Override
+    public double[] getBand() { return new double[] {wpm/100, wpm, wpp, wpp*100}; }
 }

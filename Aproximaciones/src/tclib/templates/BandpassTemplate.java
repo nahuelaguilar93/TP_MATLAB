@@ -52,4 +52,11 @@ public class BandpassTemplate extends SuperTemplate {
             else return false;
         } else return false;
     }
+
+    @Override
+    public double getWmax() { return wap; }
+    @Override
+    public double getWmin() { return wam; }
+    @Override
+    public double[] getBand() { return new double[] {wpm, wpp}; }
 }

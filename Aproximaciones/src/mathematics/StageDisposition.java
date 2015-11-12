@@ -13,23 +13,13 @@ public class StageDisposition {
     private List<Stage> stageList;
     public List<Stage> getStageList() { return stageList; };
 
-    public StageDisposition(List<Stage> stages) {
-        stageList = stages;
-    }
-    public StageDisposition() {
-        this(new ArrayList<>());
-    }
+    public StageDisposition() { this(new ArrayList<>()); }
+    public StageDisposition(List<Stage> stages) { stageList = stages; }
 
     public void gainCorrection() {
         if(stageList.size() == 0) return;
-        double wEval;
         SuperTemplate temp = Singleton.getInstance().getUserData().getCurrentTemplate();
-
-        if (temp instanceof LowpassTemplate) wEval = ((LowpassTemplate) temp).getWp();
-        else if (temp instanceof HighpassTemplate) wEval = ((HighpassTemplate) temp).getWp();
-        else if (temp instanceof DelayTemplate) wEval = ((DelayTemplate) temp).getWp();
-        else if (temp instanceof BandpassTemplate) wEval = ((BandpassTemplate) temp).getWo();
-        else wEval = ((BandrejectTemplate) temp).getWpp();
+        double wEval = temp.getBand()[0];
 
         TransferFunction finalTF = new TransferFunction(Singleton.getInstance().getUserData().getTransferFunction());
         TransferFunction acumTF = new TransferFunction(stageList.get(0).getTF());
@@ -47,6 +37,7 @@ public class StageDisposition {
         if(stageList.size() == 0) return;
 
         double lowestDRL = Double.POSITIVE_INFINITY;
+        double bandRange[] = Singleton.getInstance().getUserData().getCurrentTemplate().getBand();
         List<TransferFunction> bestTFList =  new ArrayList<>();
         List<TransferFunction> sortedTFList = new ArrayList<>();
         List<TransferFunction> acumTFList =  new ArrayList<>();
@@ -70,8 +61,8 @@ public class StageDisposition {
 //        System.out.println("maxGainFreq: " + auxW);
             double prevAcumStageMax = sortedTFList.get(0).evaluateApproximationAtOmega(auxW).abs();
             for (int k = 1; k < sortedTFList.size(); k++) {
-                auxW = getMaxGainFreq(acumTFList.get(k), wMin / 100, wMax * 100);
-//                System.out.println("maxGainFreq: " + auxW);
+                auxW = getMaxGainFreq(acumTFList.get(k), wMin/100, wMax*100);
+ //                System.out.println("maxGainFreq: " + auxW);
                 double nextAcumStageMax = acumTFList.get(k).evaluateApproximationAtOmega(auxW).abs();
                 double correction = prevAcumStageMax/nextAcumStageMax;
                 sortedTFList.get(k).multiply(correction);
@@ -81,8 +72,11 @@ public class StageDisposition {
                 prevAcumStageMax = nextAcumStageMax;
             }
 
-            double newDRL = GenericUtils.dynamicRangeLoss(sortedTFList, wMin / 100, wMax * 100, 12345);
-//            System.out.println("newDRL: " + newDRL);
+            double newDRL = GenericUtils.dynamicRangeLoss(sortedTFList, bandRange[0], bandRange[1], 12345);
+            if(bandRange.length == 4)
+                newDRL = Math.max(auxW,GenericUtils.dynamicRangeLoss(sortedTFList, bandRange[2], bandRange[3], 12345));
+
+            System.out.println("newDRL: " + 20.*Math.log10(newDRL));
             if(newDRL < lowestDRL){
                 lowestDRL = newDRL;
                 bestTFList = new ArrayList<>(sortedTFList);
@@ -95,6 +89,7 @@ public class StageDisposition {
         for(TransferFunction x : bestTFList)
             this.stageList.add(new Stage(x));
     }
+
 
     private double getMaxGainFreq(TransferFunction TF, double wMin, double wMax){
         int pointsQuantity = (int)(Math.log10(wMax/wMin)*100);  //Evalúo 100 puntos por década.

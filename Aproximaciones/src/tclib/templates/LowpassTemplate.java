@@ -31,4 +31,11 @@ public class LowpassTemplate extends SuperTemplate {
             else return false;
         } else return false;
     }
+
+    @Override
+    public double getWmax() { return wa; }
+    @Override
+    public double getWmin() { return wp; }
+    @Override
+    public double[] getBand() { return new double[] {wp/100, wp}; }
 }
